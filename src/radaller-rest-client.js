@@ -104,6 +104,7 @@ export default (apiUrl, httpClient = fetchJson) => {
 
         switch (type) {
             case GET_LIST:
+            case GET_MANY:
             case GET_MANY_REFERENCE:
                 return {
                     data: data.items,
