@@ -14,8 +14,8 @@ const PATHS = {
 };
 
 const entries = {
-    // app: './src/index.js',
-    login: './src/login/index.js',
+    app: './src/index.js',
+    // login: './src/login/index.js',
 };
 
 PATHS.entries = entries;
