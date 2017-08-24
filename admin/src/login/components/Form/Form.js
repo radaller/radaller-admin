@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import Grid from 'material-ui/Grid';
-import Button from 'material-ui/Button';
+import { Grid, Row, Col } from 'react-flexbox-grid';
+import RaisedButton from 'material-ui/RaisedButton';
 import FormStore from '../../stores/form/form';
 import Field from './Field';
 
@@ -29,35 +29,33 @@ class GenerateForm extends Component {
         const { fields } = this.form;
         
         return (
-            <div>
-                <Grid container spacing={24}>
-                    <Grid item xs={12} sm={8}>
+            <Grid fluid>
+                <Row>
+                    <Col xs={12}>
                         {
                             fields.map((field, index) => <Field key={ index } field={ field } />)
                         }
-                    </Grid>
-                </Grid>
-                <Grid container spacing={24}>
-                    <Grid item xs={6} sm={4}>
-                        <Button
-                            raised
-                            color="primary"
+                    </Col>
+                </Row>
+                <Row between="xs">
+                    <Col>
+                        <br/>
+                        <RaisedButton
+                            primary={true}
                             onClick={ this.props.onCancelPress }
-                        >
-                            Cancel
-                        </Button>
-                    </Grid>
-                    <Grid item xs={6} sm={4}>
-                        <Button
-                            raised
-                            color="primary"
+                            label="Cancel"
+                        />
+                    </Col>
+                    <Col>
+                        <br/>
+                        <RaisedButton
+                            primary={true}
                             onClick={ this.onNextPress }
-                        >
-                            Next
-                        </Button>
-                    </Grid>
-                </Grid>
-            </div>
+                            label="Next"
+                        />
+                    </Col>
+                </Row>
+            </Grid>
         )
     }
 }

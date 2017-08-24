@@ -1,4 +1,4 @@
-.container {
+.loginContainer {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -7,7 +7,7 @@
     position: absolute;
 }
 
-.wrapper {
+.loginWrapper {
     max-width: 600px;
     flex-direction: column;
     width: 100%;

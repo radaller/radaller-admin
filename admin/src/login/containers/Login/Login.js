@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
 
 import LoginForm from '../../components/LoginForm/Form';
-import Field from '../../stores/form/field';
+import FieldStore from '../../stores/form/field';
 
 import Form from '../../components/Form/Form';
 
-const styles = {
-    formsWrap: {
-        padding: 15,
-        paddingTop: 0,
-        margin: 5,
-    }
+const stylesPaper = {
+    padding: 15,
+    paddingTop: 0,
+    margin: 5,
 };
 
 @observer
@@ -22,9 +19,9 @@ class App extends Component {
         super(props);
         this.state = {
             fields: {
-                userName: new Field({ name: 'user_name', value: '', placeholder: 'Enter git user name' }),
+                userName: new FieldStore({ name: 'user_name', value: '', placeholder: 'Enter git user name' }),
                 token: { name: 'token', value: '', placeholder: 'Enter git token' },
-                password: new Field({ name: 'password', value: '', placeholder: 'password', type: 'password' }),
+                password: new FieldStore({ name: 'password', value: '', placeholder: 'password', type: 'password' }),
                 code: { name: 'code', value: '', placeholder: 'Enter received code' },
             },
             showLoginForm: true,
@@ -59,9 +56,8 @@ class App extends Component {
     }
 
     render() {
-        const classes = this.props.classes;
         return (
-            <Paper className={ classes.formsWrap } elevation={ 4 }>
+            <div style={ stylesPaper } elevation={ 4 }>
                 {
                     this.state.showLoginForm && (
                         <LoginForm
@@ -97,9 +93,9 @@ class App extends Component {
                         />
                     )
                 }
-            </Paper>
+            </div>
         );
     }
 }
 
-export default withStyles(styles)(App);
+export default App;

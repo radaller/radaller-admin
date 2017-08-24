@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { withStyles } from 'material-ui/styles';
-import Button from 'material-ui/Button';
+
+import { Grid, Row, Col } from 'react-flexbox-grid';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import { blue500 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
-import AddIcon from 'material-ui-icons/Add';
-import SaveIcon from 'material-ui-icons/Save';
-import CloseIcon from 'material-ui-icons/Close';
-import DeleteIcon from 'material-ui-icons/Delete';
-import TouchAppIcon from 'material-ui-icons/TouchApp';
-import Grid from 'material-ui/Grid';
+import SaveIcon from 'material-ui/svg-icons/content/save';
+import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import DeleteIcon from 'material-ui/svg-icons/action/delete';
+import TouchAppIcon from 'material-ui/svg-icons/action/touch-app';
 import Chip from 'material-ui/Chip';
+
 import Field from '../../components/Form/Field';
 import FieldStore from '../../stores/form/field';
 
@@ -27,7 +29,7 @@ const styles = {
 };
 
 @observer
-class App extends Component {
+class AddRepo extends Component {
     constructor(props) {
         super(props);
 
@@ -84,31 +86,30 @@ class App extends Component {
     }
 
     render() {
-        const classes = this.props.classes;
         const { fields, createdRepos } = this.state;
         return (
-            <div className={ classes.centering }>
+            <div style={ styles.centering }>
                 {
                     createdRepos.map((repo, repoIndex) => {
                         return (
-                            <Grid key={ repoIndex } container spacing={24} align={'center'}>
-                                <Grid item xs={7} sm={9}>
-                                    <Chip label={ repo.name } className={ classes.chip } />
-                                </Grid>
-                                <Grid item xs={5} sm={3}>
-                                    <IconButton
-                                        color="primary"
-                                        onClick={ () => { this.chooseRepo(repoIndex) } }
-                                    >
-                                        <TouchAppIcon />
-                                    </IconButton>
-                                    <IconButton
-                                        color="primary"
-                                        onClick={ () => { this.deleteRepo(repoIndex) } }
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Grid>
+                            <Grid fluid key={ repoIndex }>
+                                <Row middle="xs">
+                                    <Col xs={7} sm={9}>
+                                        <Chip style={ styles.chip }>{ repo.name }</Chip>
+                                    </Col>
+                                    <Col xs={5} sm={3}>
+                                        <IconButton
+                                            onClick={ () => { this.chooseRepo(repoIndex) } }
+                                        >
+                                            <TouchAppIcon color={ blue500 } />
+                                        </IconButton>
+                                        <IconButton
+                                            onClick={ () => { this.deleteRepo(repoIndex) } }
+                                        >
+                                            <DeleteIcon color={ blue500 } />
+                                        </IconButton>
+                                    </Col>
+                                </Row>
                             </Grid>
                         )
                     })
@@ -117,36 +118,36 @@ class App extends Component {
                 {
                     fields.map((field, fieldIndex) => {
                         return (
-                            <Grid key={ fieldIndex } container spacing={24} align={'center'}>
-                                <Grid item xs={7} sm={9}>
-                                    <Field field={ field }/>
-                                </Grid>
-                                <Grid item xs={5} sm={3}>
-                                    <IconButton
-                                        color="primary"
-                                        onClick={ () => { this.createRepo(fieldIndex) } }
-                                    >
-                                        <SaveIcon />
-                                    </IconButton>
-                                    <IconButton
-                                        color="primary"
-                                        onClick={ () => { this.deleteRepoField(fieldIndex) } }
-                                    >
-                                        <CloseIcon />
-                                    </IconButton>
-                                </Grid>
+                            <Grid fluid key={ fieldIndex }>
+                                <Row middle="xs">
+                                    <Col xs={7} sm={9}>
+                                        <Field field={ field }/>
+                                    </Col>
+                                    <Col xs={5} sm={3}>
+                                        <IconButton
+                                            onClick={ () => { this.createRepo(fieldIndex) } }
+                                        >
+                                            <SaveIcon color={ blue500 } />
+                                        </IconButton>
+                                        <IconButton
+                                            onClick={ () => { this.deleteRepoField(fieldIndex) } }
+                                        >
+                                            <CloseIcon color={ blue500 } />
+                                        </IconButton>
+                                    </Col>
+                                </Row>
                             </Grid>
                         )
                     })
                 }
-                <div className={ classes.buttonRow }>
-                    <Button fab color="primary" onClick={ this.addRepoField }>
-                        <AddIcon />
-                    </Button>
+                <div style={ styles.buttonRow }>
+                    <FloatingActionButton onClick={ this.addRepoField }>
+                        <ContentAdd />
+                    </FloatingActionButton>
                 </div>
             </div>
         );
     }
 }
 
-export default withStyles(styles)(App);
+export default AddRepo;
