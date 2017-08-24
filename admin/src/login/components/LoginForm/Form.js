@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { withStyles } from 'material-ui/styles';
-import Grid from 'material-ui/Grid';
-import Button from 'material-ui/Button';
+
+import { Grid, Row, Col } from 'react-flexbox-grid';
+import RaisedButton from 'material-ui/RaisedButton';
 import Field from '../Form/Field';
 import FormStore from '../../stores/form/form';
 
-const styles = {
-    generateBtn: {
-        fontSize: 10,
-        minWidth: 40,
-        padding: 10,
-        marginBottom: 8,
-        minHeight: 30,
-    }
+const generateBtn = {
+    fontSize: 12,
+    height: 30,
+    lineHeight: '30px',
+    marginBottom: 15,
+    maxWidth: 75
 };
 
 @observer
@@ -39,42 +37,40 @@ class LoginForm extends Component {
     }
 
     render() {
-        const cs = this.props.classes;
         const { fields } = this.form;
 
         return (
-            <div>
-                <Grid container spacing={24}>
-                    <Grid item xs={12} sm={8}>
-                        <Field field={ fields[0] } />
-                    </Grid>
-                </Grid>
-                <Grid container spacing={24} align={'flex-end'}>
-                    <Grid item xs={8} sm={8}>
-                        <Field field={ fields[1] } />
-                    </Grid>
-                    <Grid item xs={4} sm={4}>
-                        <Button
-                            raised
+            <Grid fluid>
+                <Row>
+                    <Col xs={12} sm={8}>
+                        <Field field={ fields[0] }/>
+                    </Col>
+                </Row>
+                <Row bottom="xs">
+                    <Col xs={8} sm={8}>
+                        <Field field={ fields[1] }/>
+                    </Col>
+                    <Col xs={4} sm={4}>
+                        <RaisedButton
+                            style={ generateBtn }
                             onClick={ this.onGeneratePress }
-                            className={ cs.generateBtn }
-                        >Generate</Button>
-                    </Grid>
-                </Grid>
-                <Grid container spacing={24}>
-                    <Grid item xs={12} sm={8}>
-                        <Button
-                            raised
-                            color="primary"
+                        >Generate</RaisedButton>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={12} sm={8}>
+                        <br/>
+                        <RaisedButton
+                            primary={true}
                             onClick={ this.onNextPress }
-                        >
-                            Next
-                        </Button>
-                    </Grid>
-                </Grid>
-            </div>
+                            fullWidth
+                            label="Next"
+                        />
+                    </Col>
+                </Row>
+            </Grid>
         )
     }
 }
 
-export default withStyles(styles)(LoginForm);
+export default LoginForm;

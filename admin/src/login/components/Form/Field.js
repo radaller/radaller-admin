@@ -4,13 +4,12 @@ import TextField from 'material-ui/TextField';
 
 const Field = ({ field }) => (
     <TextField
+        floatingLabelText={ field.placeholder }
         name={ field.name }
         value={ field.value }
-        error={ field.error }
+        errorText={ field.error }
         type={ field.type }
-        label={ field.placeholder }
         fullWidth
-        margin="normal"
         onChange={ (evt) => { field.setValue(evt.target.value) } }
         onBlur={ () => { field.validate() } }
     />
