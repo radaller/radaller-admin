@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import radallerRestClient  from './radaller-rest-client';
+import authClient from './authClient';
 import RichTextInput from 'aor-rich-text-input';
+import LoginApp from './login/containers/App/App';
 import { Admin, Resource, GET_LIST,
     List,
     Create,
@@ -131,7 +133,7 @@ class App extends Component {
         if (this.state.items.length === 0) return false;
 
         return (
-            <Admin restClient={cmsRestClient}>
+            <Admin loginPage={LoginApp} restClient={cmsRestClient} authClient={authClient}>
                 {
                     this.state.items.map((item, index) => {
                         return (
