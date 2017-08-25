@@ -101,7 +101,6 @@ export default (apiUrl, httpClient = fetchJson) => {
      */
     const convertHTTPResponseToREST = (response, type, resource, params) => {
         const data = response.json;
-
         switch (type) {
             case GET_LIST:
             case GET_MANY:
