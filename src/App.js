@@ -133,7 +133,7 @@ class App extends Component {
         if (this.state.items.length === 0) return false;
 
         return (
-            <Admin loginPage={LoginApp} restClient={cmsRestClient} authClient={authClient}>
+            <Admin  restClient={cmsRestClient} authClient={authClient}>
                 {
                     this.state.items.map((item, index) => {
                         return (
