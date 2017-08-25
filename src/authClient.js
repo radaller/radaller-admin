@@ -19,7 +19,8 @@ export default (type, params) => {
     if (type === AUTH_CHECK) {
         console.log("check");
         console.log(localStorage.getItem('token'));
-        return localStorage.getItem('token') ? Promise.resolve() : Promise.reject({ redirectTo: '/login' });
+        //return localStorage.getItem('token') ? Promise.resolve() : Promise.reject({ redirectTo: '/login' });
+        return  Promise.resolve();
     }
     return Promise.reject('Unkown method');
 };
