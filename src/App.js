@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import radallerRestClient  from './radaller-rest-client';
 import authClient from './authClient';
 import RichTextInput from 'aor-rich-text-input';
+import githubHttpClient from './github-http-client';
 import LoginApp from './login/containers/App/App';
 import { Admin, Resource, GET_LIST,
     List,
@@ -22,7 +23,7 @@ import { Admin, Resource, GET_LIST,
     SelectArrayInput
 } from 'admin-on-rest';
 
-const cmsRestClient = radallerRestClient('http://localhost:8080');
+const cmsRestClient = radallerRestClient('http://localhost:8080', githubHttpClient);
 
 const listFieldsMap = (propertyName, propertyData) => {
     switch (propertyData.inputType) {
@@ -133,7 +134,7 @@ class App extends Component {
         if (this.state.items.length === 0) return false;
 
         return (
-            <Admin  restClient={cmsRestClient} authClient={authClient}>
+            <Admin restClient={cmsRestClient}>
                 {
                     this.state.items.map((item, index) => {
                         return (
