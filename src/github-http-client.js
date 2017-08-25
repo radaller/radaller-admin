@@ -9,12 +9,18 @@ const cms = new GithubCms({
 
 export default (url, options) => {
     const urlParts = new URL(decodeURIComponent(url));
+
     const path = urlParts.pathname.substr(1);
-    const search = urlParts.search.substr(1);
-    const query = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+    let query = {};
+    if (urlParts.search) {
+        const search = urlParts.search.substr(1);
+        query = JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}');
+    }
+
     if (query.filter) {
         query.filter = JSON.parse(query.filter);
     }
+
     switch (options.method) {
         case 'PUT':
             return cms.put(path, options.body).then(data => ({json: JSON.parse(data)}));
