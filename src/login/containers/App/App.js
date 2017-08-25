@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import 'react-flexbox-grid/lib/index.css'
 import './App.css';
 
 import {
