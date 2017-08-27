@@ -34,7 +34,7 @@ class AddRepo extends Component {
         super(props);
 
         this.state = {
-            fields: [],
+            newRepoFields: [],
             createdRepos: []
         };
 
@@ -43,21 +43,31 @@ class AddRepo extends Component {
         this.deleteRepoField = this.deleteRepoField.bind(this);
     }
 
+    componentDidMount() {
+        if (!!localStorage.getItem('repos')) {
+            //console.log(localStorage.getItem('repos'));
+            this.setState({
+                createdRepos: JSON.parse(localStorage.getItem('repos'))
+            });
+        }
+    }
+
     addCreatedRepo(name) {
         const { createdRepos } = this.state;
         createdRepos.push({ name });
+        localStorage.setItem('repos', JSON.stringify(createdRepos));
         this.setState({ createdRepos });
     }
 
     addRepoField() {
-        const { fields } = this.state;
-        fields.push(new FieldStore({ name: 'repo_name', placeholder: 'Enter repository name', value: '' }));
-        this.setState({ fields });
+        const { newRepoFields } = this.state;
+        newRepoFields.push(new FieldStore({ name: 'repo_name', placeholder: 'Enter repository name', value: '' }));
+        this.setState({ newRepoFields });
     }
 
     createRepo(fieldIndex) {
-        const { fields } = this.state;
-        const field = fields[fieldIndex];
+        const { newRepoFields } = this.state;
+        const field = newRepoFields[fieldIndex];
 
         field.validate();
 
@@ -70,13 +80,15 @@ class AddRepo extends Component {
     }
 
     chooseRepo(repoIndex) {
-
+        const { createdRepos } = this.state;
+        localStorage.setItem('current', createdRepos[repoIndex].name);
+        this.props.onChooseRepository();
     }
 
-    deleteRepoField(fieldIndex) {
-        const { fields } = this.state;
-        fields.splice(fieldIndex, 1);
-        this.setState({ fields });
+    deleteRepoField(newRepoFieldIndex) {
+        const { newRepoFields } = this.state;
+        newRepoFields.splice(newRepoFieldIndex, 1);
+        this.setState({ newRepoFields });
     }
 
     deleteRepo(repoIndex) {
@@ -86,7 +98,7 @@ class AddRepo extends Component {
     }
 
     render() {
-        const { fields, createdRepos } = this.state;
+        const { newRepoFields, createdRepos } = this.state;
         return (
             <div style={ styles.centering }>
                 {
@@ -116,21 +128,21 @@ class AddRepo extends Component {
                 }
 
                 {
-                    fields.map((field, fieldIndex) => {
+                    newRepoFields.map((newRepoField, newRepoFieldIndex) => {
                         return (
-                            <Grid fluid key={ fieldIndex }>
+                            <Grid fluid key={ newRepoFieldIndex }>
                                 <Row middle="xs">
                                     <Col xs={7} sm={9}>
-                                        <Field field={ field }/>
+                                        <Field field={ newRepoField }/>
                                     </Col>
                                     <Col xs={5} sm={3}>
                                         <IconButton
-                                            onClick={ () => { this.createRepo(fieldIndex) } }
+                                            onClick={ () => { this.createRepo(newRepoFieldIndex) } }
                                         >
                                             <SaveIcon color={ blue500 } />
                                         </IconButton>
                                         <IconButton
-                                            onClick={ () => { this.deleteRepoField(fieldIndex) } }
+                                            onClick={ () => { this.deleteRepoField(newRepoFieldIndex) } }
                                         >
                                             <CloseIcon color={ blue500 } />
                                         </IconButton>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import Paper from 'material-ui/Paper';
 
 import LoginForm from '../../components/LoginForm/Form';
 import FieldStore from '../../stores/form/field';
@@ -35,6 +34,12 @@ class App extends Component {
         this.onCodeSubmit = this.onCodeSubmit.bind(this);
     }
 
+    componentDidMount() {
+        if (!!localStorage.getItem('auth')) {
+            this.props.onLogedIn();
+        }
+    }
+
     showForm(form) {
         this.setState({
             showLoginForm: form === 'login',
@@ -44,6 +49,12 @@ class App extends Component {
     }
 
     onLoginSubmit(data) {
+        const auth = {
+            token: data.token,
+            username: data.user_name
+        };
+        localStorage.setItem('auth',JSON.stringify(auth));
+
         this.props.onLogedIn();
     }
 

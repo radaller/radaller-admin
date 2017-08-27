@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import './App.css';
+import './LoginApp.css';
 
 import {
     cyan500, cyan700,
@@ -33,7 +33,7 @@ const muiTheme = getMuiTheme({
 
 
 @observer
-class App extends Component {
+class LoginApp extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -63,7 +63,7 @@ class App extends Component {
                         }
                         {
                             !this.state.showLogin && (
-                                <AddRepo />
+                                <AddRepo onChooseRepository={this.props.onChooseRepository} />
                             )
                         }
                     </div>
@@ -73,4 +73,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default LoginApp;
