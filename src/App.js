@@ -3,7 +3,8 @@ import radallerRestClient  from './radaller-rest-client';
 import authClient from './authClient';
 import RichTextInput from 'aor-rich-text-input';
 import githubHttpClient from './github-http-client';
-import LoginApp from './login/containers/App/App';
+import LoginApp from './login/containers/LoginApp/LoginApp';
+import LogoutButton from './LogoutButton';
 import { Admin, Resource, GET_LIST,
     List,
     Create,
@@ -22,8 +23,6 @@ import { Admin, Resource, GET_LIST,
     ReferenceArrayInput,
     SelectArrayInput
 } from 'admin-on-rest';
-
-const cmsRestClient = radallerRestClient('http://localhost:8080', githubHttpClient);
 
 const listFieldsMap = (propertyName, propertyData) => {
     switch (propertyData.inputType) {
@@ -107,17 +106,33 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            items:[]
+            schemas:[]
         };
-        this._getResourceDefinition = this._getResourceDefinition.bind(this);
+        this.showAdmin = this.showAdmin.bind(this);
+        this.closeAdmin = this.closeAdmin.bind(this);
     }
 
     componentDidMount() {
-        this._getResourceDefinition();
+        if (this._checkAuth() && this._checkCurrentRepo()) {
+            this.showAdmin();
+        }
     }
 
-    _getResourceDefinition() {
-        cmsRestClient(GET_LIST, 'schemas', {
+    _getRestClient() {
+        return radallerRestClient('', githubHttpClient);
+    }
+
+    _checkCurrentRepo() {
+        return !!localStorage.getItem('current');
+    }
+
+    _checkAuth() {
+        return !!localStorage.getItem('auth');
+    }
+
+    showAdmin() {
+        const restClient = this._getRestClient();
+        restClient(GET_LIST, 'schemas', {
             pagination: {
                 page: 1,
                 perPage: 100
@@ -126,30 +141,44 @@ class App extends Component {
             filter: {}
         })
         .then(resp => {
-            this.setState({items: resp.data});
+            this.setState({schemas: resp.data});
         });
     }
 
-    render() {
-        if (this.state.items.length === 0) return false;
+    closeAdmin() {
+        localStorage.removeItem('current');
+        this.setState({schemas: []});
+    }
 
+    render() {
         return (
-            <Admin restClient={cmsRestClient}>
-                {
-                    this.state.items.map((item, index) => {
-                        return (
-                            <Resource
-                                key={index}
-                                name={item.folder}
-                                options={{ label: item.title }}
-                                list={getListDefinition(item)}
-                                edit={getEditDefinition(item)}
-                                create={getCreateDefinition(item)}
-                                remove={Delete}/>
-                        );
-                    })
-                }
-            </Admin>
+            <div>
+            {
+                this.state.schemas.length > 0 && (
+                    <Admin restClient={this._getRestClient()} logoutButton={LogoutButton(this.closeAdmin)} authClient={authClient}>
+                        {
+                            this.state.schemas.map((item, index) => {
+                                return (
+                                    <Resource
+                                        key={index}
+                                        name={item.folder}
+                                        options={{ label: item.title }}
+                                        list={getListDefinition(item)}
+                                        edit={getEditDefinition(item)}
+                                        create={getCreateDefinition(item)}
+                                        remove={Delete}/>
+                                );
+                            })
+                        }
+                    </Admin>
+                )
+            },
+            {
+                this.state.schemas.length === 0 && (
+                    <LoginApp onChooseRepository={this.showAdmin}/>
+                )
+            }
+            </div>
         )
     }
 }
