@@ -8,8 +8,8 @@ const PATHS = {
     fonts: '/fonts',
     src: './src',
     dist: 'public/dist',
-    template: './src/index.html',
-    port: 8010,
+    template: './src/templates/index.html',
+    port: 8080,
     host: 'localhost',
 };
 

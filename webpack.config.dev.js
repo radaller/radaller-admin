@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const PATHS = require('./Paths');
-// const helpers = require('./helpers');
 const path = require('path');
 
 module.exports = {
@@ -23,7 +22,7 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
 
-        // new OpenBrowserPlugin({ url: PATHS.openInBrowser, browser: 'Google Chrome' }),
+        new OpenBrowserPlugin({ url: PATHS.openInBrowser, browser: 'Google Chrome' }),
 
         new webpack.DefinePlugin({
             'process.env': {

@@ -65,6 +65,7 @@ class LoginForm extends Component {
                             onClick={ this.onNextPress }
                             fullWidth
                             label="Next"
+                            className="next-button"
                         />
                     </Col>
                 </Row>

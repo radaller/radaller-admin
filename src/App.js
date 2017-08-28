@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import radallerRestClient  from './radaller-rest-client';
-import authClient from './authClient';
+import radallerRestClient  from './admin/radaller-rest-client';
+import authClient from './admin/authClient';
 import RichTextInput from 'aor-rich-text-input';
-import githubHttpClient from './github-http-client';
+import githubHttpClient from './admin/github-http-client';
 import LoginApp from './login/containers/LoginApp/LoginApp';
-import LogoutButton from './LogoutButton';
+import LogoutButton from './admin/LogoutButton';
 import { Admin, Resource, GET_LIST,
     List,
     Create,

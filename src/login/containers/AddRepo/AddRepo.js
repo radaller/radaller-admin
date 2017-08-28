@@ -112,6 +112,7 @@ class AddRepo extends Component {
                                     <Col xs={5} sm={3}>
                                         <IconButton
                                             onClick={ () => { this.chooseRepo(repoIndex) } }
+                                            className="touch-button"
                                         >
                                             <TouchAppIcon color={ blue500 } />
                                         </IconButton>
@@ -138,6 +139,7 @@ class AddRepo extends Component {
                                     <Col xs={5} sm={3}>
                                         <IconButton
                                             onClick={ () => { this.createRepo(newRepoFieldIndex) } }
+                                            className="save-button"
                                         >
                                             <SaveIcon color={ blue500 } />
                                         </IconButton>
@@ -153,7 +155,7 @@ class AddRepo extends Component {
                     })
                 }
                 <div style={ styles.buttonRow }>
-                    <FloatingActionButton onClick={ this.addRepoField }>
+                    <FloatingActionButton onClick={ this.addRepoField } className="add-button">
                         <ContentAdd />
                     </FloatingActionButton>
                 </div>
