@@ -24,7 +24,7 @@ class Field {
     }
 
     @action validate() {
-        this.error = this.value === '';
+        this.error = this.value.trim() === '';
     }
 }
 
