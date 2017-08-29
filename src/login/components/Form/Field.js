@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import TextField from 'material-ui/TextField';
 
-const Field = ({ field }) => (
+const Field = ({ field, onKeyPress }) => (
     <TextField
         floatingLabelText={ field.placeholder }
         name={ field.name }
@@ -11,6 +11,7 @@ const Field = ({ field }) => (
         type={ field.type }
         fullWidth
         onChange={ (evt) => { field.setValue(evt.target.value) } }
+        onKeyPress={ onKeyPress }
         onBlur={ () => { field.validate() } }
     />
 );

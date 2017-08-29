@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import './LoginApp.css';
+import { withRouter } from 'react-router';
+import './styles.css';
 
 import {
     cyan500, cyan700,
@@ -8,8 +9,6 @@ import {
     grey100, grey300, grey400, grey500,
     white, darkBlack, fullBlack,
 } from 'material-ui/styles/colors';
-import Login from '../Login/Login';
-import AddRepo from '../AddRepo/AddRepo';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -33,39 +32,16 @@ const muiTheme = getMuiTheme({
 
 
 @observer
-class LoginApp extends Component {
+class Layout extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            showLogin: true
-        };
-
-        this.onLoggedIn = this.onLoggedIn.bind(this);
     }
-
-    onLoggedIn() {
-        this.setState({
-            showLogin: false,
-        })
-    }
-
     render() {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div className="loginContainer">
                     <div className="loginWrapper">
-                        {
-                            this.state.showLogin && (
-                                <Login
-                                    onLogedIn={ this.onLoggedIn }
-                                />
-                            )
-                        }
-                        {
-                            !this.state.showLogin && (
-                                <AddRepo onChooseRepository={this.props.onChooseRepository} />
-                            )
-                        }
+                        { this.props.children }
                     </div>
                 </div>
             </MuiThemeProvider>
@@ -73,4 +49,4 @@ class LoginApp extends Component {
     }
 }
 
-export default LoginApp;
+export default withRouter(Layout);

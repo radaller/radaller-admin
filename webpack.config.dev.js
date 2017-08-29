@@ -1,8 +1,8 @@
 const webpack = require('webpack');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const PATHS = require('./Paths');
+const webpackHelpers = require('./webpackHelpers');
 const path = require('path');
+const PATHS = webpackHelpers.PATHS;
 
 module.exports = {
     devtool: 'eval-source-map',
@@ -22,7 +22,7 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoEmitOnErrorsPlugin(),
 
-        new OpenBrowserPlugin({ url: PATHS.openInBrowser, browser: 'Google Chrome' }),
+        // new OpenBrowserPlugin({ url: PATHS.openInBrowser, browser: 'Google Chrome' }),
 
         new webpack.DefinePlugin({
             'process.env': {
@@ -30,10 +30,7 @@ module.exports = {
             },
         }),
 
-        new HtmlWebpackPlugin({
-            template: PATHS.template,
-            filename: 'index.html'
-        })
+        ...webpackHelpers.getHtmlEntries(),
     ],
     module: {
         rules: [

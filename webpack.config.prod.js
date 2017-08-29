@@ -1,8 +1,8 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpackHelpers = require('./webpackHelpers');
 const path = require('path');
-const PATHS = require('./Paths');
+const PATHS = webpackHelpers.PATHS;
 
 module.exports = {
     entry: PATHS.entries,
@@ -49,10 +49,7 @@ module.exports = {
             },
         }),
 
-        new HtmlWebpackPlugin({
-            template: PATHS.template,
-            filename: '../index.html'
-        })
+        ...webpackHelpers.getHtmlEntries(),
     ],
     module: {
         rules: [
