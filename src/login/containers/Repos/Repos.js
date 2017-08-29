@@ -10,7 +10,7 @@ import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import Chip from 'material-ui/Chip';
 
-import Field from '../../components/Form/Field';
+import AutoCompleteField from '../../components/Form/AutoCompleteField';
 import FieldStore from '../../stores/form/field';
 
 import * as routes from '../../../constants/routes';
@@ -36,12 +36,43 @@ class Repos extends Component {
 
         this.state = {
             fields: [],
-            repos: []
+            repos: [],
+            dataSource: []
         };
 
         this.addRepoField = this.addRepoField.bind(this);
         this.createRepo = this.createRepo.bind(this);
         this.deleteRepoField = this.deleteRepoField.bind(this);
+        this.handleUpdateInput = this.handleUpdateInput.bind(this);
+    }
+
+    handleUpdateInput = (value) => {
+        if (value.trim().length < 5) {
+            return false;
+        }
+        const auth = JSON.parse(localStorage.getItem('auth'));
+        this._findRepos(auth.token, value)
+            .then(items => {
+                this.setState({
+                    dataSource: items
+                });
+            });
+    };
+
+    _findRepos(token, queryString) {
+        const query = `q=${queryString}`;
+        return fetch(`https://api.github.com/search/repositories?${query}`, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `token ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(repositories => {
+            return repositories.items.map(item => item.full_name)
+        })
     }
 
     componentDidMount() {
@@ -68,19 +99,19 @@ class Repos extends Component {
         this.setState({ fields });
     }
 
-    createRepo(evt, fieldIndex) {
-        if (evt.charCode !== 13) return false; // if not enter do not save
+    createRepo(fieldIndex) {
+        return () => {
+            const { fields } = this.state;
+            const field = fields[fieldIndex];
 
-        const { fields } = this.state;
-        const field = fields[fieldIndex];
+            field.validate();
 
-        field.validate();
+            if (!field.error) {
+                // send repo name
 
-        if (!field.error) {
-            // send repo name
-
-            this.deleteRepoField(fieldIndex);
-            this.addCreatedRepo(field.value);
+                this.deleteRepoField(fieldIndex);
+                this.addCreatedRepo(field.value);
+            }
         }
     }
 
@@ -159,9 +190,11 @@ class Repos extends Component {
                             <Grid fluid key={ newRepoFieldIndex }>
                                 <Row middle="xs">
                                     <Col xs={9} sm={10}>
-                                        <Field
+                                        <AutoCompleteField
                                            field={ newRepoField }
-                                           onKeyPress={ (evt) => { this.createRepo(evt, newRepoFieldIndex) } } />
+                                           dataSource={this.state.dataSource}
+                                           onUpdateInput={this.handleUpdateInput}
+                                           onNewRequest={ this.createRepo(newRepoFieldIndex) } />
                                     </Col>
                                     <Col xs={3} sm={2}>
                                         <IconButton
