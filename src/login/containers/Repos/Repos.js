@@ -159,9 +159,9 @@ class Repos extends Component {
                             <Grid fluid key={ newRepoFieldIndex }>
                                 <Row middle="xs">
                                     <Col xs={9} sm={10}>
-                                        <Field f
-                                               field={ newRepoField }
-                                               onKeyPress={ (evt) => { this.createRepo(evt, newRepoFieldIndex) } } />
+                                        <Field
+                                           field={ newRepoField }
+                                           onKeyPress={ (evt) => { this.createRepo(evt, newRepoFieldIndex) } } />
                                     </Col>
                                     <Col xs={3} sm={2}>
                                         <IconButton
