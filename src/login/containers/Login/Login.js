@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
+import * as routes from '../../../constants/routes';
+import * as storage from '../../../constants/storage';
 
 import LoginForm from '../../components/LoginForm/Form';
 import FieldStore from '../../stores/form/field';
@@ -34,9 +36,13 @@ class App extends Component {
         this.onCodeSubmit = this.onCodeSubmit.bind(this);
     }
 
-    componentDidMount() {
-        if (!!localStorage.getItem('auth')) {
-            this.props.onLogedIn();
+    componentWillMount() {
+        this.goToHome();
+    }
+
+    goToHome() {
+        if (!!localStorage.getItem(storage.AUTH)) {
+            this.props.history.push(routes.HOME);
         }
     }
 
@@ -53,9 +59,13 @@ class App extends Component {
             token: data.token,
             username: data.user_name
         };
-        localStorage.setItem('auth',JSON.stringify(auth));
 
-        this.props.onLogedIn();
+        this.saveAuthToLocalStorage(auth);
+        this.goToHome();
+    }
+
+    saveAuthToLocalStorage(auth) {
+        localStorage.setItem(storage.AUTH, JSON.stringify(auth));
     }
 
     onTokenGenSubmit(data) {

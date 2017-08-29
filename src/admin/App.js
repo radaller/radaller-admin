@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import radallerRestClient  from './admin/radaller-rest-client';
-import authClient from './admin/authClient';
+import radallerRestClient  from './radaller-rest-client';
+import authClient from './authClient';
 import RichTextInput from 'aor-rich-text-input';
-import githubHttpClient from './admin/github-http-client';
-import LoginApp from './login/containers/LoginApp/LoginApp';
-import LogoutButton from './admin/LogoutButton';
+import githubHttpClient from './github-http-client';
+import LogoutButton from './LogoutButton';
 import { Admin, Resource, GET_LIST,
     List,
     Create,
@@ -171,11 +170,6 @@ class App extends Component {
                             })
                         }
                     </Admin>
-                )
-            },
-            {
-                this.state.schemas.length === 0 && (
-                    <LoginApp onChooseRepository={this.showAdmin}/>
                 )
             }
             </div>

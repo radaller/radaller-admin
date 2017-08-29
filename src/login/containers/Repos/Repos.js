@@ -6,14 +6,15 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import { blue500 } from 'material-ui/styles/colors';
 import IconButton from 'material-ui/IconButton';
-import SaveIcon from 'material-ui/svg-icons/content/save';
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
-import TouchAppIcon from 'material-ui/svg-icons/action/touch-app';
 import Chip from 'material-ui/Chip';
 
 import Field from '../../components/Form/Field';
 import FieldStore from '../../stores/form/field';
+
+import * as routes from '../../../constants/routes';
+import * as storage from '../../../constants/storage';
 
 const styles = {
     centering: {
@@ -29,13 +30,13 @@ const styles = {
 };
 
 @observer
-class AddRepo extends Component {
+class Repos extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            newRepoFields: [],
-            createdRepos: []
+            fields: [],
+            repos: []
         };
 
         this.addRepoField = this.addRepoField.bind(this);
@@ -44,30 +45,34 @@ class AddRepo extends Component {
     }
 
     componentDidMount() {
-        if (!!localStorage.getItem('repos')) {
-            //console.log(localStorage.getItem('repos'));
+        if (!localStorage.getItem(storage.AUTH)) {
+            this.goToLogin();
+        }
+        if (!!localStorage.getItem(storage.REPOS)) {
             this.setState({
-                createdRepos: JSON.parse(localStorage.getItem('repos'))
+                repos: JSON.parse(localStorage.getItem(storage.REPOS))
             });
         }
     }
 
     addCreatedRepo(name) {
-        const { createdRepos } = this.state;
-        createdRepos.push({ name });
-        localStorage.setItem('repos', JSON.stringify(createdRepos));
-        this.setState({ createdRepos });
+        const { repos } = this.state;
+        repos.push({ name });
+        this.setState({ repos });
+        this.saveReposToLocalStorage();
     }
 
     addRepoField() {
-        const { newRepoFields } = this.state;
-        newRepoFields.push(new FieldStore({ name: 'repo_name', placeholder: 'Enter repository name', value: '' }));
-        this.setState({ newRepoFields });
+        const { fields } = this.state;
+        fields.push(new FieldStore({ name: 'repo_name', placeholder: 'Enter repository name', value: '' }));
+        this.setState({ fields });
     }
 
-    createRepo(fieldIndex) {
-        const { newRepoFields } = this.state;
-        const field = newRepoFields[fieldIndex];
+    createRepo(evt, fieldIndex) {
+        if (evt.charCode !== 13) return false; // if not enter do not save
+
+        const { fields } = this.state;
+        const field = fields[fieldIndex];
 
         field.validate();
 
@@ -80,42 +85,62 @@ class AddRepo extends Component {
     }
 
     chooseRepo(repoIndex) {
-        const { createdRepos } = this.state;
-        localStorage.setItem('current', createdRepos[repoIndex].name);
-        this.props.onChooseRepository();
+        const { repos } = this.state;
+        this.saveChosenRepoToLocalStorage(repos[repoIndex].name);
+        this.goToAdmin();
     }
 
     deleteRepoField(newRepoFieldIndex) {
-        const { newRepoFields } = this.state;
-        newRepoFields.splice(newRepoFieldIndex, 1);
-        this.setState({ newRepoFields });
+        const { fields } = this.state;
+        fields.splice(newRepoFieldIndex, 1);
+        this.setState({ fields });
     }
 
     deleteRepo(repoIndex) {
-        const { createdRepos } = this.state;
-        createdRepos.splice(repoIndex, 1);
-        this.setState({ createdRepos });
+        const { repos } = this.state;
+        repos.splice(repoIndex, 1);
+        this.setState({ repos });
+
+        localStorage.removeItem(storage.CURRENT);
+
+        this.saveReposToLocalStorage();
+    }
+
+    saveChosenRepoToLocalStorage(name) {
+        localStorage.setItem(storage.CURRENT, name);
+    }
+
+    saveReposToLocalStorage() {
+        const { repos } = this.state;
+        localStorage.setItem(storage.REPOS, JSON.stringify(repos));
+    }
+
+    goToAdmin() {
+        window.location.href = routes.ADMIN;
+    }
+
+    goToLogin() {
+        this.props.history.push(routes.LOGIN);
     }
 
     render() {
-        const { newRepoFields, createdRepos } = this.state;
+        const { fields, repos } = this.state;
         return (
             <div style={ styles.centering }>
                 {
-                    createdRepos.map((repo, repoIndex) => {
+                    repos.map((repo, repoIndex) => {
                         return (
                             <Grid fluid key={ repoIndex }>
                                 <Row middle="xs">
-                                    <Col xs={7} sm={9}>
-                                        <Chip style={ styles.chip }>{ repo.name }</Chip>
-                                    </Col>
-                                    <Col xs={5} sm={3}>
-                                        <IconButton
+                                    <Col xs={9} sm={10}>
+                                        <Chip
+                                            style={ styles.chip }
                                             onClick={ () => { this.chooseRepo(repoIndex) } }
-                                            className="touch-button"
                                         >
-                                            <TouchAppIcon color={ blue500 } />
-                                        </IconButton>
+                                            { repo.name }
+                                        </Chip>
+                                    </Col>
+                                    <Col xs={3} sm={2}>
                                         <IconButton
                                             onClick={ () => { this.deleteRepo(repoIndex) } }
                                         >
@@ -129,20 +154,16 @@ class AddRepo extends Component {
                 }
 
                 {
-                    newRepoFields.map((newRepoField, newRepoFieldIndex) => {
+                    fields.map((newRepoField, newRepoFieldIndex) => {
                         return (
                             <Grid fluid key={ newRepoFieldIndex }>
                                 <Row middle="xs">
-                                    <Col xs={7} sm={9}>
-                                        <Field field={ newRepoField }/>
+                                    <Col xs={9} sm={10}>
+                                        <Field f
+                                               field={ newRepoField }
+                                               onKeyPress={ (evt) => { this.createRepo(evt, newRepoFieldIndex) } } />
                                     </Col>
-                                    <Col xs={5} sm={3}>
-                                        <IconButton
-                                            onClick={ () => { this.createRepo(newRepoFieldIndex) } }
-                                            className="save-button"
-                                        >
-                                            <SaveIcon color={ blue500 } />
-                                        </IconButton>
+                                    <Col xs={3} sm={2}>
                                         <IconButton
                                             onClick={ () => { this.deleteRepoField(newRepoFieldIndex) } }
                                         >
@@ -164,4 +185,4 @@ class AddRepo extends Component {
     }
 }
 
-export default AddRepo;
+export default Repos;
