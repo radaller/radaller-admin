@@ -19,9 +19,6 @@ const stylesPaper = {
 };
 
 function _checkTwoFactor(response) {
-    console.log("check");
-    console.log(response.headers.get('X-GitHub-OTP'));
-    console.log(response.status);
     const twoFactor = response.headers.get('X-GitHub-OTP');
     if (twoFactor && twoFactor.indexOf("required") !== -1) {
         throw { status: response.status, twoFactor: true };
@@ -36,7 +33,7 @@ class Login extends Component {
         this.state = {
             fields: {
                 username: new FieldStore({ name: 'username', value: '', placeholder: 'GitHub User Name' }),
-                token: { name: 'token', value: '', placeholder: 'GitHub token' },
+                token: { name: 'token', value: '', placeholder: 'GitHub Token' },
                 password: new FieldStore({ name: 'password', value: '', placeholder: 'GitHub Password', type: 'password' }),
                 code: { name: 'code', value: '', placeholder: '2FA Code' },
             },
@@ -119,8 +116,6 @@ class Login extends Component {
         ._createToken(username, password, twoFactorCode)
         .then(_checkTwoFactor)
         .then(response => {
-            console.log(response.status);
-            console.log(response.json());
             if (response.status === 422) {
                 return this
                     ._getTokens(username, password, twoFactorCode)
@@ -146,7 +141,6 @@ class Login extends Component {
             this.goToHome();
         })
         .catch((e) => {
-            console.log(e);
             if (e.twoFactor) {
                 this.showForm('code');
             } else {
