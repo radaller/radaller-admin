@@ -146,7 +146,7 @@ class App extends Component {
 
     closeAdmin() {
         localStorage.removeItem('current');
-        this.setState({schemas: []});
+        window.location.href = "/";
     }
 
     render() {
