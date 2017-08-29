@@ -38,17 +38,11 @@ class LoginForm extends Component {
 
     render() {
         const { fields } = this.form;
-
         return (
             <Grid fluid>
-                <Row>
-                    <Col xs={12} sm={8}>
-                        <Field field={ fields[0] }/>
-                    </Col>
-                </Row>
                 <Row bottom="xs">
                     <Col xs={8} sm={8}>
-                        <Field field={ fields[1] }/>
+                        <Field field={ fields[0] }/>
                     </Col>
                     <Col xs={4} sm={4}>
                         <RaisedButton
