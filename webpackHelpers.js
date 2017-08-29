@@ -10,7 +10,7 @@ const PATHS = {
     src: './src',
     dist: 'public/dist',
     template: './src/templates/index.html',
-    port: 8010,
+    port: 8080,
     host: 'localhost',
 };
 
