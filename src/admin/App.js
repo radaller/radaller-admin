@@ -107,6 +107,9 @@ function getEditDefinition(item) {
     );
 }
 
+import Menu from './components/Menu/Menu';
+import Routes from './routes/routes';
+
 class App extends Component {
     constructor() {
         super();
@@ -167,7 +170,13 @@ class App extends Component {
             }
             {
                 this.state.schemas.length > 0 && (
-                    <Admin restClient={this._getRestClient()} logoutButton={LogoutButton(this.closeAdmin)} authClient={authClient}>
+                    <Admin
+                        menu={ Menu }
+                        restClient={this._getRestClient()}
+                        logoutButton={LogoutButton(this.closeAdmin)}
+                        authClient={authClient}
+                        customRoutes={Routes}
+                    >
                         {
                             this.state.schemas.map((item, index) => {
                                 return (
