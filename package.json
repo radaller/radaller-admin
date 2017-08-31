@@ -42,7 +42,8 @@
   },
   "scripts": {
     "start": "webpack-dev-server --progress --config webpack.config.dev.js",
-    "build": "npm run clean:build && webpack -p --config webpack.config.prod.js",
+    "build": "npm run clean:build && NODE_ENV=production webpack -p --config webpack.config.prod.js",
+    "build:test": "npm run clean:build && NODE_ENV=test webpack -p --config webpack.config.prod.js",
     "clean:build": "rm -frd public/dist && rm -frd public/index.html",
     "prod": "./node_modules/http-server/bin/http-server",
     "test": "jest"
