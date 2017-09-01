@@ -21,12 +21,12 @@ import { Admin, Resource, GET_LIST,
     RichTextField,
     DateField,
     ReferenceArrayInput,
-    SelectArrayInput
+    SelectArrayInput,
 } from 'admin-on-rest';
 
+import { DataModelsList, DataModelCreate } from './ContentModel';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-
 const muiTheme = getMuiTheme();
 
 const listFieldsMap = (propertyName, propertyData) => {
@@ -107,9 +107,6 @@ function getEditDefinition(item) {
     );
 }
 
-import Menu from './components/Menu/Menu';
-import Routes from './routes/routes';
-
 class App extends Component {
     constructor() {
         super();
@@ -171,12 +168,18 @@ class App extends Component {
             {
                 this.state.schemas.length > 0 && (
                     <Admin
-                        menu={ Menu }
+                        // menu={ Menu }
                         restClient={this._getRestClient()}
                         logoutButton={LogoutButton(this.closeAdmin)}
                         authClient={authClient}
-                        customRoutes={Routes}
+                        // customRoutes={Routes}
                     >
+                        <Resource
+                            name="schemas"
+                            options={{ label: "Content Model" }}
+                            list={ DataModelsList }
+                            create={ DataModelCreate }
+                        />
                         {
                             this.state.schemas.map((item, index) => {
                                 return (
