@@ -21,7 +21,7 @@ describe('Login Page', function() {
                 .goto('http://localhost:8080/')
                 .type('input[name="token"]', 'wrong_token')
                 .click('.next-button button')
-                .wait(50)
+                .wait(500)
                 .wait('.error-snack')
                 .evaluate(() => {
                     return document.querySelector('.error-snack').innerText
