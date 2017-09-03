@@ -21,7 +21,7 @@
     "file-loader": "^0.11.2",
     "i": "^0.3.5",
     "js-base64": "^2.1.9",
-    "material-ui": "^0.19.0",
+    "material-ui": "^0.19.1",
     "mobx": "^3.2.2",
     "mobx-react": "^4.2.2",
     "node-sass": "^4.5.3",
@@ -29,7 +29,7 @@
     "open-browser-webpack-plugin": "0.0.5",
     "postcss-loader": "^2.0.6",
     "prop-types": "^15.5.10",
-    "radaller-core": "file:../radaller-core",
+    "radaller-core": "^0.1.5",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-flexbox-grid": "^1.1.4",
@@ -43,14 +43,19 @@
   "scripts": {
     "start": "webpack-dev-server --progress --config webpack.config.dev.js",
     "build": "npm run clean:build && NODE_ENV=production webpack -p --config webpack.config.prod.js",
-    "build:test": "npm run clean:build && NODE_ENV=test webpack -p --config webpack.config.prod.js",
+    "start:mock": "NODE_ENV=development GIT_API_URL=http://localhost:3000 webpack-dev-server --progress --config webpack.config.dev.js",
+    "build:mock": "npm run clean:build && NODE_ENV=test GIT_API_URL=http://localhost:3000 webpack -p --config webpack.config.prod.js",
     "clean:build": "rm -frd public/dist && rm -frd public/index.html",
-    "prod": "./node_modules/http-server/bin/http-server",
-    "test": "jest"
+    "http-server": "./node_modules/http-server/bin/http-server ./public/dist/ -p 8080",
+    "git-mock-server": "./node_modules/json-server/bin/index.js ./test/git-mock/data.js --middlewares ./test/git-mock/middlewares/auth.js --routes ./test/git-mock/routes.json",
+    "test": "jest",
+    "test:spec": "jest ./test/spec"
   },
   "devDependencies": {
     "html-webpack-plugin": "^2.30.1",
+    "http-server": "^0.10.0",
     "jest": "^20.0.4",
+    "json-server": "^0.12.0",
     "nightmare": "^2.10.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"

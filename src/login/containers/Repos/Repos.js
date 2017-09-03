@@ -59,9 +59,16 @@ class Repos extends Component {
             });
     };
 
+    _getGithubApiUrl() {
+        if (process.env.GIT_API_URL) {
+            return process.env.GIT_API_URL
+        }
+        return 'https://api.github.com';
+    }
+
     _findRepos(token, queryString) {
         const query = `q=${queryString}`;
-        return fetch(`https://api.github.com/search/repositories?${query}`, {
+        return fetch(`${this._getGithubApiUrl()}/search/repositories?${query}`, {
             method: 'GET',
             mode: 'cors',
             headers: {

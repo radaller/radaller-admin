@@ -4,6 +4,7 @@ import authClient from './authClient';
 import RichTextInput from 'aor-rich-text-input';
 import githubHttpClient from './github-http-client';
 import LogoutButton from './LogoutButton';
+import LinearProgress from 'material-ui/LinearProgress';
 import { Admin, Resource, GET_LIST,
     List,
     Create,
@@ -22,6 +23,11 @@ import { Admin, Resource, GET_LIST,
     ReferenceArrayInput,
     SelectArrayInput
 } from 'admin-on-rest';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
+const muiTheme = getMuiTheme();
 
 const listFieldsMap = (propertyName, propertyData) => {
     switch (propertyData.inputType) {
@@ -152,6 +158,13 @@ class App extends Component {
     render() {
         return (
             <div>
+            {
+                this.state.schemas.length === 0 && (
+                    <MuiThemeProvider muiTheme={muiTheme}>
+                        <LinearProgress mode="indeterminate" />
+                    </MuiThemeProvider>
+                )
+            }
             {
                 this.state.schemas.length > 0 && (
                     <Admin restClient={this._getRestClient()} logoutButton={LogoutButton(this.closeAdmin)} authClient={authClient}>
