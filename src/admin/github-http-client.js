@@ -4,11 +4,17 @@ export default (url, options) => {
     const auth = JSON.parse(localStorage.getItem('auth'));
     const repo = localStorage.getItem('current');
 
-    const cms = new GithubCms({
+    const config = {
         username: auth.username,
         token: auth.token,
         repository: repo
-    });
+    };
+
+    if (process.env.GIT_API_URL) {
+        config.apiBase = process.env.GIT_API_URL
+    }
+
+    const cms = new GithubCms(config);
 
 
     const [pathname, search] = decodeURIComponent(url).split("?");

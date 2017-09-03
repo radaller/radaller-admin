@@ -4,6 +4,8 @@ const webpackHelpers = require('./webpackHelpers');
 const path = require('path');
 const PATHS = webpackHelpers.PATHS;
 
+const env = process.env;
+
 module.exports = {
     devtool: 'eval-source-map',
     entry: PATHS.entries,
@@ -26,7 +28,8 @@ module.exports = {
 
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: JSON.stringify('development'),
+                NODE_ENV: JSON.stringify(env.NODE_ENV),
+                GIT_API_URL: JSON.stringify(env.GIT_API_URL)
             },
         }),
 

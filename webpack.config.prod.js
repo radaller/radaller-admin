@@ -4,9 +4,7 @@ const webpackHelpers = require('./webpackHelpers');
 const path = require('path');
 const PATHS = webpackHelpers.PATHS;
 
-const env = process.env.NODE_ENV;
-
-console.log(env);
+const env = process.env;
 
 module.exports = {
     entry: PATHS.entries,
@@ -22,7 +20,8 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             'process.env': {
-                NODE_ENV: JSON.stringify(env),
+                NODE_ENV: JSON.stringify(env.NODE_ENV),
+                GIT_API_URL: JSON.stringify(env.GIT_API_URL)
             },
         }),
         // Extract bundle libs file.

@@ -26,6 +26,13 @@ function _checkTwoFactor(response) {
     return response;
 }
 
+function _getGithubApiUrl() {
+    if (process.env.GIT_API_URL) {
+        return process.env.GIT_API_URL
+    }
+    return 'https://api.github.com';
+}
+
 @observer
 class Login extends Component {
     constructor(props) {
@@ -72,7 +79,7 @@ class Login extends Component {
     }
 
     onLoginSubmit(data) {
-        fetch('https://api.github.com/user', {
+        fetch(`${_getGithubApiUrl()}/user`, {
             method: 'GET',
             mode: 'cors',
             headers: {
@@ -161,7 +168,7 @@ class Login extends Component {
         if (twoFactorCode) {
             headers.append("X-GitHub-OTP", twoFactorCode);
         }
-        return fetch('https://api.github.com/authorizations', {
+        return fetch(`${_getGithubApiUrl()}/authorizations`, {
             method: 'POST',
             mode: 'cors',
             headers: headers,
@@ -181,7 +188,7 @@ class Login extends Component {
         if (twoFactorCode) {
             headers.append("X-GitHub-OTP", twoFactorCode);
         }
-        return fetch('https://api.github.com/authorizations', {
+        return fetch(`${_getGithubApiUrl()}/authorizations`, {
             method: 'GET',
             mode: 'cors',
             headers: headers
@@ -199,7 +206,7 @@ class Login extends Component {
         if (twoFactorCode) {
             headers.append("X-GitHub-OTP", twoFactorCode);
         }
-        return fetch('https://api.github.com/authorizations/' + token.id, {
+        return fetch(`${_getGithubApiUrl()}/authorizations/` + token.id, {
             method: 'DELETE',
             mode: 'cors',
             headers: headers
@@ -261,7 +268,7 @@ class Login extends Component {
                         />
                     )
                 }
-                <Snackbar
+                <Snackbar className="error-snack"
                     open={this.state.error.open}
                     message={this.state.error.message}
                     autoHideDuration={4000}

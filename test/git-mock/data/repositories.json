@@ -1,0 +1,31 @@
+{
+  "total_count": 5,
+  "incomplete_results": false,
+  "items": [
+    {
+      "id": 1,
+      "name": "test-repository-1",
+      "full_name": "test/test-repository-1"
+    },
+    {
+      "id": 2,
+      "name": "test-repository-2",
+      "full_name": "test/test-repository-2"
+    },
+    {
+      "id": 3,
+      "name": "est-repository-3",
+      "full_name": "test/test-repository-3"
+    },
+    {
+      "id": 4,
+      "name": "test-repository-4",
+      "full_name": "test/test-repository-4"
+    },
+    {
+      "id": 5,
+      "name": "test-repository-5",
+      "full_name": "test/test-repository-5"
+    }
+  ]
+}
