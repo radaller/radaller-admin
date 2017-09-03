@@ -1,9 +1,7 @@
 import React from 'react';
-import {
-    Create,
-} from 'admin-on-rest';
+import { Create } from 'admin-on-rest';
 
-import CreateForm from './components/CreateForm';
+import CreateForm from '../../components/ContentModel/CreateForm';
 
 export default (props) => {
     return (
