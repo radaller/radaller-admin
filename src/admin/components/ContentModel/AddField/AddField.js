@@ -7,10 +7,12 @@ import TextIcon from 'material-ui/svg-icons/editor/format-align-justify';
 
 const typeBox = {
     display: 'inline-block',
-    padding: 4
+    marginTop: 4,
+    padding: 8,
+    textAlign: 'center'
 };
 
-export default class DataModelFields extends Component {
+export default class AddField extends Component {
     constructor() {
         super();
         this.state = {
@@ -18,19 +20,19 @@ export default class DataModelFields extends Component {
                 {
                     type: 'TextInput',
                     label: 'Text',
-                    value: '',
+                    value: 'some',
                     required: false,
                     icon: <TextIcon />
                 }
             ],
+            selectedField: {}
         };
         this.saveField = this.saveField.bind(this);
     };
 
-    saveField() {
-        this.props.onSave();
+    saveField(field) {
+        this.props.onSave(field);
     }
-
 
     render() {
         const { fields } = this.state;
@@ -60,9 +62,12 @@ export default class DataModelFields extends Component {
                     {
                         fields.map((field) => {
                             return (
-                                <Paper style={ typeBox }>
+                                <Paper
+                                    style={ typeBox }
+                                    onClick={ () => { this.saveField(field) } }
+                                >
                                     { field.icon }
-
+                                    <div>{ field.label }</div>
                                 </Paper>
                             )
                         })
