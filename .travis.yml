@@ -3,8 +3,8 @@ node_js:
   - node
 script:
   - npm run build:mock
-  - npm run http-server
-  - npm run git-mock-server
+  - npm run http-server &
+  - npm run git-mock-server &
   - npm run test:spec
 
 
