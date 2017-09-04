@@ -7,7 +7,7 @@ import {
 } from 'admin-on-rest';
 
 import FormToolbar from './Create/FormToolbar';
-import AddField from './AddField/AddField';
+import AddField from './FieldTypes';
 
 class Form extends Component {
     constructor() {
@@ -18,6 +18,7 @@ class Form extends Component {
         };
         this.saveField = this.saveField.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
+        this.updateOptions = this.updateOptions.bind(this);
     }
 
     toggleDialog() {
@@ -27,7 +28,12 @@ class Form extends Component {
     saveField(field) {
         const { fields } = this.state;
         fields.push(field);
-        this.setState({ fields });
+        this.setState({ fields, showDialog: false });
+        this.updateOptions();
+    }
+
+    updateOptions() {
+        const { fields } = this.state;
         this.props.dispatch(change('record-form', 'options', JSON.stringify(fields)));
     }
 
@@ -41,6 +47,8 @@ class Form extends Component {
                     <TextInput label="Folder" source="folder" />
                     <TextInput elStyle={{ display: 'none' }} label="Options" source="options" />
                 </SimpleForm>
+
+
 
                 <AddField show={ this.state.showDialog } onSave={ this.saveField } onClose={ this.toggleDialog } />
 
