@@ -14,7 +14,7 @@ class Form extends Component {
         super();
         this.state = {
             showDialog: true,
-            fields: []
+            options: {}
         };
         this.saveField = this.saveField.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
@@ -25,20 +25,19 @@ class Form extends Component {
         this.setState({ showDialog: !this.state.showDialog })
     }
 
-    saveField(field) {
-        const { fields } = this.state;
-        fields.push(field);
-        this.setState({ fields, showDialog: false });
+    saveField(data) {
+        const options = Object.assign(this.state.options, data);
+        this.setState({ options, showDialog: false });
         this.updateOptions();
     }
 
     updateOptions() {
-        const { fields } = this.state;
-        this.props.dispatch(change('record-form', 'options', JSON.stringify(fields)));
+        const { options } = this.state;
+        this.props.dispatch(change('record-form', 'options', JSON.stringify(options)));
     }
 
     render() {
-        const { fields } = this.state;
+        const { options } = this.state;
 
         return (
             <div>
@@ -48,9 +47,11 @@ class Form extends Component {
                     <TextInput elStyle={{ display: 'none' }} label="Options" source="options" />
                 </SimpleForm>
 
-
-
-                <AddField show={ this.state.showDialog } onSave={ this.saveField } onClose={ this.toggleDialog } />
+                <AddField
+                    show={ this.state.showDialog }
+                    onSave={ this.saveField }
+                    onClose={ this.toggleDialog }
+                />
 
             </div>
         )
