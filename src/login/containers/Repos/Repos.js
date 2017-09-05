@@ -168,10 +168,11 @@ class Repos extends Component {
                 {
                     repos.map((repo, repoIndex) => {
                         return (
-                            <Grid fluid key={ repoIndex }>
+                            <Grid fluid key={ repoIndex } className="repo-grid">
                                 <Row middle="xs">
                                     <Col xs={9} sm={10}>
                                         <Chip
+                                            className="repo-item"
                                             style={ styles.chip }
                                             onClick={ () => { this.chooseRepo(repoIndex) } }
                                         >
@@ -180,6 +181,7 @@ class Repos extends Component {
                                     </Col>
                                     <Col xs={3} sm={2}>
                                         <IconButton
+                                            className="delete-repo-button"
                                             onClick={ () => { this.deleteRepo(repoIndex) } }
                                         >
                                             <DeleteIcon color={ blue500 } />

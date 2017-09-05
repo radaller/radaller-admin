@@ -1,9 +1,11 @@
-const user = require('./data/user.json');
-const repositories = require('./data/repositories.json');
 
 module.exports = () => {
     return {
-        user: user,
-        repositories: repositories
+        user: require('./data/user.json'),
+        repositories: require('./data/repositories.json'),
+        authorizations: require('./data/authorizations.json'),
+        schemas: require('./data/schemas.json'),
+        posts: require('./data/posts.json'),
+        menus_items: require('./data/menus_items.json')
     }
 };

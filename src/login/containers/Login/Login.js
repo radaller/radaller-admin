@@ -20,8 +20,10 @@ const stylesPaper = {
 
 function _checkTwoFactor(response) {
     const twoFactor = response.headers.get('X-GitHub-OTP');
-    if (twoFactor && twoFactor.indexOf("required") !== -1) {
+    if (response.status === 401 && twoFactor && twoFactor.indexOf("required") !== -1) {
         throw { status: response.status, twoFactor: true };
+    } else if (response.status === 401) {
+        throw { status: response.status };
     }
     return response;
 }
@@ -138,7 +140,7 @@ class Login extends Component {
                     .then(() => {
                         return this._createToken(username, password, twoFactorCode);
                     })
-            } else {
+            } else  {
                 return response;
             }
         })

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "1_item.yaml",
+    "path": "menus/items/1_item.yaml",
+    "type": "file"
+  },
+  {
+    "name": "2_item.yaml",
+    "path": "menus/items/2_item.yaml",
+    "type": "file"
+  },
+  {
+    "name": "3_item.yaml",
+    "path": "menus/items/3_item.yaml",
+    "type": "file"
+  },
+  {
+    "name": "4_item.yaml",
+    "path": "menus/items/4_item.yaml",
+    "type": "file"
+  }
+]

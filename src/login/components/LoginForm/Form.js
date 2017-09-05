@@ -47,6 +47,7 @@ class LoginForm extends Component {
                     <Col xs={4} sm={4}>
                         <RaisedButton
                             style={ generateBtn }
+                            className="generate-button"
                             onClick={ this.onGeneratePress }
                         >Generate</RaisedButton>
                     </Col>

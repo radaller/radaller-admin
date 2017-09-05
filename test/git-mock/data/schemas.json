@@ -1,0 +1,12 @@
+[
+  {
+    "name": "menus_items.yaml",
+    "path": "schemas/menus_items.yaml",
+    "type": "file"
+  },
+  {
+    "name": "posts.yaml",
+    "path": "schemas/posts.yaml",
+    "type": "file"
+  }
+]
