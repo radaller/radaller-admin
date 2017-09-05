@@ -168,7 +168,7 @@ class Repos extends Component {
                 {
                     repos.map((repo, repoIndex) => {
                         return (
-                            <Grid fluid key={ repoIndex } className="repo-grid">
+                            <Grid fluid key={ repoIndex }>
                                 <Row middle="xs">
                                     <Col xs={9} sm={10}>
                                         <Chip

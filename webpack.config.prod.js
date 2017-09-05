@@ -14,6 +14,9 @@ module.exports = {
         chunkFilename: '[chunkhash].js',
     },
     resolve: {
+        alias: {
+            'react': path.join(__dirname, 'node_modules', 'react')
+        },
         modules: [path.resolve(__dirname, PATHS.src), 'node_modules'],
         extensions: ['.json', '.js', '.jsx'],
     },
