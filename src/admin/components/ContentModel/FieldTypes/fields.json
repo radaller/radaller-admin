@@ -1,6 +1,7 @@
 [
     {
-        "type": "text",
+        "type": "string",
+        "fieldType": "TextInput",
         "title": "Text",
         "shortDesc": "Titles, names, tags, URLs, e-mail addresses",
         "fullDesc": "Use for titles, names, tags, URLs, e-mail addresses",

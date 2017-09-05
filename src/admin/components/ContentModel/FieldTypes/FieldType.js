@@ -38,7 +38,7 @@ export default ({ field, onClick }) => {
                 style={ iconBox }
                 onClick={ () => { onClick(field) } }
             >
-                { getIcon(field.type) }
+                { getIcon(field.fieldType) }
             </Paper>
             <div style={ title }><strong>{ field.title }</strong></div>
             <p style={ desc }>{ field.shortDesc }</p>

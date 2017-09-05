@@ -102,11 +102,15 @@ class FieldTypesForm extends Component {
 
         if (valid) {
             const fields = this.state.fields;
-            const data = {
-                id: fields.idField.value,
-                name: fields.nameField.value,
+            // json schema transformation
+            const data = {};
+            data[fields.idField.value] = {
+                title: fields.nameField.value,
                 required: fields.nameField.required,
+                fieldType: this.props.field.fieldType,
+                type: this.props.field.type
             };
+
             this.props.onSave(data);
         }
     }
