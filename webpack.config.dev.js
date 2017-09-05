@@ -82,7 +82,7 @@ module.exports = {
         hot: true,
         inline: true,
         host: PATHS.host,
-        port: PATHS.port,
+        port: env.DEV_PORT ? env.DEV_PORT : PATHS.port,
         headers: { 'Access-Control-Allow-Origin': '*' },
         stats: {
             colors: true,

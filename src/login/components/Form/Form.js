@@ -52,6 +52,7 @@ class GenerateForm extends Component {
                             primary={true}
                             onClick={ this.onNextPress }
                             label="Next"
+                            className="next-button"
                         />
                     </Col>
                 </Row>
