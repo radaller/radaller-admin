@@ -83,7 +83,11 @@ class FieldTypesForm extends Component {
         const trim = /^\s+|\s+$/g;
         const special = /[^\w\s]/gi;
         const spaces = /\s+/g;
-        return value.replace(trim, '').replace(special, '').replace(spaces, '_');
+        return value
+            .replace(trim, '')
+            .replace(special, '')
+            .replace(spaces, '_')
+            .toLowerCase();
     }
 
     validate() {
@@ -143,9 +147,10 @@ class FieldTypesForm extends Component {
                             fullWidth
                             disabled={ idField.blocked }
                             onChange={ this.updateId }
-                            errorText={ idField.valid  ? false : this.state.errorMsg }
+                            errorText={ idField.valid ? false : this.state.errorMsg }
                         />
-                        <p style={ desc }>It is generated automatically based on the name and will appear in the API responses</p>
+                        <p style={ desc }>It is generated automatically based on the name and will appear in the API
+                            responses</p>
                     </div>
                 </div>
                 <div>
