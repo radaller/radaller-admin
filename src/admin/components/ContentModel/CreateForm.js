@@ -9,6 +9,7 @@ import {
 
 import FormToolbar from './Create/FormToolbar';
 import AddField from './FieldTypes';
+import Property from './Create/Property';
 
 class Form extends Component {
     constructor() {
@@ -61,8 +62,18 @@ class Form extends Component {
                     <TextInput label="Title" source="title" validate={[required]}/>
                     <TextInput label="Folder" source="folder" validate={[required]}/>
                     <TextInput elStyle={{ display: 'none' }} label="type" source="type" defaultValue="object"/>
-                </SimpleForm>
 
+                    {
+                        this.state.properties.length > 0 && <h3>Properties</h3>
+                    }
+
+                    {
+                        this.state.properties.map((prop) => (
+                            <Property property={ prop } />
+                        ))
+                    }
+
+                </SimpleForm>
 
                 <AddField
                     show={ this.state.showDialog }
