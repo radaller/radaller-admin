@@ -15,7 +15,7 @@ class Form extends Component {
         super();
         this.state = {
             showDialog: true,
-            options: []
+            properties: []
         };
         this.saveField = this.saveField.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
@@ -27,32 +27,31 @@ class Form extends Component {
     }
 
     saveField(data) {
-        const { options } = this.state;
-        options.push(data);
-        this.setState({ options, showDialog: false });
+        const { properties } = this.state;
+        properties.push(data);
+        this.setState({ properties, showDialog: false });
         this.updateOptions();
     }
 
     updateOptions() {
-        const { options } = this.state;
+        const { properties } = this.state;
         let transformedOptions = {};
-        options.forEach((option) => {
-            const opt = {};
-            opt[option.id] = {
-                title: option.name,
-                required: option.required,
-                fieldType: option.fieldType,
-                type: option.type,
+        properties.forEach((property) => {
+            const prop = {};
+            prop[property.id] = {
+                title: property.name,
+                required: property.required,
+                fieldType: property.fieldType,
+                type: property.type,
             };
-            transformedOptions = Object.assign({}, transformedOptions, opt);
+            transformedOptions = Object.assign({}, transformedOptions, prop);
         });
 
-        this.props.dispatch(change('record-form', 'options', JSON.stringify(transformedOptions)));
+        // save properties to form
+        this.props.dispatch(change('record-form', 'properties', JSON.stringify(transformedOptions)));
     }
 
     render() {
-        const { options } = this.state;
-
         return (
             <div>
                 <SimpleForm
@@ -61,7 +60,6 @@ class Form extends Component {
                 >
                     <TextInput label="Title" source="title" validate={[required]}/>
                     <TextInput label="Folder" source="folder" validate={[required]}/>
-                    <TextInput elStyle={{ display: 'none' }} label="Options" source="options"/>
                     <TextInput elStyle={{ display: 'none' }} label="type" source="type" defaultValue="object"/>
                 </SimpleForm>
 
