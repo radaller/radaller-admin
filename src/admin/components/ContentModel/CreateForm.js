@@ -4,6 +4,7 @@ import { change } from 'redux-form';
 import {
     SimpleForm,
     TextInput,
+    required
 } from 'admin-on-rest';
 
 import FormToolbar from './Create/FormToolbar';
@@ -14,7 +15,7 @@ class Form extends Component {
         super();
         this.state = {
             showDialog: true,
-            options: {}
+            options: []
         };
         this.saveField = this.saveField.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
@@ -26,14 +27,27 @@ class Form extends Component {
     }
 
     saveField(data) {
-        const options = Object.assign(this.state.options, data);
+        const { options } = this.state;
+        options.push(data);
         this.setState({ options, showDialog: false });
         this.updateOptions();
     }
 
     updateOptions() {
         const { options } = this.state;
-        this.props.dispatch(change('record-form', 'options', JSON.stringify(options)));
+        let transformedOptions = {};
+        options.forEach((option) => {
+            const opt = {};
+            opt[option.id] = {
+                title: option.name,
+                required: option.required,
+                fieldType: option.fieldType,
+                type: option.type,
+            };
+            transformedOptions = Object.assign({}, transformedOptions, opt);
+        });
+
+        this.props.dispatch(change('record-form', 'options', JSON.stringify(transformedOptions)));
     }
 
     render() {
@@ -41,18 +55,22 @@ class Form extends Component {
 
         return (
             <div>
-                <SimpleForm {...this.props} toolbar={<FormToolbar showFieldsList={ this.toggleDialog }/>}>
-                    <TextInput label="Title" source="title"/>
-                    <TextInput label="Folder" source="folder" />
-                    <TextInput elStyle={{ display: 'none' }} label="Options" source="options" />
+                <SimpleForm
+                    {...this.props}
+                    toolbar={<FormToolbar showFieldsList={ this.toggleDialog }/>}
+                >
+                    <TextInput label="Title" source="title" validate={[required]}/>
+                    <TextInput label="Folder" source="folder" validate={[required]}/>
+                    <TextInput elStyle={{ display: 'none' }} label="Options" source="options"/>
+                    <TextInput elStyle={{ display: 'none' }} label="type" source="type" defaultValue="object"/>
                 </SimpleForm>
+
 
                 <AddField
                     show={ this.state.showDialog }
                     onSave={ this.saveField }
                     onClose={ this.toggleDialog }
                 />
-
             </div>
         )
     }

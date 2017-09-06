@@ -168,11 +168,9 @@ class App extends Component {
             {
                 this.state.schemas.length > 0 && (
                     <Admin
-                        // menu={ Menu }
                         restClient={this._getRestClient()}
                         logoutButton={LogoutButton(this.closeAdmin)}
                         authClient={authClient}
-                        // customRoutes={Routes}
                     >
                         <Resource
                             name="schemas"
