@@ -10,5 +10,17 @@
         "name": "",
         "valid": true,
         "id": ""
+    },
+    {
+        "type": "integer",
+        "fieldType": "NumberInput",
+        "title": "Number",
+        "subTitle": "Integer value",
+        "shortDesc": "ID, order number, rating, quantity",
+        "fullDesc": "ID, order number, rating, quantity - (1, 2, 3, 4, 5... or 1.1234, 23.45, 44.5, 0.4...)",
+        "required": false,
+        "name": "",
+        "valid": true,
+        "id": ""
     }
 ]
