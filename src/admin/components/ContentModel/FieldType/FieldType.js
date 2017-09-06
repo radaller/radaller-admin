@@ -1,7 +1,7 @@
 import React from 'react';
 import Paper from 'material-ui/Paper';
 
-import getIcon from './getIcon';
+import getIcon from '../../../utils/getIcon';
 
 const box = {
     display: 'inline-block',
