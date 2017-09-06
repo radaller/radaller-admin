@@ -7,13 +7,13 @@ import IconClose from 'material-ui/svg-icons/navigation/close';
 import FieldType from './FieldTypes/FieldType';
 import FieldTypeForm from './FieldTypes/FieldTypeForm';
 
-import fieldsData from './FieldTypes/fields.json';
+import fieldsData from './FieldTypes/fieldTypes.json';
 
 export default class AddField extends Component {
     constructor() {
         super();
         this.state = {
-            fields: fieldsData,
+            fields: JSON.parse(JSON.stringify(fieldsData)),  // keep fieldsData in original state
             selectedFieldIndex: null
         };
         this.saveField = this.saveField.bind(this);
@@ -31,7 +31,10 @@ export default class AddField extends Component {
     }
 
     resetState() {
-        this.setState({ fields: fieldsData, selectedFieldIndex: null });
+        this.setState({
+            fields: JSON.parse(JSON.stringify(fieldsData)), // keep fieldsData in original state
+            selectedFieldIndex: null,
+        });
     }
 
     onClose() {
@@ -47,7 +50,6 @@ export default class AddField extends Component {
             <Dialog
                 title="Add new Field"
                 titleStyle={ { background: '#ececec' } }
-                // actions={dialogActions}
                 modal={false}
                 open={this.props.show}
                 onRequestClose={this.props.onClose}
