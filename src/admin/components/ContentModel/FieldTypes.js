@@ -9,7 +9,7 @@ import FieldTypeForm from './FieldType/FieldTypeForm';
 
 import fieldsData from './fieldTypes.json';
 
-export default class AddField extends Component {
+export default class FieldTypes extends Component {
     constructor() {
         super();
         this.state = {
@@ -50,6 +50,7 @@ export default class AddField extends Component {
             <Dialog
                 title="Add new Field"
                 titleStyle={ { background: '#ececec' } }
+                autoScrollBodyContent={ true }
                 modal={false}
                 open={this.props.show}
                 onRequestClose={this.props.onClose}
@@ -60,18 +61,20 @@ export default class AddField extends Component {
                 >
                     <IconClose />
                 </IconButton>
-                <div>
-                     {
-                         !showForm && fields.map((field, index) => {
-                            return (
-                                <FieldType
-                                    field={ field }
-                                    onClick={ () => { this.chooseFieldType(index) } }
-                                />
-                            )
-                        })
-                    }
-                </div>
+
+                {
+                    !showForm && fields.map((field, index) => {
+                        return (
+                            <FieldType
+                                field={ field }
+                                onClick={ () => {
+                                    this.chooseFieldType(index)
+                                } }
+                            />
+                        )
+                    })
+                }
+
 
                 {
                     showForm && (

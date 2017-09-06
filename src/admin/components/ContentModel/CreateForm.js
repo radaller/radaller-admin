@@ -7,8 +7,9 @@ import {
     required
 } from 'admin-on-rest';
 
+import Divider from 'material-ui/Divider';
 import FormToolbar from './Create/FormToolbar';
-import AddField from './FieldTypes';
+import FieldTypes from './FieldTypes';
 import Property from './Create/Property';
 
 class Form extends Component {
@@ -64,18 +65,28 @@ class Form extends Component {
                     <TextInput elStyle={{ display: 'none' }} label="type" source="type" defaultValue="object"/>
 
                     {
-                        this.state.properties.length > 0 && <h3>Properties</h3>
+                        this.state.properties.length > 0 && (
+                            <div>
+                                <h3>Properties</h3>
+                                <Divider />
+                            </div>
+                        )
                     }
 
                     {
                         this.state.properties.map((prop) => (
-                            <Property property={ prop } />
+                            <div>
+                                <Property property={ prop }/>
+                                <Divider />
+                            </div>
+
                         ))
                     }
 
+
                 </SimpleForm>
 
-                <AddField
+                <FieldTypes
                     show={ this.state.showDialog }
                     onSave={ this.saveField }
                     onClose={ this.toggleDialog }
