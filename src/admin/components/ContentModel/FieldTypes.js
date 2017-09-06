@@ -4,10 +4,10 @@ import Dialog from 'material-ui/Dialog';
 import IconButton from 'material-ui/IconButton';
 import IconClose from 'material-ui/svg-icons/navigation/close';
 
-import FieldType from './FieldTypes/FieldType';
-import FieldTypeForm from './FieldTypes/FieldTypeForm';
+import FieldType from './FieldType/FieldType';
+import FieldTypeForm from './FieldType/FieldTypeForm';
 
-import fieldsData from './FieldTypes/fieldTypes.json';
+import fieldsData from './fieldTypes.json';
 
 export default class AddField extends Component {
     constructor() {
