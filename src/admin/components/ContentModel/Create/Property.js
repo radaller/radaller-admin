@@ -1,16 +1,54 @@
 import React from 'react';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-
+import {ListItem} from 'material-ui/List';
+import IconButton from 'material-ui/IconButton';
+import EditIcon from 'material-ui/svg-icons/image/edit';
+import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import getIcon from '../../../utils/getIcon';
 
-export default ({ property, onDelete }) => {
+const box = {
+    height: 'auto',
+    margin: '0 10px 0 0',
+    top: 5
+};
+
+const icon = {
+    width: 20,
+    height: 20,
+};
+
+const iconButton = {
+    padding: 5,
+    width: 30,
+    height: 30,
+};
+
+export default ({ property, onDelete, onEdit }) => {
     return (
-        <Card>
-            <CardHeader
-                avatar={ getIcon(property.fieldType) }
-                title={ property.name }
-                subtitle={ property.subTitle }
-            />
-        </Card>
+        <ListItem
+            leftIcon={getIcon(property.fieldType)}
+            rightIcon={
+                <div style={ box }>
+                    <IconButton
+                        style={ iconButton }
+                        iconStyle={ icon }
+                        onClick={ () => {
+                            onEdit(property)
+                        } }
+                    >
+                        <EditIcon/>
+                    </IconButton>
+                    <IconButton
+                        style={ iconButton }
+                        iconStyle={ icon }
+                        onClick={ () => {
+                            onDelete(property)
+                        } }>
+                        <DeleteIcon />
+                    </IconButton>
+                </div>
+            }
+            primaryText={ property.name }
+            secondaryText={ property.subTitle }
+        />
     )
 }

@@ -2,20 +2,10 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
+import { Grid, Row, Col } from 'react-flexbox-grid';
 
 const button = {
-    margin: '12px 12px 12px 0',
-};
-
-const box = {
-    display: 'flex',
-    flexDirection: 'row',
-    marginBottom: 20
-};
-
-const fieldBox = {
-    width: '50%',
-    padding: '0 15px'
+    margin: '0 10px 0 0',
 };
 
 const desc = {
@@ -121,9 +111,9 @@ class FieldTypesForm extends Component {
         const { field } = this.props;
         const { nameField, idField } = this.state.fields;
         return (
-            <div style={ {} }>
-                <div style={ box }>
-                    <div style={ fieldBox }>
+            <Grid fluid style={{ padding: 0 }}>
+                <Row>
+                    <Col xs={12} sm={6}>
                         <TextField
                             floatingLabelText="Name"
                             value={ nameField.value }
@@ -139,8 +129,8 @@ class FieldTypesForm extends Component {
                             onCheck={ this.setRequired }
                             labelStyle={ labelStyle }
                         />
-                    </div>
-                    <div style={ fieldBox }>
+                    </Col>
+                    <Col xs={12} sm={6}>
                         <TextField
                             floatingLabelText="ID"
                             value={ idField.value }
@@ -151,22 +141,24 @@ class FieldTypesForm extends Component {
                         />
                         <p style={ desc }>It is generated automatically based on the name and will appear in the API
                             responses</p>
-                    </div>
-                </div>
-                <div>
-                    <RaisedButton
-                        style={ button }
-                        label="Back"
-                        onClick={this.props.onBack}
-                    />
-                    <RaisedButton
-                        style={ button }
-                        label="Save"
-                        primary={true}
-                        onClick={this.onSave}
-                    />
-                </div>
-            </div>
+                    </Col>
+                </Row>
+                <Row style={{ paddingTop: 25 }}>
+                    <Col xs={12} sm={12}>
+                        <RaisedButton
+                            style={ button }
+                            label="Back"
+                            onClick={this.props.onBack}
+                        />
+                        <RaisedButton
+                            style={ button }
+                            label="Save"
+                            primary={true}
+                            onClick={this.onSave}
+                        />
+                    </Col>
+                </Row>
+            </Grid>
         );
     }
 }
