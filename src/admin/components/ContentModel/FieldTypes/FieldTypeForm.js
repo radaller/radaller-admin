@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Checkbox from 'material-ui/Checkbox';
 import { Grid, Row, Col } from 'react-flexbox-grid';
+
+import formatID from '../../../utils/formatID';
 
 const button = {
     margin: '0 10px 0 0',
@@ -18,6 +22,11 @@ const labelStyle = {
     marginLeft: '-5px',
 };
 
+const errorMsgs = {
+    required: 'Field is required',
+    idIsExist: 'Id with this value already exist',
+};
+
 class FieldTypesForm extends Component {
     constructor(props) {
         super(props);
@@ -27,20 +36,21 @@ class FieldTypesForm extends Component {
                     value: props.field.name,
                     required: false,
                     valid: true,
+                    errorMsg: null,
                 },
                 idField: {
                     value: props.field.id,
                     blocked: props.field.id !== '',
                     valid: true,
+                    errorMsg: null,
                 },
             },
-            errorMsg: 'Field is required',
             requiredTxt: 'Make field required',
         };
 
         this.updateName = this.updateName.bind(this);
         this.updateId = this.updateId.bind(this);
-        this.onSave = this.onSave.bind(this);
+        this.onSavePress = this.onSavePress.bind(this);
         this.validate = this.validate.bind(this);
         this.setRequired = this.setRequired.bind(this);
     }
@@ -48,6 +58,7 @@ class FieldTypesForm extends Component {
     updateName(event) {
         const fields = this.state.fields;
         fields.nameField.value = event.target.value;
+        fields.nameField.errorMsg = null;
 
         this.setState({ fields });
 
@@ -58,7 +69,8 @@ class FieldTypesForm extends Component {
 
     updateId(event) {
         const fields = this.state.fields;
-        fields.idField.value = this.genId(event.target.value);
+        fields.idField.value = formatID(event.target.value);
+        fields.idField.errorMsg = null;
         this.setState({ fields });
     }
 
@@ -69,29 +81,33 @@ class FieldTypesForm extends Component {
         this.setState({ fields });
     }
 
-    genId(value) {
-        const trim = /^\s+|\s+$/g;
-        const special = /[^\w\s]/gi;
-        const spaces = /\s+/g;
-        return value
-            .replace(trim, '')
-            .replace(special, '')
-            .replace(spaces, '_')
-            .toLowerCase();
+    checkIfHasId(field, ids) {
+        const hasId = ids.find((id) => field.value === id);
+        return !!hasId;
     }
 
     validate() {
         const { fields } = this.state;
         const keys = Object.keys(fields);
-        keys.forEach((key) => {
-            const field = fields[key];
-            field.valid = field.value !== '';
-        });
+
+        const hasId = this.checkIfHasId(fields.idField, this.props.existedFieldIds);
+
+        fields.idField.valid = !hasId;
+        fields.idField.errorMsg = errorMsgs.idIsExist;
+
+        if(!hasId) {
+            keys.forEach((key) => {
+                const field = fields[key];
+                field.valid = field.value !== '';
+                field.errorMsg = field.valid ? null : errorMsgs.required;
+            });
+        }
+
         this.setState({ fields });
         return keys.every(key => this.state.fields[key].valid);
     }
 
-    onSave() {
+    onSavePress() {
         const valid = this.validate();
 
 
@@ -103,7 +119,7 @@ class FieldTypesForm extends Component {
             field.name = fields.nameField.value;
             field.required = fields.nameField.required;
 
-            this.props.onSave(field);
+            this.props.onSavePress(field);
         }
     }
 
@@ -118,7 +134,7 @@ class FieldTypesForm extends Component {
                             floatingLabelText="Name"
                             value={ nameField.value }
                             onChange={ this.updateName }
-                            errorText={ nameField.valid ? false : this.state.errorMsg }
+                            errorText={ nameField.errorMsg }
                             fullWidth
                         />
                         <p style={ desc }>{ field.fullDesc }</p>
@@ -137,24 +153,25 @@ class FieldTypesForm extends Component {
                             fullWidth
                             disabled={ idField.blocked }
                             onChange={ this.updateId }
-                            errorText={ idField.valid ? false : this.state.errorMsg }
+                            errorText={ idField.errorMsg }
                         />
-                        <p style={ desc }>It is generated automatically based on the name and will appear in the API
-                            responses</p>
+                        <p style={ desc }>
+                            It is generated automatically based on the name and will appear in the API responses
+                        </p>
                     </Col>
                 </Row>
-                <Row style={{ paddingTop: 25 }}>
-                    <Col xs={12} sm={12}>
-                        <RaisedButton
-                            style={ button }
-                            label="Back"
-                            onClick={this.props.onBack}
-                        />
+                <Row style={ { paddingTop: 25 } }>
+                    <Col xs={ 12 } sm={ 12 }>
                         <RaisedButton
                             style={ button }
                             label="Save"
-                            primary={true}
-                            onClick={this.onSave}
+                            primary={ true }
+                            onClick={ this.onSavePress }
+                        />
+                        <RaisedButton
+                            style={ button }
+                            label="Change Field Type"
+                            onClick={ this.props.onBackPress }
                         />
                     </Col>
                 </Row>
@@ -162,5 +179,12 @@ class FieldTypesForm extends Component {
         );
     }
 }
+
+FieldTypesForm.propTypes = {
+    field: PropTypes.object.isRequired,
+    existedFieldIds: PropTypes.array.isRequired,
+    onSavePress: PropTypes.func.isRequired,
+    onBackPress: PropTypes.func.isRequired,
+};
 
 export default FieldTypesForm;

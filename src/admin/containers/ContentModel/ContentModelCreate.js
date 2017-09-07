@@ -1,12 +1,12 @@
 import React from 'react';
 import { Create } from 'admin-on-rest';
 
-import CreateForm from '../../components/ContentModel/CreateForm';
+import Form from '../../components/ContentModel/Form';
 
 export default (props) => {
     return (
         <Create title="Create Data Model" {...props}>
-            <CreateForm />
+            <Form />
         </Create>
     )
 };
