@@ -1,5 +1,5 @@
-[
-    {
+{
+    "TextInput": {
         "type": "string",
         "fieldType": "TextInput",
         "title": "Text",
@@ -11,7 +11,7 @@
         "valid": true,
         "id": ""
     },
-    {
+    "NumberInput": {
         "type": "integer",
         "fieldType": "NumberInput",
         "title": "Number",
@@ -23,4 +23,4 @@
         "valid": true,
         "id": ""
     }
-]
+}

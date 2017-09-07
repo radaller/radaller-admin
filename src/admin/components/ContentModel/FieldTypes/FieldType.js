@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Paper from 'material-ui/Paper';
 
 import getIcon from '../../../utils/getIcon';
@@ -31,7 +32,7 @@ const desc = {
     padding: 0,
 };
 
-export default ({ field, onClick }) => {
+const FieldType = ({ field, onClick }) => {
     return (
         <div style={ box }>
             <Paper
@@ -44,4 +45,11 @@ export default ({ field, onClick }) => {
             <p style={ desc }>{ field.shortDesc }</p>
         </div>
     )
-}
+};
+
+FieldType.propTypes = {
+    field: PropTypes.object.isRequired,
+    onClick: PropTypes.func.isRequired,
+};
+
+export default FieldType;

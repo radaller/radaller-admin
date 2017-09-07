@@ -1,5 +1,7 @@
 import React from 'react';
-import {ListItem} from 'material-ui/List';
+import PropTypes from 'prop-types';
+
+import { ListItem } from 'material-ui/List';
 import IconButton from 'material-ui/IconButton';
 import EditIcon from 'material-ui/svg-icons/image/edit';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
@@ -22,7 +24,7 @@ const iconButton = {
     height: 30,
 };
 
-export default ({ property, onDelete, onEdit }) => {
+const Property = ({ property, onDelete, onEdit }) => {
     return (
         <ListItem
             leftIcon={getIcon(property.fieldType)}
@@ -51,4 +53,12 @@ export default ({ property, onDelete, onEdit }) => {
             secondaryText={ property.subTitle }
         />
     )
-}
+};
+
+Property.propTypes = {
+    property: PropTypes.object.isRequired,
+    onDelete: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired,
+};
+
+export default Property;
