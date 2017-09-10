@@ -2,6 +2,7 @@ import React from 'react';
 import {
     List,
     EditButton,
+    DeleteButton,
     Datagrid,
     TextField,
 } from 'admin-on-rest';
@@ -13,6 +14,7 @@ export default (props) => {
                 <TextField source="id" />
                 <TextField source="title"  />
                 <EditButton />
+                <DeleteButton />
             </Datagrid>
         </List>
     );

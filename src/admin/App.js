@@ -179,6 +179,7 @@ class App extends Component {
                             list={ ContentModelList }
                             create={ ContentModelCreate }
                             edit={ ContentModelEdit }
+                            remove={Delete}
                         />
                         {
                             this.state.schemas.map((item, index) => {

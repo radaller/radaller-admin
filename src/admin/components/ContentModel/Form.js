@@ -100,7 +100,9 @@ class Form extends Component {
 
     onTitleChange(evt) {
         // save value to folder field
-        this.props.dispatch(change('record-form', 'folder', evt.target.value));
+        if (this.state.allowEditFolder) {
+            this.props.dispatch(change('record-form', 'folder', evt.target.value));
+        }
     }
 
     render() {
