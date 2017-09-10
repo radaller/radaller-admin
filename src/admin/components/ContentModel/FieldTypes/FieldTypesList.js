@@ -5,7 +5,7 @@ import FieldType from './FieldType';
 
 const FieldTypesList = ({ fieldTypes, onFieldTypeChosen }) => {
     return (
-        <div>
+        <div style={{ textAlign: 'center' }}>
             {
                 Object.keys(fieldTypes).map((key) => {
                     const field = fieldTypes[key];
