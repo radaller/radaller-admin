@@ -8,7 +8,7 @@ const style = {
 
 export default (type) => {
     switch(type) {
-        case 'TextInput':
+        case 'text':
             return <TextIcon style={ style } />;
 
         default:

@@ -41,7 +41,7 @@ const FieldType = ({ field, onClick }) => {
             >
                 { getIcon(field.fieldType) }
             </Paper>
-            <div style={ title }><strong>{ field.title }</strong></div>
+            <div style={ title }><strong>{ field.descTitle }</strong></div>
             <p style={ desc }>{ field.shortDesc }</p>
         </div>
     )

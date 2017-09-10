@@ -1,26 +1,63 @@
 {
-    "TextInput": {
+    "text": {
         "type": "string",
-        "fieldType": "TextInput",
-        "title": "Text",
+        "fieldType": "text",
+        "required": false,
+        "title": "",
+        "valid": true,
+        "id": "",
+        "descTitle": "Text",
         "subTitle": "Short text",
         "shortDesc": "Titles, names, tags, URLs, e-mail addresses",
-        "fullDesc": "Use for titles, names, tags, URLs, e-mail addresses",
-        "required": false,
-        "name": "",
-        "valid": true,
-        "id": ""
+        "fullDesc": "Use for titles, names, tags, URLs, e-mail addresses"
     },
-    "NumberInput": {
+    "reachtext": {
+        "type": "string",
+        "fieldType": "reachtext",
+        "required": false,
+        "title": "",
+        "valid": true,
+        "id": "",
+        "descTitle": "Editor",
+        "subTitle": "Long text",
+        "shortDesc": "Long text, full-text search",
+        "fullDesc": "Use for descriptions, text paragraphs, articles"
+    },
+    "date": {
+        "type": "string",
+        "fieldType": "date",
+        "required": false,
+        "title": "",
+        "valid": true,
+        "id": "",
+        "descTitle": "Date and time",
+        "subTitle": "Event date, opening hours",
+        "shortDesc": "Event date, opening hours",
+        "fullDesc": "Event date, opening hours"
+
+    },
+    "number": {
         "type": "integer",
-        "fieldType": "NumberInput",
-        "title": "Number",
+        "fieldType": "number",
+        "required": false,
+        "title": "",
+        "valid": true,
+        "id": "",
+        "descTitle": "Number",
         "subTitle": "Integer value",
         "shortDesc": "ID, order number, rating, quantity",
-        "fullDesc": "ID, order number, rating, quantity - (1, 2, 3, 4, 5... or 1.1234, 23.45, 44.5, 0.4...)",
+        "fullDesc": "ID, order number, rating, quantity - (1, 2, 3, 4, 5... or 1.1234, 23.45, 44.5, 0.4...)"
+    },
+    "reference_array": {
+        "type": "integer",
+        "fieldType": "reference_array",
         "required": false,
-        "name": "",
+        "title": "",
         "valid": true,
-        "id": ""
+        "id": "",
+        "descTitle": "Reference",
+        "subTitle": "Reference to some other elements",
+        "shortDesc": "For example, a blog post can reference its author(s)",
+        "fullDesc": "This is similar to one-to-many relationships between objects in a database For example, a blog post can reference its several authors"
     }
 }
