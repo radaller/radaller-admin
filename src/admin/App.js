@@ -24,7 +24,8 @@ import { Admin, Resource, GET_LIST,
     SelectArrayInput,
 } from 'admin-on-rest';
 
-import { ContentModelCreate, ContentModelList } from './containers/ContentModel';
+import { ContentModelCreate, ContentModelEdit, ContentModelList } from './containers/ContentModel';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 const muiTheme = getMuiTheme();
@@ -177,6 +178,7 @@ class App extends Component {
                             options={{ label: "Content Model" }}
                             list={ ContentModelList }
                             create={ ContentModelCreate }
+                            edit={ ContentModelEdit }
                         />
                         {
                             this.state.schemas.map((item, index) => {

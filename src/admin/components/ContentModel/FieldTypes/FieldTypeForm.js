@@ -33,7 +33,7 @@ class FieldTypesForm extends Component {
         this.state = {
             fields: {
                 nameField: {
-                    value: props.field.name,
+                    value: props.field.title,
                     required: false,
                     valid: true,
                     errorMsg: null,
@@ -116,7 +116,7 @@ class FieldTypesForm extends Component {
             const { field } = this.props;
 
             field.id = fields.idField.value;
-            field.name = fields.nameField.value;
+            field.title = fields.nameField.value;
             field.required = fields.nameField.required;
 
             this.props.onSavePress(field);

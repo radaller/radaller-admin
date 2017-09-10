@@ -4,7 +4,8 @@ import { change } from 'redux-form';
 import {
     SimpleForm,
     TextInput,
-    required
+    required,
+    DisabledInput
 } from 'admin-on-rest';
 
 import Divider from 'material-ui/Divider';
@@ -17,12 +18,13 @@ import formatID from '../../utils/formatID';
 import fieldTypesData from './fieldTypes.json';
 
 class Form extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             showDialog: false,
-            properties: {},
+            properties: this.mapProperties(props.record.properties),
             editProperty: null,
+            allowEditFolder: !this.props.record.folder
         };
         this.saveProperty = this.saveProperty.bind(this);
         this.toggleDialog = this.toggleDialog.bind(this);
@@ -31,6 +33,16 @@ class Form extends Component {
         this.deleteProperty = this.deleteProperty.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
         this.onTitleChange = this.onTitleChange.bind(this);
+    }
+
+    mapProperties(props) {
+        const properties = {};
+        props && Object.keys(props).forEach((key) => {
+            const prop = Object.assign({}, props[key]);
+            prop['id'] = key;
+            properties[key] = Object.assign({}, fieldTypesData[prop.inputType], prop);
+        });
+        return properties;
     }
 
     toggleDialog() {
@@ -63,7 +75,7 @@ class Form extends Component {
             const prop = properties[key];
             const newProp = {};
             newProp[key] = {
-                title: prop.name,
+                title: prop.title,
                 required: prop.required,
                 fieldType: prop.fieldType,
                 type: prop.type,
@@ -92,7 +104,7 @@ class Form extends Component {
     }
 
     render() {
-        const { properties, editProperty } = this.state;
+        const { properties, editProperty, allowEditFolder } = this.state;
         return (
             <div>
                 <SimpleForm
@@ -100,8 +112,13 @@ class Form extends Component {
                     toolbar={ <FormToolbar showFieldsList={ this.toggleDialog }/> }
                 >
                     <TextInput label="Title" source="title" validate={ [required] } onChange={ this.onTitleChange } />
-                    <TextInput label="Folder" source="folder" validate={ [required] } format={ formatID } />
                     <TextInput elStyle={ { display: 'none' } } label="type" source="type" defaultValue="object"/>
+                    {
+                        allowEditFolder && <TextInput label="Folder" source="folder" validate={ [required] } format={ formatID } />
+                    }
+                    {
+                        !allowEditFolder && <DisabledInput label="Folder" source="folder" />
+                    }
 
                     {
                         properties.length > 0 && (

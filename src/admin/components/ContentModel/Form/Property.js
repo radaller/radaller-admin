@@ -49,7 +49,7 @@ const Property = ({ property, onDelete, onEdit }) => {
                     </IconButton>
                 </div>
             }
-            primaryText={ property.name }
+            primaryText={ property.title }
             secondaryText={ property.subTitle }
         />
     )
