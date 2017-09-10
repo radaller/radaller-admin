@@ -4,14 +4,8 @@ import Paper from 'material-ui/Paper';
 
 import getIcon from '../../../utils/getIcon';
 
-const box = {
-    display: 'inline-block',
-    textAlign: 'center',
-    width: 80,
-    marginTop: 15,
-};
-
 const iconBox = {
+    verticalAlign: 'top',
     display: 'inline-block',
     marginTop: 4,
     padding: 8,
@@ -34,7 +28,7 @@ const desc = {
 
 const FieldType = ({ field, onClick }) => {
     return (
-        <div style={ box }>
+        <div className="fieldTypeBox">
             <Paper
                 style={ iconBox }
                 onClick={ () => { onClick(field) } }
