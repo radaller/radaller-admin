@@ -16,6 +16,8 @@ import FieldStore from '../../stores/form/field';
 import * as routes from '../../../constants/routes';
 import * as storage from '../../../constants/storage';
 
+import {GitHubApi} from 'radaller-core/github';
+
 const styles = {
     centering: {
         textAlign: 'center',
@@ -50,8 +52,17 @@ class Repos extends Component {
         if (value.trim().length < 5) {
             return false;
         }
-        const auth = JSON.parse(localStorage.getItem('auth'));
-        this._findRepos(auth.token, value)
+        this.gitHubAPI
+            .getUser()
+            .listRepos()
+            .then(response => {
+                if (response.data && response.data.length > 0) {
+                    return response.data
+                        .filter(item => item.permissions.pull === true)
+                        .map(item => item.full_name)
+                }
+                return [];
+            })
             .then(items => {
                 this.setState({
                     dataSource: items
@@ -59,36 +70,17 @@ class Repos extends Component {
             });
     };
 
-    _getGithubApiUrl() {
-        if (process.env.GIT_API_URL) {
-            return process.env.GIT_API_URL
-        }
-        return 'https://api.github.com';
-    }
-
-    _findRepos(token, queryString) {
-        const query = `q=${queryString}`;
-        return fetch(`${this._getGithubApiUrl()}/search/repositories?${query}`, {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `token ${token}`
-            }
-        })
-        .then(response => response.json())
-        .then(repositories => {
-            return repositories.items.map(item => item.full_name)
-        })
-    }
-
     componentDidMount() {
-        if (!localStorage.getItem(storage.AUTH)) {
+        const auth = JSON.parse(localStorage.getItem(storage.AUTH));
+        if (!auth) {
             this.goToLogin();
+            return;
         }
-        if (!!localStorage.getItem(storage.REPOS)) {
+        this.gitHubAPI = new GitHubApi(auth);
+        const repos = JSON.parse(localStorage.getItem(storage.REPOS));
+        if (!!repos) {
             this.setState({
-                repos: JSON.parse(localStorage.getItem(storage.REPOS))
+                repos: repos
             });
         }
     }

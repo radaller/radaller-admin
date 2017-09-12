@@ -10,30 +10,13 @@ import FieldStore from '../../stores/form/field';
 
 import Form from '../../components/Form/Form';
 
-const Base64 = require('js-base64').Base64;
+import { GitHubAuth, GitHubToken, UnauthorisedError, TwoFactorError } from 'radaller-core/github';
 
 const stylesPaper = {
     padding: 15,
     paddingTop: 0,
     margin: 5,
 };
-
-function _checkTwoFactor(response) {
-    const twoFactor = response.headers.get('X-GitHub-OTP');
-    if (response.status === 401 && twoFactor && twoFactor.indexOf("required") !== -1) {
-        throw { status: response.status, twoFactor: true };
-    } else if (response.status === 401) {
-        throw { status: response.status };
-    }
-    return response;
-}
-
-function _getGithubApiUrl() {
-    if (process.env.GIT_API_URL) {
-        return process.env.GIT_API_URL
-    }
-    return 'https://api.github.com';
-}
 
 @observer
 class Login extends Component {
@@ -48,17 +31,19 @@ class Login extends Component {
             },
             showLoginForm: true,
             showGenerateForm: false,
-            showCodeForm: false,
+            showTwoFactorCodeForm: false,
             error: {
                 open: false,
                 message: ''
             }
         };
 
+        this.gitHubAuth = new GitHubAuth(new GitHubToken());
+
         this.showForm = this.showForm.bind(this);
-        this.onLoginSubmit = this.onLoginSubmit.bind(this);
+        this.onTokenSubmit = this.onTokenSubmit.bind(this);
         this.onTokenGenSubmit = this.onTokenGenSubmit.bind(this);
-        this.onCodeSubmit = this.onCodeSubmit.bind(this);
+        this.onTwoFactorCodeSubmit = this.onTwoFactorCodeSubmit.bind(this);
         this.handleErrorMessageClose = this.handleErrorMessageClose.bind(this);
     }
 
@@ -75,151 +60,73 @@ class Login extends Component {
     showForm(form) {
         this.setState({
             showLoginForm: form === 'login',
-            showCodeForm: form === 'code',
+            showTwoFactorCodeForm: form === 'code',
             showGenerateForm: form === 'generate',
         });
     }
 
-    onLoginSubmit(data) {
-        fetch(`${_getGithubApiUrl()}/user`, {
-            method: 'GET',
-            mode: 'cors',
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `token ${data.token}`
-            }
-        })
-        .then(response => {
-            if (response.status !== 200) {
-                throw new Error('Token is not valid.');
-            }
-            return response.json()
-        })
-        .then(userData => {
-            this._storeCredentials(userData.login, data.token);
-            this.goToHome();
-        })
-        .catch(() => {
-            this.setState({
-                error: {
-                    open: true,
-                    message: 'Token is not valid'
-                }
-            });
-        });
-    }
-
-    onTokenGenSubmit(data) {
-        this._generateToken(data.username, data.password);
-    }
-
-    onCodeSubmit(data) {
-        const username = this.state.fields.username.value;
-        const password = this.state.fields.password.value;
-        const twoFactorCode = data.code;
-        this._generateToken(username, password, twoFactorCode);
-    }
-
-    _generateToken(username, password, twoFactorCode) {
-        this
-        ._createToken(username, password, twoFactorCode)
-        .then(_checkTwoFactor)
-        .then(response => {
-            if (response.status === 422) {
-                return this
-                    ._getTokens(username, password, twoFactorCode)
-                    .then(response => response.json())
-                    .then(tokens => {
-                        const token = this._findToken(tokens, "Radaller CMS");
-                        if (token) {
-                            return this._deleteToken(token, username, password, twoFactorCode)
-                        } else {
-                            return Promise.resolve();
-                        }
-                    })
-                    .then(() => {
-                        return this._createToken(username, password, twoFactorCode);
-                    })
-            } else  {
-                return response;
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            this._storeCredentials(username, data.token);
-            this.goToHome();
-        })
-        .catch((e) => {
-            if (e.twoFactor) {
-                this.showForm('code');
-            } else {
-                this.setState({
-                    error: {
-                        open: true,
-                        message: 'Credentials are not valid.'
-                    }
-                });
+    showError(message) {
+        this.setState({
+            error: {
+                open: true,
+                message: message
             }
         });
     }
 
-    _createToken(username, password, twoFactorCode) {
-        let headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        headers.append("Authorization", 'Basic ' + Base64.encode(username + ":" + password));
-        if (twoFactorCode) {
-            headers.append("X-GitHub-OTP", twoFactorCode);
-        }
-        return fetch(`${_getGithubApiUrl()}/authorizations`, {
-            method: 'POST',
-            mode: 'cors',
-            headers: headers,
-            body: JSON.stringify({
-                "scopes": [
-                    "public_repo"
-                ],
-                "note": "Radaller CMS"
+    onTokenSubmit(formData) {
+        this._authenticate(formData.token);
+    }
+
+    onTokenGenSubmit(formData) {
+        this._authenticate({
+            username: formData.username,
+            password: formData.password,
+            appName: "Radaller CMS"
+        });
+    }
+
+    onTwoFactorCodeSubmit(formData) {
+        this._authenticate({
+            username: this.state.fields.username.value,
+            password: this.state.fields.password.value,
+            twoFactorCode: formData.code,
+            appName: "Radaller CMS"
+        });
+    }
+
+    _authenticate(credentials) {
+        this._getAuthByCredentialType(credentials)
+            .then(auth => {
+                this._storeCredentials(auth);
+                this.goToHome();
             })
-        });
+            .catch(error => {
+                console.log(error);
+                if (error instanceof TwoFactorError) {
+                    this.showForm('code');
+                } else {
+                    throw error;
+                }
+            })
+            .catch(error => {
+                let errorMessage = "Unknown error.";
+                if (error instanceof UnauthorisedError) {
+                    errorMessage = typeof credentials === "string" ? "Token is not valid." : "Credentials are not valid.";
+                }
+                this.showError(errorMessage);
+            });
     }
 
-    _getTokens(username, password, twoFactorCode) {
-        let headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        headers.append("Authorization", 'Basic ' + Base64.encode(username + ":" + password));
-        if (twoFactorCode) {
-            headers.append("X-GitHub-OTP", twoFactorCode);
+    _getAuthByCredentialType(credentials) {
+        if (typeof credentials === "string") {
+            return this.gitHubAuth.getAuthByToken(credentials);
+        } else {
+            return this.gitHubAuth.getAuthByBaseAuth(credentials);
         }
-        return fetch(`${_getGithubApiUrl()}/authorizations`, {
-            method: 'GET',
-            mode: 'cors',
-            headers: headers
-        });
     }
 
-    _findToken(tokens, note) {
-        return tokens.find(token => token.note === note);
-    }
-
-    _deleteToken(token, username, password, twoFactorCode) {
-        let headers = new Headers();
-        headers.append("Content-Type", "application/json");
-        headers.append("Authorization", 'Basic ' + Base64.encode(username + ":" + password));
-        if (twoFactorCode) {
-            headers.append("X-GitHub-OTP", twoFactorCode);
-        }
-        return fetch(`${_getGithubApiUrl()}/authorizations/` + token.id, {
-            method: 'DELETE',
-            mode: 'cors',
-            headers: headers
-        })
-    }
-
-    _storeCredentials(login, token) {
-        const auth = {
-            token: token,
-            username: login
-        };
+    _storeCredentials(auth) {
         localStorage.setItem('auth', JSON.stringify(auth));
     }
 
@@ -239,7 +146,7 @@ class Login extends Component {
                     this.state.showLoginForm && (
                         <LoginForm
                             fields={ [this.state.fields.token] }
-                            onSubmit={ this.onLoginSubmit }
+                            onSubmit={ this.onTokenSubmit }
                             onTokenGeneratePress={ () => {
                                 this.showForm('generate')
                             } }
@@ -260,10 +167,10 @@ class Login extends Component {
                 }
 
                 {
-                    this.state.showCodeForm && (
+                    this.state.showTwoFactorCodeForm && (
                         <Form
                             fields={ [this.state.fields.code] }
-                            onSubmit={ this.onCodeSubmit }
+                            onSubmit={ this.onTwoFactorCodeSubmit }
                             onCancelPress={ () => {
                                 this.showForm('login')
                             } }

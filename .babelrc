@@ -1,4 +1,15 @@
 {
   "presets": ["es2015", "react", "stage-0"],
-  "plugins": ["transform-decorators-legacy", "transform-class-properties", "transform-react-constant-elements", "transform-react-inline-elements", "transform-object-assign"]
+  "plugins": [
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    "transform-react-constant-elements",
+    "transform-react-inline-elements",
+    "transform-object-assign",
+    [
+      "babel-plugin-transform-builtin-extend", {
+        "globals": ["Error", "Array"]
+      }
+    ]
+  ]
 }
