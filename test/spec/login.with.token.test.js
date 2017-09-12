@@ -18,7 +18,7 @@ describe('Login Page', function() {
     });
 
     describe('Login with token', () => {
-        it('should login on valid token', async function () {
+        it('should show error on wrong token', async function () {
             let errorMessage = await nightmare
                 .goto(appUrl)
                 .insert('input[name="token"]', 'wrong_token')
@@ -29,10 +29,10 @@ describe('Login Page', function() {
                     return document.querySelector('.error-snack').innerText
                 })
                 .end();
-            expect(errorMessage).toEqual('Token is not valid');
+            expect(errorMessage).toEqual('Token is not valid.');
         }, 5000);
 
-        it('should show error on wrong token', async function () {
+        it('should login on valid token', async function () {
             let isAddButtonVisible = await nightmare
                 .goto(appUrl)
                 .insert('input[name="token"]', 'valid_token')

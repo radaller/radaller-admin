@@ -1,4 +1,4 @@
-import GithubCms from 'radaller-core/github-cms'
+import { GitHubCms } from 'radaller-core/github'
 
 export default (url, options) => {
     const auth = JSON.parse(localStorage.getItem('auth'));
@@ -14,7 +14,7 @@ export default (url, options) => {
         config.apiBase = process.env.GIT_API_URL
     }
 
-    const cms = new GithubCms(config);
+    const cms = new GitHubCms(config);
 
 
     const [pathname, search] = decodeURIComponent(url).split("?");
