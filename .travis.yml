@@ -1,19 +1,22 @@
 language: node_js
 node_js:
-  - node
+- node
 addons:
   apt:
     packages:
-      - xvfb
+    - xvfb
 cache:
   directories:
-    - node_modules
+  - node_modules
 install:
-  - export DISPLAY=':99.0'
-  - Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-  - npm install
+- export DISPLAY=':99.0'
+- Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+- npm install
 script:
-  - npm run build:mock
-  - npm run http-server > /dev/null 2>&1 &
-  - npm run git-mock-server > /dev/null 2>&1 &
-  - npm run test:spec
+- npm run build:mock
+- npm run http-server > /dev/null 2>&1 &
+- npm run git-mock-server > /dev/null 2>&1 &
+- npm run test:spec
+notifications:
+  slack:
+    secure: BexiaMAkCfiKCNdQCpTn7GzJ71mlxlFg3Krf6vAGAEGwLS16e+7q3Nld2ckxoK8OeZEG/yi28qzonc3RmpmbPeZly4bOyG4MgtCYcW3K5mJVf5JJZBN8MJ1BXb7H3J/D192JPtG+kUusOv4JvKzuWA2a6cTr/d4EwgYP7hd6PcawDzlep9npZnp2efOGFojy1G+oBFv7/A6efBWKlQrqryzuZOnVtGnCTPfW4p01nK48m+vvpaYpu49vNjxCR++MSktwczUPQJqy4uoyRR7u583v27h6K8/FQ85zPmWyzP2WW8CiIix07+8Rq1vKwxkYssWY2/PMv6qSMqg7ZvjuHh9r144Rj9LSrhwtsMfjjGP3fmhc688aOuJGRfAE/kUGyeDNAZake9ilov8U5vm7YlrAlMwm6ZlxYpzcyu1irlIArgUYy0MmpxCq8wDSgbtCYh8t9BUpEBSySzEOV+kCoUCvH7xjIzx7RHAwpKoLTOBNC70TeEh/bBw/aZy4NB6M1CNruSH08cDZbmvgzYzV4Pf5vDjUluAgeH7lSR1yd4Py+/t0uNzfBoTNMrR2jnl0NGOZ/Zx3pPGzIWhitIqmh7Q6UCJIlJT9aV5D8qZXaC/luL/zeP66yrimX2+FOVBAn300fa9b3gBDxaD1H95LNdpUsVQ37JPwllLMoqu7ayk=
