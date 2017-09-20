@@ -1,4 +1,4 @@
-import { GitHubCms } from 'radaller-core/github'
+import { GitHubCms } from 'radaller-core'
 
 export default (url, options) => {
     const auth = JSON.parse(localStorage.getItem('auth'));
@@ -14,7 +14,7 @@ export default (url, options) => {
         config.apiBase = process.env.GIT_API_URL
     }
 
-    const cms = new GitHubCms(config);
+    const restStorage = GitHubCms.getRestStorage(config);
 
 
     const [pathname, search] = decodeURIComponent(url).split("?");
@@ -31,16 +31,16 @@ export default (url, options) => {
 
     switch (options.method) {
         case 'PUT':
-            return cms.put(path, options.body).then(data => ({json: JSON.parse(data)}));
+            return restStorage.put(path, options.body).then(data => ({json: JSON.parse(data)}));
             break;
         case 'POST':
-            return cms.post(path, options.body).then(data => ({json: JSON.parse(data)}));
+            return restStorage.post(path, options.body).then(data => ({json: JSON.parse(data)}));
             break;
         case 'DELETE':
-            return cms.remove(path).then(data => ({json: JSON.parse(data)}));
+            return restStorage.remove(path).then(data => ({json: JSON.parse(data)}));
             break;
         default:
-            return cms.get(path, query).then(data => ({json: JSON.parse(data)}));
+            return restStorage.get(path, query).then(data => ({json: JSON.parse(data)}));
     }
 
 }

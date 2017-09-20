@@ -16,7 +16,7 @@ import FieldStore from '../../stores/form/field';
 import * as routes from '../../../constants/routes';
 import * as storage from '../../../constants/storage';
 
-import {GitHubApi} from 'radaller-core/github';
+import { GitHubCms } from 'radaller-core';
 
 const styles = {
     centering: {
@@ -76,7 +76,7 @@ class Repos extends Component {
             this.goToLogin();
             return;
         }
-        this.gitHubAPI = new GitHubApi(auth);
+        this.gitHubAPI = GitHubCms.getApi(auth);
         const repos = JSON.parse(localStorage.getItem(storage.REPOS));
         if (!!repos) {
             this.setState({
