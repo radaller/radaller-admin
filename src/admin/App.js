@@ -5,6 +5,8 @@ import RichTextInput from 'aor-rich-text-input';
 import githubHttpClient from './github-http-client';
 import LogoutButton from './LogoutButton';
 import LinearProgress from 'material-ui/LinearProgress';
+import AddIcon from 'material-ui/svg-icons/content/add';
+import BookIcon from 'material-ui/svg-icons/action/book';
 import { Admin, Resource, GET_LIST,
     List,
     Create,
@@ -173,14 +175,6 @@ class App extends Component {
                         logoutButton={LogoutButton(this.closeAdmin)}
                         authClient={authClient}
                     >
-                        <Resource
-                            name="schemas"
-                            options={{ label: "Content Model" }}
-                            list={ ContentModelList }
-                            create={ ContentModelCreate }
-                            edit={ ContentModelEdit }
-                            remove={Delete}
-                        />
                         {
                             this.state.schemas.map((item, index) => {
                                 return (
@@ -191,10 +185,20 @@ class App extends Component {
                                         list={getListDefinition(item)}
                                         edit={getEditDefinition(item)}
                                         create={getCreateDefinition(item)}
-                                        remove={Delete}/>
+                                        remove={Delete}
+                                        icon={BookIcon}/>
                                 );
                             })
                         }
+                        <Resource
+                            name="schemas"
+                            options={{ label: "Content Model" }}
+                            list={ ContentModelList }
+                            create={ ContentModelCreate }
+                            edit={ ContentModelEdit }
+                            remove={Delete}
+                            icon={AddIcon}
+                        />
                     </Admin>
                 )
             }
