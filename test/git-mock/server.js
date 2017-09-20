@@ -9,7 +9,7 @@ const auth = require('./middlewares/auth');
 server.use(middlewares);
 server.use(auth);
 server.use(jsonServer.rewriter({
-    "/search/repositories\\?q=:q": "/repositories",
+    "/user/repos\\?type=:type&sort=:sort&per_page=:per_page": "/repositories",
     "/repos/test/test-repository-1/contents/schemas?ref=master" : "/schemas",
     "/repos/test/test-repository-1/contents/posts?ref=master" : "/posts",
     "/repos/test/test-repository-1/contents/menus/items?ref=master" : "/menus_items",

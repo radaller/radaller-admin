@@ -10,7 +10,7 @@ import FieldStore from '../../stores/form/field';
 
 import Form from '../../components/Form/Form';
 
-import { GitHubAuth, GitHubToken, UnauthorisedError, TwoFactorError } from 'radaller-core/github';
+import { GitHubCms, GitHubUnauthorisedError, GitHubTwoFactorError } from 'radaller-core';
 
 const stylesPaper = {
     padding: 15,
@@ -38,7 +38,7 @@ class Login extends Component {
             }
         };
 
-        this.gitHubAuth = new GitHubAuth(new GitHubToken());
+        this.gitHubAuth = GitHubCms.getAuth();
 
         this.showForm = this.showForm.bind(this);
         this.onTokenSubmit = this.onTokenSubmit.bind(this);
@@ -103,7 +103,7 @@ class Login extends Component {
             })
             .catch(error => {
                 console.log(error);
-                if (error instanceof TwoFactorError) {
+                if (error instanceof GitHubTwoFactorError) {
                     this.showForm('code');
                 } else {
                     throw error;
@@ -111,7 +111,7 @@ class Login extends Component {
             })
             .catch(error => {
                 let errorMessage = "Unknown error.";
-                if (error instanceof UnauthorisedError) {
+                if (error instanceof GitHubUnauthorisedError) {
                     errorMessage = typeof credentials === "string" ? "Token is not valid." : "Credentials are not valid.";
                 }
                 this.showError(errorMessage);
