@@ -19,21 +19,21 @@ describe('Content Model', () => {
             .click('.repo-item')
             .wait(500)
             .wait('span[to="/schemas"]');
-    });
+    }, 10000);
 
 
     describe('Model Details Page', () => {
         it('should see models list', async function () {
             let modelsList = await nightmare
                 .click('span[to="/schemas"]')
-                .wait(500)
+                .wait(1000)
                 .wait('.datagrid-body')
                 .evaluate(() => {
                     return Array.from(document.querySelectorAll('.datagrid-body .column-id span')).map(item => item.innerText);
                 })
                 .end();
             expect(modelsList).toEqual(['posts.yaml', 'menus_items.yaml']);
-        }, 7000);
+        }, 8000);
 
         it('should see model\'s details', async function () {
             let modelsList = await nightmare
