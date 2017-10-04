@@ -171,6 +171,7 @@ class App extends Component {
             {
                 this.state.schemas.length > 0 && (
                     <Admin
+                        title="Radaller"
                         restClient={this._getRestClient()}
                         logoutButton={LogoutButton(this.closeAdmin)}
                         authClient={authClient}

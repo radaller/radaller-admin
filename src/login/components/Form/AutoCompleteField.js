@@ -11,6 +11,7 @@ const AutoCompleteField = ({ field, onNewRequest, dataSource, onUpdateInput }) =
         value={ field.value }
         errorText={ field.error }
         type={ field.type }
+        openOnFocus="true"
         fullWidth
         onNewRequest={ onNewRequest }
         onBlur={ () => { field.validate() } }

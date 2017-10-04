@@ -26,5 +26,17 @@ describe('Repository Page', function() {
                 .end();
             expect(repoName).toEqual('test/test-repository-1');
         }, 5000);
-    })
+
+        it('should show suggestions', async function () {
+            let suggestions = await nightmare
+                .click('.add-button button')
+                .type('input[name="repo_name"]', 'test/test')
+                .evaluate(() => {
+                    document.querySelector('input[name="repo_name"]').focus();
+                    return document.querySelectorAll('span[role="menuitem"]').length;
+                })
+                .end();
+            expect(suggestions).toEqual(5);
+        }, 5000);
+    });
 });

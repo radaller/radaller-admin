@@ -5,8 +5,7 @@ export default (url, options) => {
     const repo = localStorage.getItem('current');
 
     const config = {
-        username: auth.username,
-        token: auth.token,
+        auth: auth,
         repository: repo
     };
 
