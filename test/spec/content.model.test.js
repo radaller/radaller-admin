@@ -5,7 +5,7 @@ describe('Content Model', () => {
     const appUrl = process.env.TEST_URL;
 
     beforeEach(() => {
-        nightmare = new Nightmare({ show: true });
+        nightmare = new Nightmare({ show: false });
         return nightmare
             .goto(appUrl)
             .insert('input[name="token"]', 'valid_token')
