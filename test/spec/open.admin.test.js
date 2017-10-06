@@ -8,13 +8,12 @@ describe('Admin', function() {
         nightmare = new Nightmare({ show: false });
         return nightmare
             .goto(appUrl)
-            .insert('input[name="token"]', 'valid_token')
-            .click('.next-button button')
-            .wait(500)
-            .wait('.add-button button')
-            .click('.add-button button')
-            .insert('input[name="repo_name"]', 'test/test-repository-1')
-            .type('input[name="repo_name"]', '\u000d')
+            .evaluate(() => {
+                window.localStorage.setItem('auth', '{"username":"osvarychevskyi","token":"valid_token"}');
+                window.localStorage.setItem('current', 'test/test-repository-1');
+                window.localStorage.setItem('repos', '[{"name":"test/test-repository-1"}]');
+            })
+            .goto(appUrl)
             .wait('.repo-item')
     });
 
