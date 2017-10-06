@@ -32,13 +32,13 @@ export default (apiUrl, httpClient = fetchJson) => {
      * @param {Object} params The REST request params, depending on the type
      * @returns {Object} { url, options } The HTTP request parameters
      */
-    const convertRESTRequestToHTTP = (type, resource, params) => {
+    const convertRESTRequestToHTTP = (type, resource, params = {}) => {
         let url = '';
         const options = {};
         switch (type) {
             case GET_LIST: {
-                const { page, perPage } = params.pagination;
-                const { field, order } = params.sort;
+                const { page = 1, perPage = 100 } = params.pagination || {};
+                const { field, order } = params.sort || {};
                 const query = {
                     sort: JSON.stringify([field, order]),
                     offset: (page - 1) * perPage,
@@ -60,8 +60,8 @@ export default (apiUrl, httpClient = fetchJson) => {
                 break;
             }
             case GET_MANY_REFERENCE: {
-                const { page, perPage } = params.pagination;
-                const { field, order } = params.sort;
+                const { page = 1, perPage = 100 } = params.pagination || {};
+                const { field, order } = params.sort || {};
                 const query = {
                     sort: JSON.stringify([field, order]),
                     offset: page - 1,

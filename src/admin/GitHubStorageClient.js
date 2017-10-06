@@ -1,8 +1,10 @@
-import { GitHubCms } from 'radaller-core'
+import { GitHubCms } from 'radaller-core';
+import Session from '../Session';
 
 export default (url, options) => {
-    const auth = JSON.parse(localStorage.getItem('auth'));
-    const repo = localStorage.getItem('current');
+    const session = new Session(localStorage);
+    const auth = session.getAuth();
+    const repo = session.getCurrentRepository();
 
     const config = {
         auth: auth,

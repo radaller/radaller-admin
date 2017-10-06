@@ -4,9 +4,10 @@ import GitHubStorageClient from './GitHubStorageClient';
 import LogoutButton from './LogoutButton';
 import LinearProgress from 'material-ui/LinearProgress';
 import AddIcon from 'material-ui/svg-icons/content/add';
-import { Admin, Resource, Delete, GET_LIST} from 'admin-on-rest';
+import { Admin, Resource, Delete, GET_LIST } from 'admin-on-rest';
 
 import Schema from './Schema';
+import Session from '../Session';
 
 import { ContentModelCreate, ContentModelEdit, ContentModelList } from './containers/ContentModel';
 
@@ -22,43 +23,23 @@ class App extends Component {
         };
         this.showAdmin = this.showAdmin.bind(this);
         this.closeAdmin = this.closeAdmin.bind(this);
+        this.restClient = RestClient('', GitHubStorageClient);
+        this.session = new Session(localStorage);
     }
 
     componentDidMount() {
-        if (this._checkAuth() && this._checkCurrentRepo()) {
-            this.showAdmin();
-        }
-    }
-
-    _getRestClient() {
-        return RestClient('', GitHubStorageClient);
-    }
-
-    _checkCurrentRepo() {
-        return !!localStorage.getItem('current');
-    }
-
-    _checkAuth() {
-        return !!localStorage.getItem('auth');
+        this.session.isAuthorised() && this.session.isRepositorySelected() && this.showAdmin();
     }
 
     showAdmin() {
-        const restClient = this._getRestClient();
-        restClient(GET_LIST, 'schemas', {
-            pagination: {
-                page: 1,
-                perPage: 100
-            },
-            sort: {},
-            filter: {}
-        })
+        this.restClient(GET_LIST, 'schemas')
         .then(resp => {
             this.setState({schemas: resp.data});
         });
     }
 
     closeAdmin() {
-        localStorage.removeItem('current');
+        this.session.clearSelectedRepository();
         window.location.href = "/";
     }
 
@@ -72,9 +53,9 @@ class App extends Component {
             this.state.schemas.length > 0 && (
                 <Admin
                     title="Radaller"
-                    restClient={this._getRestClient()}
-                    logoutButton={LogoutButton(this.closeAdmin)}
-                    authClient={()=>{}}
+                    restClient={ this.restClient }
+                    logoutButton={ LogoutButton(this.closeAdmin) }
+                    authClient={ ()=>{} }
                 >
                     {
                         this.state.schemas.map(item => {

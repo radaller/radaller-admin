@@ -14,9 +14,9 @@ import AutoCompleteField from '../../components/Form/AutoCompleteField';
 import FieldStore from '../../stores/form/field';
 
 import * as routes from '../../../constants/routes';
-import * as storage from '../../../constants/storage';
 
 import { GitHubCms } from 'radaller-core';
+import Session from '../../../Session';
 
 const styles = {
     centering: {
@@ -41,6 +41,8 @@ class Repos extends Component {
             repos: [],
             dataSource: []
         };
+
+        this.session = new Session(localStorage);
 
         this.addRepoField = this.addRepoField.bind(this);
         this.createRepo = this.createRepo.bind(this);
@@ -71,13 +73,13 @@ class Repos extends Component {
     };
 
     componentDidMount() {
-        const auth = JSON.parse(localStorage.getItem(storage.AUTH));
+        const auth = this.session.getAuth();
         if (!auth) {
             this.goToLogin();
             return;
         }
         this.gitHubAPI = GitHubCms.getApi(auth);
-        const repos = JSON.parse(localStorage.getItem(storage.REPOS));
+        const repos = this.session.getRepositories();
         if (!!repos) {
             this.setState({
                 repos: repos
@@ -89,7 +91,7 @@ class Repos extends Component {
         const { repos } = this.state;
         repos.push({ name });
         this.setState({ repos });
-        this.saveReposToLocalStorage();
+        this.session.setRepositories(repos);
     }
 
     addRepoField() {
@@ -116,7 +118,7 @@ class Repos extends Component {
 
     chooseRepo(repoIndex) {
         const { repos } = this.state;
-        this.saveChosenRepoToLocalStorage(repos[repoIndex].name);
+        this.session.setCurrentRepository(repos[repoIndex].name);
         this.goToAdmin();
     }
 
@@ -131,18 +133,8 @@ class Repos extends Component {
         repos.splice(repoIndex, 1);
         this.setState({ repos });
 
-        localStorage.removeItem(storage.CURRENT);
-
-        this.saveReposToLocalStorage();
-    }
-
-    saveChosenRepoToLocalStorage(name) {
-        localStorage.setItem(storage.CURRENT, name);
-    }
-
-    saveReposToLocalStorage() {
-        const { repos } = this.state;
-        localStorage.setItem(storage.REPOS, JSON.stringify(repos));
+        this.session.clearSelectedRepository();
+        this.session.setRepositories(repos);
     }
 
     goToAdmin() {

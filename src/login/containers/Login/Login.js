@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import * as routes from '../../../constants/routes';
-import * as storage from '../../../constants/storage';
 
 import Snackbar from 'material-ui/Snackbar';
 
@@ -9,6 +8,7 @@ import LoginForm from '../../components/LoginForm/Form';
 import FieldStore from '../../stores/form/field';
 
 import Form from '../../components/Form/Form';
+import Session from '../../../Session';
 
 import { GitHubCms, GitHubUnauthorisedError, GitHubTwoFactorError } from 'radaller-core';
 
@@ -39,6 +39,7 @@ class Login extends Component {
         };
 
         this.gitHubAuth = GitHubCms.getAuth();
+        this.session = new Session(localStorage);
 
         this.showForm = this.showForm.bind(this);
         this.onTokenSubmit = this.onTokenSubmit.bind(this);
@@ -52,7 +53,7 @@ class Login extends Component {
     }
 
     goToHome() {
-        if (!!localStorage.getItem(storage.AUTH)) {
+        if (this.session.isAuthorised()) {
             this.props.history.push(routes.HOME);
         }
     }
@@ -98,7 +99,7 @@ class Login extends Component {
     _authenticate(credentials) {
         this._getAuthByCredentialType(credentials)
             .then(auth => {
-                this._storeCredentials(auth);
+                this.session.setAuth(auth);
                 this.goToHome();
             })
             .catch(error => {
@@ -124,10 +125,6 @@ class Login extends Component {
         } else {
             return this.gitHubAuth.getAuthByBaseAuth(credentials);
         }
-    }
-
-    _storeCredentials(auth) {
-        localStorage.setItem('auth', JSON.stringify(auth));
     }
 
     handleErrorMessageClose() {
