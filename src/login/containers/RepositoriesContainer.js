@@ -14,6 +14,7 @@ import FilteredRepositoryList from '../components/Lists/FilteredRepositoryList';
 import FetchContentPopup from '../components/Popups/FetchContentPopup';
 
 import * as routes from '../../constants/routes';
+import logo from '../../../public/logo.png';
 
 @inject("store") @observer
 class RepositoriesContainer extends Component {
@@ -83,7 +84,7 @@ class RepositoriesContainer extends Component {
                         <Col xs={4} xsOffset={this.props.store.getSortedRecentRepositories().length ? 0 : 4}>
                             <Row center="xs" >
                                 <br/><br/><br/>
-                                <img src="../../../public/logo.png"/>
+                                <img src={ logo }/>
                                 <br/>
                             </Row>
                             <Row center="xs" >

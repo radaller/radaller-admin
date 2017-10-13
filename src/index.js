@@ -7,6 +7,7 @@ import LoginContainer from './login/containers/LoginContainer';
 import RepositoriesContainer from './login/containers/RepositoriesContainer';
 import Store from './stores/Store';
 import LocalStorageSession from './LocalStorageSession';
+require('../public/favicon.ico');
 
 const store = Store.create({}, { session: new LocalStorageSession() });
 
