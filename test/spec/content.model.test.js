@@ -3,7 +3,6 @@ const Nightmare = require('nightmare');
 describe('Content Model', () => {
     let nightmare = null;
     const appUrl = process.env.TEST_URL;
-    const appAdminUrl = `${appUrl}/admin.html`;
 
     beforeEach(() => {
         nightmare = new Nightmare({ show: false });
@@ -12,8 +11,12 @@ describe('Content Model', () => {
             .evaluate(() => {
                 window.localStorage.setItem('auth', '{"username":"osvarychevskyi","token":"valid_token"}');
                 window.localStorage.setItem('current', 'test/test-repository-1');
+                window.localStorage.setItem('repos', '{"1":{"id":1,"full_name":"test/test-repository-1"}}');
             })
-            .goto(appAdminUrl)
+            .goto(appUrl)
+            .click('.repo-item')
+            .wait(1000)
+            .wait('.logout')
             .wait(500)
             .wait('span[to="/schemas"]')
             .click('span[to="/schemas"]')

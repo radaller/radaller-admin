@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import { withRouter } from 'react-router';
-import './styles.css';
 
 import {
     cyan500, cyan700,
@@ -30,17 +29,30 @@ const muiTheme = getMuiTheme({
     },
 });
 
+const loginContainer = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    position: 'absolute'
+};
+const loginWrapper = {
+    maxWidth: '700px',
+    flexDirection: 'column',
+    width: '100%'
+};
 
 @observer
-class Layout extends Component {
+class OneColumnLayout extends Component {
     constructor(props) {
         super(props);
     }
     render() {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
-                <div className="loginContainer">
-                    <div className="loginWrapper">
+                <div style={loginContainer}>
+                    <div style={loginWrapper}>
                         { this.props.children }
                     </div>
                 </div>
@@ -49,4 +61,4 @@ class Layout extends Component {
     }
 }
 
-export default withRouter(Layout);
+export default withRouter(OneColumnLayout);

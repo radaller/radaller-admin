@@ -37,8 +37,8 @@ describe('Login Page', function() {
                 .goto(appUrl)
                 .insert('input[name="token"]', 'valid_token')
                 .click('.next-button button')
-                .wait('.add-button button')
-                .visible('.add-button button')
+                .wait('input[name="repository_name"]')
+                .visible('input[name="repository_name"]')
                 .end();
             expect(isAddButtonVisible).toBeTruthy();
         }, 5000);

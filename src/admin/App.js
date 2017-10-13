@@ -7,7 +7,7 @@ import AddIcon from 'material-ui/svg-icons/content/add';
 import { Admin, Resource, Delete, GET_LIST } from 'admin-on-rest';
 
 import Schema from './Schema';
-import Session from '../Session';
+import Session from '../LocalStorageSession';
 
 import { ContentModelCreate, ContentModelEdit, ContentModelList } from './containers/ContentModel';
 
@@ -24,7 +24,7 @@ class App extends Component {
         this.showAdmin = this.showAdmin.bind(this);
         this.closeAdmin = this.closeAdmin.bind(this);
         this.restClient = RestClient('', GitHubStorageClient);
-        this.session = new Session(localStorage);
+        this.session = new Session();
     }
 
     componentDidMount() {

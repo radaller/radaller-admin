@@ -1,5 +1,5 @@
 import { GitHubCms } from 'radaller-core';
-import Session from '../Session';
+import Session from '../LocalStorageSession';
 
 export default (url, options) => {
     const session = new Session(localStorage);

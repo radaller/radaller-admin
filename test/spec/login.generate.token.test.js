@@ -32,8 +32,8 @@ describe('Login Page', function() {
                 .insert('input[name="username"]', 'valid_username')
                 .insert('input[name="password"]', 'valid_password')
                 .click('.next-button button')
-                .wait('.add-button button')
-                .visible('.add-button button')
+                .wait('input[name="repository_name"]')
+                .visible('input[name="repository_name"]')
                 .end();
             expect(isAddButtonVisible).toBeTruthy();
         }, 5000);
@@ -46,8 +46,8 @@ describe('Login Page', function() {
                 .insert('input[name="password"]', 'regenerate_token_password')
                 .click('.next-button button')
                 .wait(500)
-                .wait('.add-button button')
-                .visible('.add-button button')
+                .wait('input[name="repository_name"]')
+                .visible('input[name="repository_name"]')
                 .end();
             expect(isAddButtonVisible).toBeTruthy();
         }, 7000);

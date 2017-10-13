@@ -11,7 +11,7 @@ describe('Admin', function() {
             .evaluate(() => {
                 window.localStorage.setItem('auth', '{"username":"osvarychevskyi","token":"valid_token"}');
                 window.localStorage.setItem('current', 'test/test-repository-1');
-                window.localStorage.setItem('repos', '[{"name":"test/test-repository-1"}]');
+                window.localStorage.setItem('repos', '{"1":{"id":1,"full_name":"test/test-repository-1"}}');
             })
             .goto(appUrl)
             .wait('.repo-item')
@@ -25,7 +25,7 @@ describe('Admin', function() {
                 .wait('.logout')
                 .click('.logout')
                 .wait(500)
-                .wait('.add-button button')
+                .wait('.repo-item')
                 .evaluate(() => {
                     return document.querySelector('.repo-item span').innerText
                 })

@@ -2,18 +2,23 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 
-import Layout from './login/containers/Layout/Layout';
-import Login from './login/containers/Login/Login';
-import Repos from './login/containers/Repos/Repos';
+import OneColunmLayout from './login/layouts/OneColunmLayout';
+import LoginContainer from './login/containers/LoginContainer';
+import RepositoriesContainer from './login/containers/RepositoriesContainer';
+import Store from './stores/Store';
+import LocalStorageSession from './LocalStorageSession';
 
-ReactDOM.render(
+const store = Store.create({}, { session: new LocalStorageSession() });
+
+const App = () => (
     <HashRouter>
-        <Layout>
+        <OneColunmLayout>
             <Switch>
-                <Route exact path="/" component={ Repos } />
-                <Route path="/login" component={ Login } />
+                <Route exact path="/" render={ props => <RepositoriesContainer store={store} {...props} />} />
+                <Route path="/login" render={ props => <LoginContainer store={store} {...props} />} />
             </Switch>
-        </Layout>
-    </HashRouter>,
-    document.getElementById('root')
+        </OneColunmLayout>
+    </HashRouter>
 );
+
+ReactDOM.render(App(), document.getElementById('root'));
