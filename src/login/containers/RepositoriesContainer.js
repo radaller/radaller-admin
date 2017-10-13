@@ -83,9 +83,7 @@ class RepositoriesContainer extends Component {
                         }
                         <Col xs={4} xsOffset={this.props.store.getSortedRecentRepositories().length ? 0 : 4}>
                             <Row center="xs" >
-                                <br/><br/><br/>
-                                <img src={ logo }/>
-                                <br/>
+                                <img style={{paddingTop:"60px",paddingBottom:"30px"}} src={ logo }/>
                             </Row>
                             <Row center="xs" >
                                 <Col xs={8}>
