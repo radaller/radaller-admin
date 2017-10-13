@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
 
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import List from 'material-ui/List/List';
-import ListItem from 'material-ui/List/ListItem';
-import Subheader from 'material-ui/Subheader';
-import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
 import GithubBoxIcon from 'mdi-react/GithubBoxIcon';
@@ -13,10 +9,9 @@ import FolderOpenIcon from 'mdi-react/FolderOpenIcon';
 import DatabasePlusIcon from 'mdi-react/DatabasePlusIcon';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
-import Avatar from 'material-ui/Avatar';
-import Dialog from 'material-ui/Dialog';
-import LinearProgress from 'material-ui/LinearProgress';
-import TextField from 'material-ui/TextField';
+import RepositoryList from '../components/Lists/RepositoryList';
+import FilteredRepositoryList from '../components/Lists/FilteredRepositoryList';
+import FetchContentPopup from '../components/Popups/FetchContentPopup';
 
 import * as routes from '../../constants/routes';
 
@@ -36,7 +31,7 @@ class RepositoriesContainer extends Component {
     }
 
     openRepository(repository) {
-        this.props.store.openRepository(repository);
+        this.props.store.openRepository(repository.toJSON());
         this.goToAdmin()
     }
 
@@ -48,16 +43,6 @@ class RepositoriesContainer extends Component {
         this.props.history.push(routes.LOGIN);
     }
 
-    getActions() {
-        return [
-            <FlatButton
-                label="Close"
-                primary={true}
-                onClick={this.handleClose}
-            />
-        ];
-    }
-
     handleOpen = () => {
         this.props.store.fetchSuggestedRepositories();
         this.setState({open: true});
@@ -67,90 +52,71 @@ class RepositoriesContainer extends Component {
         this.setState({open: false});
     };
 
+    getGitHubLink() {
+        return [
+            this.props.store.user && <FlatButton
+                href={`https://github.com/${this.props.store.user.username}?tab=repositories`}
+                target="_blank"
+                label="Repositories"
+                labelStyle={ {textTransform: "none"} }
+                icon={ <GithubBoxIcon/> }
+            />
+        ];
+    }
+
     render() {
         return (
             <Paper zDepth={2}>
                 <Grid fluid>
                     <Row style={{height: "400px"}}>
                         {
-                            this.props.store.getSortedRecentRepositories().length && (
+                            this.props.store.getSortedRecentRepositories().length > 0 && (
                                 <Col xs={8} style={{overflowX: "auto", borderRight: '1px solid rgb(217, 217, 217)'}}>
-                                    <List>
-                                        <Subheader>Recent Repositories</Subheader>
-                                        { this.getRepositoriesListItems() }
-                                    </List>
+                                    <RepositoryList
+                                        listHeader={ "Recent Repositories" }
+                                        items={ this.props.store.getSortedRecentRepositories() }
+                                        onRepositoryClick={ repository => this.openRepository(repository) }
+                                    />
                                 </Col>
                             )
                         }
                         <Col xs={4} xsOffset={this.props.store.getSortedRecentRepositories().length ? 0 : 4}>
-                            <Row middle="xs" left="xs" style={{height: "400px"}}>
-                                <Menu>
-                                    <MenuItem primaryText="Open" leftIcon={<FolderOpenIcon />} onClick={ this.handleOpen } />
-                                    {/*<MenuItem primaryText="New" leftIcon={<DatabasePlusIcon/>}/>*/}
-                                </Menu>
-                                <Dialog
-                                    actions={ this.getActions() }
-                                    modal={ false }
-                                    open={ this.state.open }
-                                    onRequestClose={ this.handleClose }
-                                    autoScrollBodyContent={ true }
-                                >
-                                    { this.props.store.user && [
-                                        <FlatButton
-                                            href={`https://github.com/${this.props.store.user.username}?tab=repositories`}
-                                            target="_blank"
-                                            label="Repositories"
-                                            labelStyle={{textTransform: "none"}}
-                                            icon={<GithubBoxIcon/>}
-                                        />,
-                                        <Divider/>,
-                                        !this.props.store.isLoadingSuggestedRepositories && this.getSuggestedRepositoriesList(),
-                                        this.props.store.isLoadingSuggestedRepositories && <LinearProgress mode="indeterminate" />
-                                    ]}
-                                </Dialog>
+                            <Row center="xs" >
+                                <br/><br/><br/>
+                                <img src="../../../public/logo.png"/>
+                                <br/>
+                            </Row>
+                            <Row center="xs" >
+                                <Col xs={8}>
+                                    <Row left="xs">
+                                        <Menu style={{width: "100px"}}>
+                                            <MenuItem
+                                                primaryText="Open"
+                                                leftIcon={ <FolderOpenIcon /> }
+                                                onClick={ this.handleOpen } />
+                                            <MenuItem
+                                                primaryText="New"
+                                                leftIcon={ <DatabasePlusIcon/> }/>
+                                        </Menu>
+                                        <FetchContentPopup
+                                            header={ this.getGitHubLink() }
+                                            isLoading={ this.props.store.isLoadingSuggestedRepositories }
+                                            open={ this.state.open }
+                                            onRequestClose={ this.handleClose }
+                                        >
+                                            <FilteredRepositoryList
+                                                items={ this.props.store.suggestedRepositories }
+                                                onRepositoryClick={ repository => this.openRepository(repository) }
+                                            />
+                                        </FetchContentPopup>
+                                    </Row>
+                                </Col>
                             </Row>
                         </Col>
                     </Row>
                 </Grid>
             </Paper>
         );
-    }
-
-    getRepositoriesListItems() {
-        return this.props.store.getSortedRecentRepositories().map(repository =>
-            [
-                <ListItem
-                    primaryText={ repository.name }
-                    secondaryText={ repository.full_name }
-                    secondaryTextLines={1}
-                    leftAvatar={ <Avatar size={35}>{repository.name.substring(0,1).toUpperCase()}</Avatar> }
-                />,
-                <Divider inset={ true }/>
-            ]
-        )
-    }
-
-    getSuggestedRepositoriesList() {
-        return [
-            this.props.store.suggestedRepositories.length && <TextField
-                hintText="Repository Name"
-                floatingLabelText="Filter Results"
-            />,
-            this.props.store.suggestedRepositories &&
-            <List>
-                { this.props.store.suggestedRepositories.map(repository =>
-                    [
-                        <ListItem
-                            primaryText={ repository.name }
-                            secondaryText={ repository.full_name }
-                            secondaryTextLines={1}
-                            leftAvatar={ <Avatar size={35}>{repository.name.substring(0,1).toUpperCase()}</Avatar> }
-                            onClick={ () => this.openRepository(repository.toJSON()) }
-                        />,
-                        <Divider inset={ true }/>
-                    ])}
-            </List>
-        ];
     }
 }
 
