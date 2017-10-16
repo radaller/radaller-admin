@@ -31,7 +31,7 @@ describe('Admin', function() {
                 })
                 .end();
             expect(repoName).toEqual('test-repository-1');
-        }, 30000);
+        }, 15000);
     })
 
 });

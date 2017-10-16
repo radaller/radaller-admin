@@ -33,7 +33,7 @@ describe('Content Model', () => {
                 })
                 .end();
             expect(modelsList).toEqual(['posts.yaml', 'menus_items.yaml']);
-        }, 8000);
+        }, 11000);
 
         it('should see model\'s details', async function () {
             let modelsList = await nightmare
