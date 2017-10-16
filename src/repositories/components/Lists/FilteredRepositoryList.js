@@ -9,12 +9,12 @@ class FilteredRepositoryList extends Component {
             items: props.items
         }
     }
-    onChange(value) {
+    onChange = (e, value) => {
         const filtered = this.props.items.filter(repository => value ? repository.name.includes(value) : true);
         this.setState({
             items: filtered
         });
-    }
+    };
     render() {
         return [
             <TextField
@@ -23,12 +23,12 @@ class FilteredRepositoryList extends Component {
                 name="list-filter"
                 hintText="Repository Name"
                 floatingLabelText="Filter Results"
-                onChange={ (e, value) => this.onChange(value) }
+                onChange={ this.onChange }
             />,
             <RepositoryList
                 key={"list"}
                 {...this.props}
-                items={this.state.items}
+                items={ this.state.items }
             />
         ];
     }

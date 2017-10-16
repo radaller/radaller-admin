@@ -46,29 +46,37 @@ class LoginContainer extends Component {
         });
     }
 
-    authenticate(credentials) {
+    clearSnackbarMessage = () => {
+        this.props.store.clearSnackbarMessage();
+    };
+
+    useBaseType = () => {
+        this.props.store.login.useBaseType();
+    };
+
+    useTokenType = () => {
+        this.props.store.login.useTokenType();
+    };
+
+    authenticate = (credentials) => {
         return this.props.store.login.authenticate(credentials)
             .then(() => {
                 this.goToHome();
             })
-    }
+    };
 
     render() {
         return [
             this.props.store.login.isTokenType() && (
                 <GitHubLoginToken
-                    onSubmit={ credentials => this.authenticate(credentials) }
-                    onGeneratePress={ () => {
-                        this.props.store.login.useBaseType()
-                    } }
+                    onSubmit={ this.authenticate }
+                    onGeneratePress={ this.useBaseType  }
                 />
             ),
             this.props.store.login.isBaseType() && (
                 <GitHubLoginBase
-                    onSubmit={ credentials => this.authenticate(credentials) }
-                    onCancelPress={ () => {
-                        this.props.store.login.useTokenType()
-                    } }
+                    onSubmit={ this.authenticate }
+                    onCancelPress={ this.useTokenType }
                 />
             ),
             (
@@ -76,7 +84,7 @@ class LoginContainer extends Component {
                    open={!!this.props.store.snackbarMessage}
                    message={this.props.store.snackbarMessage}
                    autoHideDuration={4000}
-                   onRequestClose={() => this.props.store.clearSnackbarMessage()}/>
+                   onRequestClose={ this.props.store.clearSnackbarMessage }/>
             )
         ]
     }

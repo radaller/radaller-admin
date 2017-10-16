@@ -31,7 +31,7 @@ class RepositoriesContainer extends Component {
         }
     }
 
-    openRepository(repository) {
+    openRepository = (repository) => {
         this.props.store.openRepository(repository.toJSON());
         this.goToAdmin()
     }
@@ -77,7 +77,7 @@ class RepositoriesContainer extends Component {
                                         className="repository-list"
                                         listHeader={ "Recent Repositories" }
                                         items={ this.props.store.getSortedRecentRepositories() }
-                                        onRepositoryClick={ repository => this.openRepository(repository) }
+                                        onRepositoryClick={ this.openRepository }
                                     />
                                 </Col>
                             )
@@ -108,7 +108,7 @@ class RepositoriesContainer extends Component {
                                             <FilteredRepositoryList
                                                 className="suggested-repositories"
                                                 items={ this.props.store.suggestedRepositories }
-                                                onRepositoryClick={ repository => this.openRepository(repository) }
+                                                onRepositoryClick={ this.openRepository }
                                             />
                                         </FetchContentPopup>
                                     </Row>

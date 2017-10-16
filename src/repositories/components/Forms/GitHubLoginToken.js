@@ -18,11 +18,26 @@ class GitHubLoginToken extends Component {
             isTokenValid: true
         };
     }
-    validateToken() {
+    validateToken = () => {
         const isValid = this.state.token.trim() !== '';
         this.setState({isTokenValid: isValid});
         return isValid;
-    }
+    };
+
+    onGeneratePress = () => {
+        this.props.onGeneratePress();
+    };
+
+    onTokenChange = (event) => {
+        this.setState({ token: event.target.value });
+    };
+
+    onSubmit = () => {
+        if (this.validateToken()) {
+            this.props.onSubmit(this.state.token);
+        }
+    };
+
     render() {
         return (
             <Grid fluid>
@@ -34,19 +49,15 @@ class GitHubLoginToken extends Component {
                             type="text"
                             errorText={ !this.state.isTokenValid }
                             fullWidth
-                            onChange={
-                                (e) => {
-                                    this.setState({ token: e.target.value });
-                                }
-                            }
-                            onBlur={ () => { this.validateToken() } }
+                            onChange={ this.onTokenChange }
+                            onBlur={ this.validateToken }
                         />
                     </Col>
                     <Col xs={4} sm={4}>
                         <RaisedButton
                             style={ SubmitButtonStyle }
                             className="generate-button"
-                            onClick={ () => { this.props.onGeneratePress(); } }
+                            onClick={ this.onGeneratePress }
                             label="Generate"
                         />
                     </Col>
@@ -56,11 +67,7 @@ class GitHubLoginToken extends Component {
                         <br/>
                         <RaisedButton
                             primary={ true }
-                            onClick={ () => {
-                                if (this.validateToken()) {
-                                    this.props.onSubmit(this.state.token);
-                                }
-                            } }
+                            onClick={ this.onSubmit }
                             fullWidth
                             label="Submit"
                             className="submit-button"

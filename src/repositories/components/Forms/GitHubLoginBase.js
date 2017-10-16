@@ -18,23 +18,23 @@ class GitHubLoginBase extends Component {
         };
     }
 
-    validateUsername() {
+    validateUsername = () => {
         const isValid = this.state.username.trim() !== '';
         this.setState({isUsernameValid: isValid});
         return isValid;
-    }
+    };
 
-    validatePassword() {
+    validatePassword = () => {
         const isValid = this.state.password.trim() !== '';
         this.setState({isPasswordValid: isValid});
         return isValid;
-    }
+    };
 
-    validate2facode() {
+    validate2facode = () => {
         const isValid = this.state._2facode.trim() !== '';
         this.setState({is2facodeValid: isValid});
         return isValid;
-    }
+    };
 
     validate() {
         let results = [];
@@ -50,7 +50,7 @@ class GitHubLoginBase extends Component {
         return isValid;
     }
 
-    onSubmit() {
+    onSubmit = () => {
         if (this.validate()) {
             const credentials = {
                 username: this.state.username,
@@ -68,7 +68,11 @@ class GitHubLoginBase extends Component {
                     }
                 });
         }
-    }
+    };
+
+    onCancelPress = () => {
+        this.props.onCancelPress();
+    };
 
     render() {
         return (
@@ -83,7 +87,7 @@ class GitHubLoginBase extends Component {
                         <br/>
                         <RaisedButton
                             primary={ true }
-                            onClick={ () => { this.props.onCancelPress() } }
+                            onClick={ this.onCancelPress }
                             label="Cancel"
                         />
                     </Col>
@@ -91,7 +95,7 @@ class GitHubLoginBase extends Component {
                         <br/>
                         <RaisedButton
                             primary={ true }
-                            onClick={ () => this.onSubmit() }
+                            onClick={ this.onSubmit }
                             label="Submit"
                             className="submit-button"
                         />
@@ -114,7 +118,7 @@ class GitHubLoginBase extends Component {
                             this.setState({ username: e.target.value });
                         }
                     }
-                    onBlur={ () => { this.validateUsername() } }
+                    onBlur={ this.validateUsername }
                 />
             ),
             !this.state.is2fa && (
@@ -129,7 +133,7 @@ class GitHubLoginBase extends Component {
                             this.setState({ password: e.target.value });
                         }
                     }
-                    onBlur={ () => { this.validatePassword() } }
+                    onBlur={ this.validatePassword }
                 />
             ),
             this.state.is2fa && (
@@ -144,7 +148,7 @@ class GitHubLoginBase extends Component {
                             this.setState({ _2facode: e.target.value });
                         }
                     }
-                    onBlur={ () => { this.validate2facode() } }
+                    onBlur={ this.validate2facode }
                 />
             )
         ];

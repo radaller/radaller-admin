@@ -22,7 +22,7 @@ describe('Content Model', () => {
             .click('span[to="/schemas"]')
             .wait(1000)
             .wait('.datagrid-body');
-    }, 10000);
+    }, 15000);
 
 
     describe('Model Details Page', () => {
@@ -33,7 +33,7 @@ describe('Content Model', () => {
                 })
                 .end();
             expect(modelsList).toEqual(['posts.yaml', 'menus_items.yaml']);
-        }, 11000);
+        }, 8000);
 
         it('should see model\'s details', async function () {
             let modelsList = await nightmare
