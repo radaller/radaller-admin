@@ -18,7 +18,9 @@ class FilteredRepositoryList extends Component {
     render() {
         return [
             <TextField
-                key={"search"}
+                key={"list-filter"}
+                className="list-filter"
+                name="list-filter"
                 hintText="Repository Name"
                 floatingLabelText="Filter Results"
                 onChange={ (e, value) => this.onChange(value) }

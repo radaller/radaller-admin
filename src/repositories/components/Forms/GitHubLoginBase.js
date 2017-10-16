@@ -91,9 +91,9 @@ class GitHubLoginBase extends Component {
                         <br/>
                         <RaisedButton
                             primary={ true }
-                            onClick={ () => { this.onSubmit() } }
+                            onClick={ () => this.onSubmit() }
                             label="Submit"
-                            className="next-button"
+                            className="submit-button"
                         />
                     </Col>
                 </Row>
@@ -135,7 +135,7 @@ class GitHubLoginBase extends Component {
             this.state.is2fa && (
                 <TextField
                     floatingLabelText="2FA Code"
-                    name="token"
+                    name="_2facode"
                     type="text"
                     errorText={ !this.state.is2facodeValid }
                     fullWidth
@@ -144,7 +144,7 @@ class GitHubLoginBase extends Component {
                             this.setState({ _2facode: e.target.value });
                         }
                     }
-                    onBlur={ () => { this.validate2fatoken() } }
+                    onBlur={ () => { this.validate2facode() } }
                 />
             )
         ];

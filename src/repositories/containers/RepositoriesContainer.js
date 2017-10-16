@@ -74,6 +74,7 @@ class RepositoriesContainer extends Component {
                             this.props.store.getSortedRecentRepositories().length > 0 && (
                                 <Col xs={8} style={{overflowX: "auto", borderRight: '1px solid rgb(217, 217, 217)'}}>
                                     <RepositoryList
+                                        className="repository-list"
                                         listHeader={ "Recent Repositories" }
                                         items={ this.props.store.getSortedRecentRepositories() }
                                         onRepositoryClick={ repository => this.openRepository(repository) }
@@ -90,6 +91,7 @@ class RepositoriesContainer extends Component {
                                     <Row left="xs">
                                         <Menu style={{width: "100px"}}>
                                             <MenuItem
+                                                className="repository-open"
                                                 primaryText="Open"
                                                 leftIcon={ <FolderOpenIcon /> }
                                                 onClick={ this.handleOpen } />
@@ -104,6 +106,7 @@ class RepositoriesContainer extends Component {
                                             onRequestClose={ this.handleClose }
                                         >
                                             <FilteredRepositoryList
+                                                className="suggested-repositories"
                                                 items={ this.props.store.suggestedRepositories }
                                                 onRepositoryClick={ repository => this.openRepository(repository) }
                                             />

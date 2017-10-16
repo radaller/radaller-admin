@@ -11,26 +11,26 @@ describe('Admin', function() {
             .evaluate(() => {
                 window.localStorage.setItem('auth', '{"username":"osvarychevskyi","token":"valid_token"}');
                 window.localStorage.setItem('current', 'test/test-repository-1');
-                window.localStorage.setItem('repos', '{"1":{"id":1,"full_name":"test/test-repository-1"}}');
+                window.localStorage.setItem('repos', '{"1":{"id":1,"name":"test-repository-1","full_name":"test/test-repository-1","description":"Test repository 1 Description.","openedAt":1508152604141}}');
             })
             .goto(appUrl)
-            .wait('.repo-item')
+            .wait('.repository-list')
     });
 
     describe('Repository Admin', () => {
         it('should open/close admin', async function () {
             let repoName = await nightmare
-                .click('.repo-item')
+                .click('.repository-list .list-item')
                 .wait(1000)
-                .wait('.logout')
+                .wait('span[to="/schemas"]')
                 .click('.logout')
                 .wait(500)
-                .wait('.repo-item')
+                .wait('.repository-list')
                 .evaluate(() => {
-                    return document.querySelector('.repo-item span').innerText
+                    return document.querySelector('.repository-list .list-item').innerText.split('\n')[1];
                 })
                 .end();
-            expect(repoName).toEqual('test/test-repository-1');
+            expect(repoName).toEqual('test-repository-1');
         }, 30000);
     })
 

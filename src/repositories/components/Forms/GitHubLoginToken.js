@@ -63,7 +63,7 @@ class GitHubLoginToken extends Component {
                             } }
                             fullWidth
                             label="Submit"
-                            className="next-button"
+                            className="submit-button"
                         />
                     </Col>
                 </Row>

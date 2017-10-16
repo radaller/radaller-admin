@@ -15,7 +15,7 @@ describe('Login Page', function() {
                 .click('.generate-button button')
                 .insert('input[name="username"]', 'wrong_username')
                 .insert('input[name="password"]', 'wrong_password')
-                .click('.next-button button')
+                .click('.submit-button button')
                 .wait(500)
                 .wait('.error-snack')
                 .evaluate(() => {
@@ -26,30 +26,47 @@ describe('Login Page', function() {
         }, 5000);
 
         it('should generate token on valid credentials', async function () {
-            let isAddButtonVisible = await nightmare
+            let isOpenButtonVisible = await nightmare
                 .goto(appUrl)
                 .click('.generate-button button')
                 .insert('input[name="username"]', 'valid_username')
                 .insert('input[name="password"]', 'valid_password')
-                .click('.next-button button')
-                .wait('input[name="repository_name"]')
-                .visible('input[name="repository_name"]')
+                .click('.submit-button button')
+                .wait('.repository-open')
+                .visible('.repository-open')
                 .end();
-            expect(isAddButtonVisible).toBeTruthy();
+            expect(isOpenButtonVisible).toBeTruthy();
         }, 5000);
 
         it('should regenerate token on valid credentials', async function () {
-            let isAddButtonVisible = await nightmare
+            let isOpenButtonVisible = await nightmare
                 .goto(appUrl)
                 .click('.generate-button button')
                 .insert('input[name="username"]', 'regenerate_token_username')
                 .insert('input[name="password"]', 'regenerate_token_password')
-                .click('.next-button button')
+                .click('.submit-button button')
                 .wait(500)
-                .wait('input[name="repository_name"]')
-                .visible('input[name="repository_name"]')
+                .wait('.repository-open')
+                .visible('.repository-open')
                 .end();
-            expect(isAddButtonVisible).toBeTruthy();
+            expect(isOpenButtonVisible).toBeTruthy();
+        }, 7000);
+
+        it('should generate token on 2fa valid credentials', async function () {
+            let isOpenButtonVisible = await nightmare
+                .goto(appUrl)
+                .click('.generate-button button')
+                .insert('input[name="username"]', '2fa_username')
+                .insert('input[name="password"]', '2fa_password')
+                .click('.submit-button button')
+                .wait(500)
+                .wait('input[name="_2facode"]')
+                .insert('input[name="_2facode"]', '2fa_code')
+                .click('.submit-button button')
+                .wait('.repository-open')
+                .visible('.repository-open')
+                .end();
+            expect(isOpenButtonVisible).toBeTruthy();
         }, 7000);
 
     })

@@ -22,14 +22,17 @@ const Login = types
                     const auth = yield getGitHubAuth(self.type, credentials);
                     store.setUser(auth);
                 } catch (error) {
+                    console.log(error);
                     if (error instanceof GitHubTwoFactorError) {
                         yield Promise.reject(error);
                     } else if (error instanceof GitHubUnauthorisedError) {
                         let errorMessage = typeof credentials === "string" ? "Token is not valid." : "Credentials are not valid.";
                         store.showSnackbarMessage(errorMessage);
+                        yield Promise.resolve();
                     } else {
                         let errorMessage = "Unknown error.";
                         store.showSnackbarMessage(errorMessage);
+                        yield Promise.reject(error);
                     }
                 }
             }

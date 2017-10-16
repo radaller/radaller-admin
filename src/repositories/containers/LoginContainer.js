@@ -47,7 +47,7 @@ class LoginContainer extends Component {
     }
 
     authenticate(credentials) {
-        this.props.store.login.authenticate(credentials)
+        return this.props.store.login.authenticate(credentials)
             .then(() => {
                 this.goToHome();
             })
@@ -57,7 +57,7 @@ class LoginContainer extends Component {
         return [
             this.props.store.login.isTokenType() && (
                 <GitHubLoginToken
-                    onSubmit={ (credentials) => { this.authenticate(credentials) } }
+                    onSubmit={ credentials => this.authenticate(credentials) }
                     onGeneratePress={ () => {
                         this.props.store.login.useBaseType()
                     } }
@@ -65,7 +65,7 @@ class LoginContainer extends Component {
             ),
             this.props.store.login.isBaseType() && (
                 <GitHubLoginBase
-                    onSubmit={ (credentials) => { this.authenticate(credentials) } }
+                    onSubmit={ credentials => this.authenticate(credentials) }
                     onCancelPress={ () => {
                         this.props.store.login.useTokenType()
                     } }

@@ -13,8 +13,8 @@
     },
     {
       "id": 2,
-      "name": "test-repository-2",
-      "full_name": "test/test-repository-2",
+      "name": "test-a-repository-2",
+      "full_name": "test/test-a-repository-2",
       "description": "Test repository 2 Description.",
       "permissions": {
         "pull": true
@@ -22,8 +22,8 @@
     },
     {
       "id": 3,
-      "name": "test-repository-3",
-      "full_name": "test/test-repository-3",
+      "name": "test-a-repository-3",
+      "full_name": "test/test-a-repository-3",
       "description": "Test repository 3 Description.",
       "permissions": {
         "pull": true
@@ -31,8 +31,8 @@
     },
     {
       "id": 4,
-      "name": "test-repository-4",
-      "full_name": "test/test-repository-4",
+      "name": "test-b-repository-4",
+      "full_name": "test/test-b-repository-4",
       "description": "Test repository 4 Description.",
       "permissions": {
         "pull": true
@@ -40,8 +40,8 @@
     },
     {
       "id": 5,
-      "name": "test-repository-5",
-      "full_name": "test/test-repository-5",
+      "name": "test-b-repository-5",
+      "full_name": "test/test-b-repository-5",
       "description": "Test repository 5 Description.",
       "permissions": {
         "pull": true

@@ -5,10 +5,10 @@ import Avatar from 'material-ui/Avatar';
 import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
 
-const RepositoryList = ( { listHeader, items, onRepositoryClick } ) => {
+const RepositoryList = ( { className, listHeader, items, onRepositoryClick } ) => {
     const renderListItem = items => {
         return [
-            <ListItem key={ items.id }
+            <ListItem className={ "list-item" } key={ items.id }
                 primaryText={ items.name }
                 secondaryText={ items.full_name }
                 secondaryTextLines={1}
@@ -20,7 +20,7 @@ const RepositoryList = ( { listHeader, items, onRepositoryClick } ) => {
     };
 
     return [
-        <List>
+        <List className={className}>
             { listHeader && (<Subheader>{listHeader}</Subheader>) }
             { items.map(renderListItem) }
         </List>
