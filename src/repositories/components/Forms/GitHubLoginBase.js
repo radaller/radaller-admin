@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col } from 'react-flexbox-grid';
+import { Row, Col } from 'react-flexbox-grid';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import { GitHubTwoFactorError } from 'radaller-core';
@@ -76,7 +76,7 @@ class GitHubLoginBase extends Component {
 
     render() {
         return (
-            <Grid fluid>
+            <Col xs={8}>
                 <Row>
                     <Col xs={12}>
                         { this.getFields() }
@@ -101,7 +101,7 @@ class GitHubLoginBase extends Component {
                         />
                     </Col>
                 </Row>
-            </Grid>
+            </Col>
         )
     }
     getFields() {

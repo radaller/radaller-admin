@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
-import { withRouter } from 'react-router';
+
+import Paper from 'material-ui/Paper';
+import { Grid, Row } from 'react-flexbox-grid';
 import Snackbar from 'material-ui/Snackbar';
 
 import {
@@ -46,15 +48,18 @@ const loginWrapper = {
 
 @inject("store") @observer
 class OneColumnLayout extends Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div style={loginContainer}>
                     <div style={loginWrapper}>
-                        { this.props.children }
+                        <Paper zDepth={2}>
+                            <Grid fluid>
+                                <Row style={{height: "400px"}}>
+                                    { this.props.children }
+                                </Row>
+                            </Grid>
+                        </Paper>
                     </div>
                 </div>
                 <Snackbar
@@ -69,4 +74,4 @@ class OneColumnLayout extends Component {
     }
 }
 
-export default withRouter(OneColumnLayout);
+export default OneColumnLayout;

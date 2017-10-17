@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col } from 'react-flexbox-grid';
+import { Row, Col } from 'react-flexbox-grid';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 
@@ -39,10 +39,10 @@ class GitHubLoginToken extends Component {
     };
 
     render() {
-        return (
-            <Grid fluid>
+        return [
+            <Col xs={9}>
                 <Row bottom="xs">
-                    <Col xs={8} sm={8}>
+                    <Col xs={9}>
                         <TextField
                             floatingLabelText="GitHub Token"
                             name="token"
@@ -53,7 +53,7 @@ class GitHubLoginToken extends Component {
                             onBlur={ this.validateToken }
                         />
                     </Col>
-                    <Col xs={4} sm={4}>
+                    <Col xs={3}>
                         <RaisedButton
                             style={ SubmitButtonStyle }
                             className="generate-button"
@@ -63,8 +63,7 @@ class GitHubLoginToken extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col xs={12} sm={8}>
-                        <br/>
+                    <Col xs={9}>
                         <RaisedButton
                             primary={ true }
                             onClick={ this.onSubmit }
@@ -74,8 +73,8 @@ class GitHubLoginToken extends Component {
                         />
                     </Col>
                 </Row>
-            </Grid>
-        )
+            </Col>
+        ]
     }
 }
 

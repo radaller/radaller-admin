@@ -1,4 +1,4 @@
-import { types, getEnv, process } from "mobx-state-tree";
+import { types, getEnv } from "mobx-state-tree";
 import User from './User';
 import Login from './Login';
 import Repository from './Repository';
@@ -62,34 +62,33 @@ const Store = types
             getEnv(self).session.setItem('current', self.currentRepository.full_name);
             window.location.href = routes.ADMIN;
         },
-        fetchSuggestedRepositories: process(
-            function* fetchSuggestedRepositories() {
-                self.isLoadingSuggestedRepositories = true;
+        fetchSuggestedRepositories: async () => {
+            self.setIsLoadingSuggestedRepositories(true);
+            try {
                 const gitHubAPI = GitHubCms.getApi(self.user.getAuth());
-                try {
-                     yield gitHubAPI.getUser().listRepos()
-                        .then(response => {
-                            if (response.data && response.data.length > 0) {
-                                response.data
-                                    .filter(item => item.permissions.pull === true)
-                                    .forEach(item => {
-                                        const repository = SuggestedRepository.create({
-                                            id: item.id,
-                                            name: item.name,
-                                            full_name: item.full_name,
-                                            description: item.description ? item.description : ""
-                                        });
-                                        self.addSuggestedRepository(repository);
-                                    });
-                            }
+                const response = await gitHubAPI.getUser().listRepos();
+                if (response.data && response.data.length > 0) {
+                    response.data
+                        .filter(item => item.permissions.pull === true)
+                        .forEach(item => {
+                            const repository = SuggestedRepository.create({
+                                id: item.id,
+                                name: item.name,
+                                full_name: item.full_name,
+                                description: item.description ? item.description : ""
+                            });
+                            self.addSuggestedRepository(repository);
                         });
-                } catch (error) {
-                    let errorMessage = "Unknown error.";
-                    self.showSnackbarMessage(errorMessage);
                 }
-                self.isLoadingSuggestedRepositories = false;
+            } catch (error) {
+                let errorMessage = "Unknown error.";
+                self.showSnackbarMessage(errorMessage);
             }
-        )
+            self.setIsLoadingSuggestedRepositories(false);
+        },
+        setIsLoadingSuggestedRepositories(isLoading) {
+            self.isLoadingSuggestedRepositories = isLoading;
+        }
     }));
 
 export default Store;
