@@ -9,7 +9,7 @@ const Store = types
     .model({
         user: types.maybe(types.late(() => User)),
         login: types.maybe(types.late(() => Login)),
-        suggestedRepositories: types.optional(types.array(SuggestedRepository), []),
+        suggestedRepositories: types.optional(types.map(SuggestedRepository), {}),
         isLoadingSuggestedRepositories: false,
         currentRepository: types.maybe(types.reference(types.late(() => Repository))),
         recentRepositories: types.optional(types.map(Repository), {}),
@@ -43,15 +43,18 @@ const Store = types
             self.user = User.create(auth);
             getEnv(self).session.setItem('auth', auth);
         },
-        openRepository(repository) {
-            if (!self.recentRepositories.get(repository.id)) {
-                self.recentRepositories.set(repository.id, Repository.create(repository));
+        addSuggestedRepository(repository) {
+            self.suggestedRepositories.set(repository.id, repository);
+        },
+        openRepository(repositoryId) {
+            if (!self.recentRepositories.get(repositoryId)) {
+                const suggestedRepository = self.suggestedRepositories.get(repositoryId);
+                self.recentRepositories.set(suggestedRepository.id, suggestedRepository.toJSON());
             }
-            const currentRepository = self.recentRepositories.get(repository.id);
-            currentRepository.openedAt = Date.now();
+            self.currentRepository = self.recentRepositories.get(repositoryId);
+            self.currentRepository.openedAt = Date.now();
 
             getEnv(self).session.setItem('repos', self.recentRepositories.toJSON());
-            self.currentRepository = currentRepository;
             getEnv(self).session.setItem('current', self.currentRepository.full_name);
         },
         fetchSuggestedRepositories: process(
@@ -59,24 +62,23 @@ const Store = types
                 self.isLoadingSuggestedRepositories = true;
                 const gitHubAPI = GitHubCms.getApi(self.user.getAuth());
                 try {
-                    self.suggestedRepositories = yield gitHubAPI
-                        .getUser()
-                        .listRepos()
+                     yield gitHubAPI.getUser().listRepos()
                         .then(response => {
                             if (response.data && response.data.length > 0) {
-                                return response.data
+                                response.data
                                     .filter(item => item.permissions.pull === true)
-                                    .map(item => SuggestedRepository.create({
-                                        id: item.id,
-                                        name: item.name,
-                                        full_name: item.full_name,
-                                        description: item.description ? item.description : ""
-                                    }))
+                                    .forEach(item => {
+                                        const repository = SuggestedRepository.create({
+                                            id: item.id,
+                                            name: item.name,
+                                            full_name: item.full_name,
+                                            description: item.description ? item.description : ""
+                                        });
+                                        self.addSuggestedRepository(repository);
+                                    });
                             }
-                            return [];
                         });
                 } catch (error) {
-                    console.log(error);
                     let errorMessage = "Unknown error.";
                     self.showSnackbarMessage(errorMessage);
                 }

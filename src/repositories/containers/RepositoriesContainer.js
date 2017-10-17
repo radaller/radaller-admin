@@ -31,10 +31,10 @@ class RepositoriesContainer extends Component {
         }
     }
 
-    openRepository = (repository) => {
-        this.props.store.openRepository(repository.toJSON());
-        this.goToAdmin()
-    }
+    openRepository = (repositoryId) => {
+        this.props.store.openRepository(repositoryId);
+        this.goToAdmin();
+    };
 
     goToAdmin() {
         window.location.href = routes.ADMIN;
@@ -107,7 +107,7 @@ class RepositoriesContainer extends Component {
                                         >
                                             <FilteredRepositoryList
                                                 className="suggested-repositories"
-                                                items={ this.props.store.suggestedRepositories }
+                                                items={ this.props.store.suggestedRepositories.values() }
                                                 onRepositoryClick={ this.openRepository }
                                             />
                                         </FetchContentPopup>

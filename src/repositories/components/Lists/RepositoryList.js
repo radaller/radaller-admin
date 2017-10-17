@@ -6,16 +6,19 @@ import Divider from 'material-ui/Divider';
 import Subheader from 'material-ui/Subheader';
 
 const RepositoryList = ( { className, listHeader, items, onRepositoryClick } ) => {
-    const renderListItem = items => {
+    const renderListItem = item => {
         return [
-            <ListItem className={ "list-item" } key={ items.id }
-                primaryText={ items.name }
-                secondaryText={ items.full_name }
-                secondaryTextLines={1}
-                leftAvatar={ <Avatar size={35}>{items.name.substring(0,1).toUpperCase()}</Avatar> }
-                onClick={ () => onRepositoryClick(items) }
+            <ListItem
+                className={ "list-item" }
+                key={ item.id }
+                value={ item.id }
+                primaryText={ item.name }
+                secondaryText={ item.full_name }
+                secondaryTextLines={ 1 }
+                leftAvatar={ <Avatar size={35}>{item.name.substring(0,1).toUpperCase()}</Avatar> }
+                onClick={ () => onRepositoryClick(item.id) }
             />,
-            <Divider key={ 'd:' + items.id } inset={ true }/>
+            <Divider key={ 'd:' + item.id } inset={ true }/>
         ];
     };
 
