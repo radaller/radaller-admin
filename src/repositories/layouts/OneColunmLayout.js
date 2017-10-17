@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 import { withRouter } from 'react-router';
+import Snackbar from 'material-ui/Snackbar';
 
 import {
     cyan500, cyan700,
@@ -43,7 +44,7 @@ const loginWrapper = {
     width: '100%'
 };
 
-@observer
+@inject("store") @observer
 class OneColumnLayout extends Component {
     constructor(props) {
         super(props);
@@ -56,6 +57,13 @@ class OneColumnLayout extends Component {
                         { this.props.children }
                     </div>
                 </div>
+                <Snackbar
+                    className="error-snack"
+                    open={!!this.props.store.snackbarMessage}
+                    message={this.props.store.snackbarMessage}
+                    autoHideDuration={4000}
+                    onRequestClose={ this.props.store.clearSnackbarMessage }
+                />
             </MuiThemeProvider>
         );
     }

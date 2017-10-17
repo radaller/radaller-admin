@@ -4,11 +4,13 @@ import Login from './Login';
 import Repository from './Repository';
 import SuggestedRepository from './Repository';
 import { GitHubCms } from 'radaller-core';
+import * as routes from './../constants/routes';
 
 const Store = types
     .model({
         user: types.maybe(types.late(() => User)),
         login: types.maybe(types.late(() => Login)),
+        route: types.optional(types.string, routes.HOME),
         suggestedRepositories: types.optional(types.map(SuggestedRepository), {}),
         isLoadingSuggestedRepositories: false,
         currentRepository: types.maybe(types.reference(types.late(() => Repository))),
@@ -31,6 +33,7 @@ const Store = types
                 self.user = User.create(userSession);
             } else {
                 self.login = Login.create();
+                getEnv(self).history.push(routes.LOGIN);
             }
         },
         showSnackbarMessage(message) {
@@ -42,6 +45,7 @@ const Store = types
         setUser(auth) {
             self.user = User.create(auth);
             getEnv(self).session.setItem('auth', auth);
+            getEnv(self).history.push(routes.HOME);
         },
         addSuggestedRepository(repository) {
             self.suggestedRepositories.set(repository.id, repository);
@@ -56,6 +60,7 @@ const Store = types
 
             getEnv(self).session.setItem('repos', self.recentRepositories.toJSON());
             getEnv(self).session.setItem('current', self.currentRepository.full_name);
+            window.location.href = routes.ADMIN;
         },
         fetchSuggestedRepositories: process(
             function* fetchSuggestedRepositories() {

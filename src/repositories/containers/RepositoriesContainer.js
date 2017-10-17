@@ -13,7 +13,6 @@ import RepositoryList from '../components/Lists/RepositoryList';
 import FilteredRepositoryList from '../components/Lists/FilteredRepositoryList';
 import FetchContentPopup from '../components/Popups/FetchContentPopup';
 
-import * as routes from '../../constants/routes';
 import logo from '../../../public/logo.png';
 
 @inject("store") @observer
@@ -25,24 +24,10 @@ class RepositoriesContainer extends Component {
             open: false
         };
     }
-    componentDidMount() {
-        if (!this.props.store.user) {
-            this.goToLogin();
-        }
-    }
 
     openRepository = (repositoryId) => {
         this.props.store.openRepository(repositoryId);
-        this.goToAdmin();
     };
-
-    goToAdmin() {
-        window.location.href = routes.ADMIN;
-    }
-
-    goToLogin() {
-        this.props.history.push(routes.LOGIN);
-    }
 
     handleOpen = () => {
         this.props.store.fetchSuggestedRepositories();
