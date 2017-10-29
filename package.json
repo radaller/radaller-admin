@@ -32,7 +32,7 @@
     "radaller-core": "^0.2.6",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-flexbox-grid": "^1.1.4",
+    "react-flexbox-grid": "^2.0.0",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
     "url-loader": "^0.6.1",
