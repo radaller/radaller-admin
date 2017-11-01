@@ -31,6 +31,7 @@ const Store = types
             }
             if (userSession) {
                 self.user = User.create(userSession);
+                getEnv(self).history.push(routes.HOME);
             } else {
                 self.login = Login.create();
                 getEnv(self).history.push(routes.LOGIN);
