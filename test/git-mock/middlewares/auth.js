@@ -1,5 +1,7 @@
 const VALID_CREDENTIALS = "Basic dmFsaWRfdXNlcm5hbWU6dmFsaWRfcGFzc3dvcmQ=";
 const REGENERATE_CREDENTIALS = "Basic cmVnZW5lcmF0ZV90b2tlbl91c2VybmFtZTpyZWdlbmVyYXRlX3Rva2VuX3Bhc3N3b3Jk";
+const _2FA_CREDENTIALS = "Basic MmZhX3VzZXJuYW1lOjJmYV9wYXNzd29yZA==";
+const _2FA_CODE = "2fa_code";
 let isTokenExist = true;
 module.exports = (req, res, next) => {
     if (req.method === "POST" && req.path === "/authorizations") {
@@ -10,6 +12,10 @@ module.exports = (req, res, next) => {
             tokenAlreadyExists(res);
         } else if (req.get("Authorization") === REGENERATE_CREDENTIALS && !isTokenExist) {
             isTokenExist = true;
+            validToken(res);
+        } else if (req.get("Authorization") === _2FA_CREDENTIALS && !req.get("X-GitHub-OTP")) {
+            _2faRequired(res)
+        } else if (req.get("Authorization") === _2FA_CREDENTIALS && req.get("X-GitHub-OTP") === _2FA_CODE) {
             validToken(res);
         } else {
             badCredentials(res);
@@ -25,6 +31,17 @@ module.exports = (req, res, next) => {
         badCredentials(res);
     }
 };
+
+function _2faRequired(res) {
+    res.status(401);
+    res.set('X-GitHub-OTP', 'required; sms');
+    res.set('Access-Control-Expose-Headers', 'X-GitHub-OTP');
+    res.end(JSON.stringify({
+            "message": "Must specify two-factor authentication OTP code.",
+            "documentation_url": "https://developer.github.com/v3"
+        }
+    ));
+}
 
 function badCredentials(res) {
     res.status(401);

@@ -22,7 +22,7 @@ describe('Login Page', function() {
             let errorMessage = await nightmare
                 .goto(appUrl)
                 .insert('input[name="token"]', 'wrong_token')
-                .click('.next-button button')
+                .click('.submit-button button')
                 .wait(500)
                 .wait('.error-snack')
                 .evaluate(() => {
@@ -33,14 +33,14 @@ describe('Login Page', function() {
         }, 5000);
 
         it('should login on valid token', async function () {
-            let isAddButtonVisible = await nightmare
+            let isOpenButtonVisible = await nightmare
                 .goto(appUrl)
                 .insert('input[name="token"]', 'valid_token')
-                .click('.next-button button')
-                .wait('.add-button button')
-                .visible('.add-button button')
+                .click('.submit-button button')
+                .wait('.repository-open')
+                .visible('.repository-open')
                 .end();
-            expect(isAddButtonVisible).toBeTruthy();
+            expect(isOpenButtonVisible).toBeTruthy();
         }, 5000);
     })
 });

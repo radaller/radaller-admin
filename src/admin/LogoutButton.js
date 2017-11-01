@@ -1,13 +1,13 @@
 import { userLogout } from 'admin-on-rest';
 import MenuItem from 'material-ui/MenuItem';
-import ExitIcon from 'material-ui/svg-icons/action/power-settings-new';
+import StorageIcon from 'material-ui/svg-icons/device/storage';
 
 const LogoutButton = (closeAdmin) =>{
     return ({ userLogout }) => (
         <MenuItem
             to="/"
             className="logout"
-            leftIcon={<ExitIcon />}
+            leftIcon={<StorageIcon />}
             primaryText="Repositories"
             onClick={closeAdmin}
         />

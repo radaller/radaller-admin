@@ -8,31 +8,30 @@ describe('Admin', function() {
         nightmare = new Nightmare({ show: false });
         return nightmare
             .goto(appUrl)
-            .insert('input[name="token"]', 'valid_token')
-            .click('.next-button button')
-            .wait(500)
-            .wait('.add-button button')
-            .click('.add-button button')
-            .insert('input[name="repo_name"]', 'test/test-repository-1')
-            .type('input[name="repo_name"]', '\u000d')
-            .wait('.repo-item')
+            .evaluate(() => {
+                window.localStorage.setItem('auth', '{"username":"osvarychevskyi","token":"valid_token"}');
+                window.localStorage.setItem('current', 'test/test-repository-1');
+                window.localStorage.setItem('repos', '{"1":{"id":1,"name":"test-repository-1","full_name":"test/test-repository-1","description":"Test repository 1 Description.","openedAt":1508152604141}}');
+            })
+            .goto(appUrl)
+            .wait('.repository-list')
     });
 
     describe('Repository Admin', () => {
         it('should open/close admin', async function () {
             let repoName = await nightmare
-                .click('.repo-item')
+                .click('.repository-list .list-item')
                 .wait(1000)
-                .wait('.logout')
+                .wait('span[to="/schemas"]')
                 .click('.logout')
                 .wait(500)
-                .wait('.add-button button')
+                .wait('.repository-list')
                 .evaluate(() => {
-                    return document.querySelector('.repo-item span').innerText
+                    return document.querySelector('.repository-list .list-item').innerText.split('\n')[1];
                 })
                 .end();
-            expect(repoName).toEqual('test/test-repository-1');
-        }, 30000);
+            expect(repoName).toEqual('test-repository-1');
+        }, 15000);
     })
 
 });

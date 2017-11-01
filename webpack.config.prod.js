@@ -102,6 +102,13 @@ module.exports = {
                     name: `${PATHS.img}/[name].[ext]`,
                 },
             },
+            {
+                test: /favicon.ico/,
+                loader: 'file-loader',
+                options: {
+                    name: `[name].[ext]`,
+                },
+            },
         ],
     },
 };

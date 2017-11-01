@@ -1,0 +1,14 @@
+.fieldTypeBox {
+    display: inline-block;
+    text-align: center;
+    width: 100px;
+    margin-top: 15px;
+    padding: 0 10px;
+    vertical-align: top;
+}
+
+@media (max-width: 576px) {
+    .fieldTypeBox {
+        width: 74px;
+    }
+}

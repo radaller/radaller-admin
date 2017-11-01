@@ -1,19 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route, Router } from 'react-router-dom';
+import { reaction } from "mobx"
 
-import Layout from './login/containers/Layout/Layout';
-import Login from './login/containers/Login/Login';
-import Repos from './login/containers/Repos/Repos';
+import LoginContainer from './repositories/containers/LoginContainer';
+import RepositoriesContainer from './repositories/containers/RepositoriesContainer';
+import Store from './stores/Store';
+import LocalStorageSession from './LocalStorageSession';
+import createBrowserHistory from "history/createBrowserHistory";
+require('../public/favicon.ico');
 
-ReactDOM.render(
-    <HashRouter>
-        <Layout>
-            <Switch>
-                <Route exact path="/" component={ Repos } />
-                <Route path="/login" component={ Login } />
-            </Switch>
-        </Layout>
-    </HashRouter>,
-    document.getElementById('root')
+const history = createBrowserHistory();
+const store = Store.create( {}, { session: new LocalStorageSession(), history: history });
+
+const App = () => (
+    <Router history={ history }>
+        <Switch>
+            <Route exact path="/" render={ props => <RepositoriesContainer store={store} {...props} />} />
+            <Route path="/login" render={ props => <LoginContainer store={store} {...props} />} />
+        </Switch>
+    </Router>
 );
+
+ReactDOM.render(App(), document.getElementById('root'));
