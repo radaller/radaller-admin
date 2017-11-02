@@ -23,7 +23,7 @@ describe('Login Page', function() {
                 })
                 .end();
             expect(errorMessage).toEqual('Credentials are not valid.');
-        }, 5000);
+        }, 7000);
 
         it('should generate token on valid credentials', async function () {
             let isOpenButtonVisible = await nightmare
@@ -36,7 +36,7 @@ describe('Login Page', function() {
                 .visible('.repository-open')
                 .end();
             expect(isOpenButtonVisible).toBeTruthy();
-        }, 5000);
+        }, 7000);
 
         it('should regenerate token on valid credentials', async function () {
             let isOpenButtonVisible = await nightmare

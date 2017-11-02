@@ -15,7 +15,7 @@ describe('Admin', function() {
             })
             .goto(appUrl)
             .wait('.repository-list')
-    });
+    }, 15000);
 
     describe('Repository Admin', () => {
         it('should open/close admin', async function () {

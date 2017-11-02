@@ -11,7 +11,7 @@ describe('Repository Page', function() {
             .insert('input[name="token"]', 'valid_token')
             .click('.submit-button button')
             .wait('.repository-open');
-    });
+    }, 10000);
 
     describe('Open Repository', () => {
         it('should show repository list', async function () {
