@@ -1,7 +1,4 @@
-{
-  "total_count": 5,
-  "incomplete_results": false,
-  "items": [
+[
     {
       "id": 1,
       "name": "test-repository-1",
@@ -47,5 +44,4 @@
         "pull": true
       }
     }
-  ]
-}
+]

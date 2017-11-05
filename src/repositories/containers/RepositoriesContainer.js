@@ -12,6 +12,7 @@ import MenuItem from 'material-ui/MenuItem';
 import RepositoryList from '../components/Lists/RepositoryList';
 import FilteredRepositoryList from '../components/Lists/FilteredRepositoryList';
 import FetchContentPopup from '../components/Popups/FetchContentPopup';
+import * as routes from './../../constants/routes';
 
 import logo from '../../../public/logo.png';
 
@@ -36,6 +37,10 @@ class RepositoriesContainer extends Component {
 
     handleClose = () => {
         this.setState({ open: false });
+    };
+
+    openNewRepositoryPage = () => {
+        this.props.store.open(routes.NEW);
     };
 
     getGitHubLink() {
@@ -80,7 +85,9 @@ class RepositoriesContainer extends Component {
                                         onClick={ this.handleOpen } />
                                     <MenuItem
                                         primaryText="New"
-                                        leftIcon={ <DatabasePlusIcon/> }/>
+                                        leftIcon={ <DatabasePlusIcon/> }
+                                        onClick={ this.openNewRepositoryPage }
+                                    />
                                 </Menu>
                                 <FetchContentPopup
                                     header={ this.getGitHubLink() }

@@ -32,7 +32,8 @@ class LoginContainer extends Component {
                                 onSubmit={ this.authenticate }
                                 onGeneratePress={ this.useBaseType }
                             />
-                        )}
+                        )
+                    }
                     {
                         this.props.store.login.isBaseType() && (
                             <GitHubLoginBase

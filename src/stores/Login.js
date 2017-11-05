@@ -1,6 +1,7 @@
 import { types, getParent } from "mobx-state-tree";
 import { useStrict } from 'mobx'; useStrict(false);
 import { GitHubCms, GitHubTwoFactorError, GitHubUnauthorisedError } from 'radaller-core';
+import * as routes from './../constants/routes';
 
 const Login = types
     .model({
@@ -19,7 +20,9 @@ const Login = types
             const store = getParent(self);
             try {
                 const auth = await getGitHubAuth(self.type, credentials);
-                store.setUser(auth);
+                store.initUser(auth);
+                store.updateSessionAuth(auth);
+                store.open(routes.HOME);
             } catch (error) {
                 console.log(error);
                 if (error instanceof GitHubTwoFactorError) {

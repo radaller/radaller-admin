@@ -5,6 +5,7 @@ import { reaction } from "mobx"
 
 import LoginContainer from './repositories/containers/LoginContainer';
 import RepositoriesContainer from './repositories/containers/RepositoriesContainer';
+import NewRepositoryContainer from './repositories/containers/NewRepositoryContainer';
 import Store from './stores/Store';
 import LocalStorageSession from './LocalStorageSession';
 import createBrowserHistory from "history/createBrowserHistory";
@@ -18,6 +19,7 @@ const App = () => (
         <Switch>
             <Route exact path="/" render={ props => <RepositoriesContainer store={store} {...props} />} />
             <Route path="/login" render={ props => <LoginContainer store={store} {...props} />} />
+            <Route path="/new" render={ props => <NewRepositoryContainer store={store} {...props} />} />
         </Switch>
     </Router>
 );

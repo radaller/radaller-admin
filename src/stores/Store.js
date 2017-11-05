@@ -4,6 +4,7 @@ import Login from './Login';
 import Repository from './Repository';
 import SuggestedRepository from './Repository';
 import { GitHubCms } from 'radaller-core';
+import { GitHubApi } from 'radaller-core/src/cms/github/GitHubApi';
 import * as routes from './../constants/routes';
 
 const Store = types
@@ -30,11 +31,11 @@ const Store = types
                 self.recentRepositories = repositories;
             }
             if (userSession) {
-                self.user = User.create(userSession);
-                getEnv(self).history.push(routes.HOME);
+                self.initUser(userSession);
+                self.open(routes.HOME);
             } else {
                 self.login = Login.create();
-                getEnv(self).history.push(routes.LOGIN);
+                self.open(routes.LOGIN);
             }
         },
         showSnackbarMessage(message) {
@@ -43,10 +44,30 @@ const Store = types
         clearSnackbarMessage() {
             self.snackbarMessage = '';
         },
-        setUser(auth) {
+        initUser(auth) {
             self.user = User.create(auth);
+            self.api = GitHubCms.getApi(self.user.getAuth());
+        },
+        updateSessionAuth(auth) {
             getEnv(self).session.setItem('auth', auth);
-            getEnv(self).history.push(routes.HOME);
+        },
+        open(page) {
+            getEnv(self).history.push(page);
+        },
+        createRepository: async (repository) => {
+            const data = {
+                "name": repository.name,
+                "description": "This is your first repository"
+            };
+            try {
+                const response = await self.api.getUser().createRepo(data);
+                if (response.data && response.data.length > 0) {
+                    self.openRepository(response.data.id);
+                }
+            } catch (error) {
+                let errorMessage = "Unknown error.";
+                self.showSnackbarMessage(errorMessage);
+            }
         },
         addSuggestedRepository(repository) {
             self.suggestedRepositories.set(repository.id, repository);
@@ -66,8 +87,7 @@ const Store = types
         fetchSuggestedRepositories: async () => {
             self.setIsLoadingSuggestedRepositories(true);
             try {
-                const gitHubAPI = GitHubCms.getApi(self.user.getAuth());
-                const response = await gitHubAPI.getUser().listRepos();
+                const response = await self.api.getUser().listRepos();
                 if (response.data && response.data.length > 0) {
                     response.data
                         .filter(item => item.permissions.pull === true)

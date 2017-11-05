@@ -3,6 +3,8 @@ import { Row, Col } from 'react-flexbox-grid';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import { GitHubTwoFactorError } from 'radaller-core';
+import IconButton from 'material-ui/IconButton';
+import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
 
 class GitHubLoginBase extends Component {
     constructor(props) {
@@ -75,34 +77,38 @@ class GitHubLoginBase extends Component {
     };
 
     render() {
-        return (
-            <Col xs={8}>
+        return [
+            <Col xs={3}>
+                <IconButton
+                    iconStyle={ {width: 36, height: 36} }
+                    style={ {width: 72, height: 72, padding: 16} }
+                    onClick={ this.onCancelPress }
+                >
+                    <ArrowLeft />
+                </IconButton>
+            </Col>,
+            <Col xs={6}>
                 <Row>
                     <Col xs={12}>
                         { this.getFields() }
                     </Col>
                 </Row>
-                <Row between="xs">
-                    <Col>
-                        <br/>
-                        <RaisedButton
-                            primary={ true }
-                            onClick={ this.onCancelPress }
-                            label="Cancel"
-                        />
-                    </Col>
-                    <Col>
-                        <br/>
+                <Row>
+                    <Col xs={12}>
                         <RaisedButton
                             primary={ true }
                             onClick={ this.onSubmit }
                             label="Submit"
                             className="submit-button"
+                            fullWidth
                         />
                     </Col>
                 </Row>
+            </Col>,
+            <Col xs={3}>
+
             </Col>
-        )
+        ]
     }
     getFields() {
         return [

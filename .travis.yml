@@ -20,7 +20,7 @@ after_script:
 script:
 - npm run build:mock
 - npm run http-server > /dev/null 2>&1 &
-- npm run git-mock-server > /dev/null 2>&1 &
+- npm run github-mock > /dev/null 2>&1 &
 - npm run test:spec
 notifications:
   slack:

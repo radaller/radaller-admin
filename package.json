@@ -9,7 +9,7 @@
     "build:mock": "npm run clean:build && NODE_ENV=production GIT_API_URL=http://localhost:3000 webpack -p --config webpack.config.prod.js",
     "clean:build": "rm -frd public/dist && rm -frd public/index.html",
     "http-server": "./node_modules/http-server/bin/http-server ./public/dist/ -p 8080",
-    "git-mock-server": "node ./test/git-mock/server.js ",
+    "github-mock": "node ./test/github-mock/server.js ",
     "test": "TEST_URL=http://localhost:8080 jest --verbose",
     "test:spec": "TEST_URL=http://localhost:8080 jest --verbose ./test/spec"
   },

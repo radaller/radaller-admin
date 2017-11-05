@@ -38,6 +38,13 @@ class GitHubLoginToken extends Component {
         }
     };
 
+    onFieldEnter = (event) => {
+        if (event.charCode === 13) { // enter key pressed
+            event.preventDefault();
+            this.onSubmit();
+        }
+    };
+
     render() {
         return [
             <Col xs={9}>
@@ -51,6 +58,7 @@ class GitHubLoginToken extends Component {
                             fullWidth
                             onChange={ this.onTokenChange }
                             onBlur={ this.validateToken }
+                            onKeyPress={ this.onFieldEnter }
                         />
                     </Col>
                     <Col xs={3}>
