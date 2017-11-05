@@ -21,7 +21,7 @@ server.use(function(req, res, next) {
     const matches = req.url.replace("?ref=master", "").match(/\/repos\/test\/test-repository-1\/contents\/(.*)/);
     if (matches && matches.length > 1) {
         const id = matches[1].replace(/\//g, '_');
-        req.url = '/test_repository_1/';
+        req.url = '/repository_with_content/';
 
         if (matches[1].indexOf('.yaml') > 0) {
             req.url += id;
@@ -32,7 +32,7 @@ server.use(function(req, res, next) {
         if (req.method === "PUT" || req.method === "POST") {
             if (!req.body.sha) {
                 req.method = "POST";
-                req.url = '/test_repository_1/';
+                req.url = '/repository_with_content/';
             }
             req.body = {
                 id: id,
@@ -61,7 +61,6 @@ router.render = function (req, res) {
         };
         data = JSON.stringify(data);
     } else if (
-        req.path.indexOf("/test_repository_1/") === 0 &&
         req.path.indexOf(".yaml") > 0 &&
         req.get('Accept') === 'application/vnd.github.v3.raw+json'
     ) {

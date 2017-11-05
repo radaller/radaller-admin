@@ -38,6 +38,7 @@ module.exports = () => {
         user: require('./data/user.json'),
         repositories: require('./data/repositories.json'),
         authorizations: require('./data/authorizations.json'),
-        test_repository_1: filesContent
+        empty_repository: [],
+        repository_with_content: filesContent
     }
 };

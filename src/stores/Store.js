@@ -4,7 +4,6 @@ import Login from './Login';
 import Repository from './Repository';
 import SuggestedRepository from './Repository';
 import { GitHubCms } from 'radaller-core';
-import { GitHubApi } from 'radaller-core/src/cms/github/GitHubApi';
 import * as routes from './../constants/routes';
 
 const Store = types
