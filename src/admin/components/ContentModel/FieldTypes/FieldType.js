@@ -33,7 +33,7 @@ const FieldType = ({ field, onClick }) => {
                 style={ iconBox }
                 onClick={ () => { onClick(field) } }
             >
-                { getIcon(field.fieldType) }
+                { getIcon(field.inputType) }
             </Paper>
             <div style={ title }><strong>{ field.descTitle }</strong></div>
             <p style={ desc }>{ field.shortDesc }</p>

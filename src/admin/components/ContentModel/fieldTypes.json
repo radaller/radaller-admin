@@ -1,7 +1,7 @@
 {
     "text": {
         "type": "string",
-        "fieldType": "text",
+        "inputType": "text",
         "required": false,
         "title": "",
         "valid": true,
@@ -13,7 +13,7 @@
     },
     "reachtext": {
         "type": "string",
-        "fieldType": "reachtext",
+        "inputType": "reachtext",
         "required": false,
         "title": "",
         "valid": true,
@@ -25,7 +25,7 @@
     },
     "date": {
         "type": "string",
-        "fieldType": "date",
+        "inputType": "date",
         "required": false,
         "title": "",
         "valid": true,
@@ -38,7 +38,7 @@
     },
     "number": {
         "type": "integer",
-        "fieldType": "number",
+        "inputType": "number",
         "required": false,
         "title": "",
         "valid": true,
@@ -50,7 +50,7 @@
     },
     "reference_array": {
         "type": "integer",
-        "fieldType": "reference_array",
+        "inputType": "reference_array",
         "required": false,
         "title": "",
         "valid": true,

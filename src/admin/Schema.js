@@ -10,6 +10,7 @@ import { TextField, RichTextField, DateField } from 'admin-on-rest';
 class Schema {
     constructor(schema) {
         this.schema = schema;
+        console.log(schema);
     }
 
     getResourceDefinition() {
@@ -80,6 +81,7 @@ class Schema {
 }
 
 function listFieldsMap(propertyName, propertyData){
+    console.log(propertyData);
     switch (propertyData.inputType) {
         case 'text': return (<TextField source={propertyName} key={propertyName} />);
         case 'reachtext': return (<RichTextField source={propertyName} key={propertyName} />);

@@ -14,7 +14,7 @@ const FieldTypesList = ({ fieldTypes, onFieldTypeChosen }) => {
                         <FieldType
                             field={ field }
                             onClick={ () => {
-                                onFieldTypeChosen(field.fieldType);
+                                onFieldTypeChosen(field.inputType);
                             } }
                         />
                     )

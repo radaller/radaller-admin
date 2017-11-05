@@ -27,7 +27,7 @@ const iconButton = {
 const Property = ({ property, onDelete, onEdit }) => {
     return (
         <ListItem
-            leftIcon={getIcon(property.fieldType)}
+            leftIcon={getIcon(property.inputType)}
             rightIcon={
                 <div style={ box }>
                     <IconButton

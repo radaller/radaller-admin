@@ -77,13 +77,13 @@ class Form extends Component {
             newProp[key] = {
                 title: prop.title,
                 required: prop.required,
-                fieldType: prop.fieldType,
+                inputType: prop.inputType,
                 type: prop.type,
             };
             transformedProps = Object.assign({}, transformedProps, newProp);
         });
         // save properties to form
-        this.props.dispatch(change('record-form', 'properties', JSON.stringify(transformedProps)));
+        this.props.dispatch(change('record-form', 'properties', transformedProps));
     }
 
     editProperty(prop) {
@@ -121,7 +121,6 @@ class Form extends Component {
                     {
                         !allowEditFolder && <DisabledInput label="Folder" source="folder" />
                     }
-
                     {
                         properties.length > 0 && (
                             <div>
@@ -135,7 +134,7 @@ class Form extends Component {
                         Object.keys(properties).map((key) => {
                             const prop = properties[key];
                             return (
-                                <div>
+                                <div key={key}>
                                     <Property
                                         property={ prop }
                                         onEdit={ () => { this.editProperty(prop) } }

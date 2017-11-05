@@ -12,23 +12,27 @@ server.use(jsonServer.bodyParser);
 server.use(middlewares);
 server.use(auth);
 server.use(repositories);
+
 server.use(jsonServer.rewriter({
     "/user/repos*": "/repositories$1",
-    "/repos/test/test-repository-1/contents/schemas?ref=master" : "/test_repository_1?dir=schemas",
-    "/repos/test/test-repository-1/contents/posts?ref=master" : "/test_repository_1?dir=posts",
-    "/repos/test/test-repository-1/contents/menus/items?ref=master" : "/test_repository_1?dir=menus/items"
 }));
+
 server.use(function(req, res, next) {
     const matches = req.url.replace("?ref=master", "").match(/\/repos\/test\/test-repository-1\/contents\/(.*)/);
     if (matches && matches.length > 1) {
         const id = matches[1].replace(/\//g, '_');
+        req.url = '/test_repository_1/';
 
-        req.url = '/test_repository_1/' + id;
+        if (matches[1].indexOf('.yaml') > 0) {
+            req.url += id;
+        } else {
+            req.query.dir = matches[1];
+        }
 
         if (req.method === "PUT" || req.method === "POST") {
             if (!req.body.sha) {
                 req.method = "POST";
-                req.url = '/test_repository_1';
+                req.url = '/test_repository_1/';
             }
             req.body = {
                 id: id,
