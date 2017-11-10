@@ -56,14 +56,13 @@ const Store = types
         createRepository: async (repository) => {
             const data = {
                 "name": repository.name,
-                "description": "This is your first repository"
+                "description": "Radaller CMS Repository."
             };
             try {
                 const response = await self.api.getUser().createRepo(data);
-                if (response.data && response.data.length > 0) {
-                    self.openRepository(response.data.id);
-                }
+                return response.data;
             } catch (error) {
+                console.log(error);
                 let errorMessage = "Unknown error.";
                 self.showSnackbarMessage(errorMessage);
             }
@@ -71,17 +70,21 @@ const Store = types
         addSuggestedRepository(repository) {
             self.suggestedRepositories.set(repository.id, repository);
         },
-        openRepository(repositoryId) {
-            if (!self.recentRepositories.get(repositoryId)) {
-                const suggestedRepository = self.suggestedRepositories.get(repositoryId);
-                self.recentRepositories.set(suggestedRepository.id, suggestedRepository.toJSON());
-            }
-            self.currentRepository = self.recentRepositories.get(repositoryId);
-            self.currentRepository.openedAt = Date.now();
-
-            getEnv(self).session.setItem('repos', self.recentRepositories.toJSON());
-            getEnv(self).session.setItem('current', self.currentRepository.full_name);
+        openRepository(repository) {
+            self.addRepositoryToRecent(repository);
+            self.setCurrentRepository(repository);
             window.location.href = routes.ADMIN;
+        },
+        setCurrentRepository(repository) {
+            self.currentRepository = self.recentRepositories.get(repository.id);
+            getEnv(self).session.setItem('current', self.currentRepository.full_name);
+        },
+        addRepositoryToRecent(repository) {
+            if (!self.recentRepositories.get(repository.id)) {
+                self.recentRepositories.set(repository.id, repository);
+            }
+            self.recentRepositories.get(repository.id).openedAt = Date.now();
+            getEnv(self).session.setItem('repos', self.recentRepositories.toJSON());
         },
         fetchSuggestedRepositories: async () => {
             self.setIsLoadingSuggestedRepositories(true);

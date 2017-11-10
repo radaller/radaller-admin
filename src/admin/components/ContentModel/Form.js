@@ -101,15 +101,16 @@ class Form extends Component {
     onTitleChange(evt) {
         // save value to folder field
         if (this.state.allowEditFolder) {
+            
             this.props.dispatch(change('record-form', 'folder', evt.target.value));
         }
     }
 
     render() {
         const { properties, editProperty, allowEditFolder } = this.state;
-        return (
-            <div>
+        return [
                 <SimpleForm
+                    key="model-form"
                     { ...this.props }
                     toolbar={ <FormToolbar showFieldsList={ this.toggleDialog }/> }
                 >
@@ -147,9 +148,9 @@ class Form extends Component {
                         })
                     }
 
-                </SimpleForm>
-
+                </SimpleForm>,
                 <Popup
+                    key="add-attribute"
                     title="Add new Field"
                     open={ this.state.showDialog }
                     onClose={ this.closeDialog }
@@ -158,9 +159,7 @@ class Form extends Component {
                     editField={ editProperty }
                     existedFieldIds={ Object.keys(properties) }
                 />
-
-            </div>
-        )
+        ]
     }
 }
 

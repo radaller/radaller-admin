@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-flexbox-grid';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import { GitHubTwoFactorError } from 'radaller-core';
 import IconButton from 'material-ui/IconButton';
@@ -93,14 +93,13 @@ class GitHubLoginBase extends Component {
                         { this.getFields() }
                     </Col>
                 </Row>
-                <Row>
+                <Row end="xs">
                     <Col xs={12}>
-                        <RaisedButton
+                        <FlatButton
                             primary={ true }
                             onClick={ this.onSubmit }
                             label="Submit"
                             className="submit-button"
-                            fullWidth
                         />
                     </Col>
                 </Row>

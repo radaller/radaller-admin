@@ -9,7 +9,7 @@ describe('Admin', function() {
         return nightmare
             .goto(appUrl)
             .evaluate(() => {
-                window.localStorage.setItem('auth', '{"username":"osvarychevskyi","token":"valid_token"}');
+                window.localStorage.setItem('auth', '{"username":"valid_username","token":"valid_token"}');
                 window.localStorage.setItem('current', 'test/test-repository-1');
                 window.localStorage.setItem('repos', '{"1":{"id":1,"name":"test-repository-1","full_name":"test/test-repository-1","description":"Test repository 1 Description.","openedAt":1508152604141}}');
             })

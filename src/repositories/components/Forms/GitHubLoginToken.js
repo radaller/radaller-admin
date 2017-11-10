@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'react-flexbox-grid';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
+import IconButton from 'material-ui/IconButton';
+import LoginVariantIcon from 'mdi-react/LoginVariantIcon';
 
-const SubmitButtonStyle = {
-    fontSize: 12,
-    height: 30,
-    lineHeight: '30px',
-    marginBottom: 15
-};
 
 class GitHubLoginToken extends Component {
     constructor(props) {
@@ -49,7 +45,7 @@ class GitHubLoginToken extends Component {
         return [
             <Col xs={9}>
                 <Row bottom="xs">
-                    <Col xs={9}>
+                    <Col xs={10}>
                         <TextField
                             floatingLabelText="GitHub Token"
                             name="token"
@@ -61,24 +57,26 @@ class GitHubLoginToken extends Component {
                             onKeyPress={ this.onFieldEnter }
                         />
                     </Col>
-                    <Col xs={3}>
-                        <RaisedButton
-                            style={ SubmitButtonStyle }
+                    <Col xs={2}>
+                        <IconButton
                             className="generate-button"
                             onClick={ this.onGeneratePress }
-                            label="Generate"
-                        />
+                            tooltip="Login with GitHub credentials">
+                            <LoginVariantIcon/>
+                        </IconButton>
                     </Col>
                 </Row>
-                <Row>
-                    <Col xs={9}>
-                        <RaisedButton
+                <Row end="xs">
+                    <Col xs={10}>
+                        <FlatButton
                             primary={ true }
                             onClick={ this.onSubmit }
-                            fullWidth
                             label="Submit"
                             className="submit-button"
                         />
+                    </Col>
+                    <Col xs={2}>
+
                     </Col>
                 </Row>
             </Col>

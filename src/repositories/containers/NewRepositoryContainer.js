@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react';
 
 import OneColumnLayout from '../layouts/OneColumnLayout';
 import { Row, Col } from 'react-flexbox-grid';
-import RaisedButton from 'material-ui/RaisedButton';
+import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
 import ArrowLeft from 'material-ui/svg-icons/hardware/keyboard-arrow-left';
@@ -18,20 +18,46 @@ class NewRepositoryContainer extends Component {
         super(props);
         this.state = {
             name: '',
+            errorText: '',
             isValid: true
         };
     }
 
     onNameChange = (event) => {
-        this.setState({ name: event.target.value });
+        this.setState({ name: this.formatName(event.target.value), errorText: ''});
     };
 
     goToRepositories = () => {
         this.props.store.open(routes.HOME);
     };
 
-    createRepository = () => {
-        this.props.store.createRepository({name: this.state.name});
+    createRepository = async () => {
+        try {
+            await this.props.store.api.getRepo(this.props.store.user.username, this.state.name).getDetails();
+            this.setState({errorText: 'Repository already exist.'});
+        } catch (error) {
+            const repository = await this.props.store.createRepository({name: this.state.name});
+            this.props.store.openRepository(repository);
+        }
+    };
+
+    onFieldEnter = (event) => {
+        if (event.charCode === 13) { // enter key pressed
+            event.preventDefault();
+            this.createRepository();
+        }
+    };
+
+    formatName = (value) => {
+        if(!value) return '';
+        const trimLeadingSpaces = /^\s+/g;
+        const special = /[^\w\s-]/gi;
+        const spaces = /\s+/g;
+        return value
+            .replace(trimLeadingSpaces, '')
+            .replace(special, '')
+            .replace(spaces, '-')
+            .toLowerCase();
     };
 
     render() {
@@ -56,17 +82,20 @@ class NewRepositoryContainer extends Component {
                                         name="repository-name"
                                         type="text"
                                         fullWidth
+                                        className="repository-name"
+                                        value={ this.state.name }
                                         onChange={ this.onNameChange }
+                                        onKeyPress={ this.onFieldEnter }
+                                        errorText={ this.state.errorText }
                                     />
                                 </Col>
                             </Row>
-                            <Row>
+                            <Row end="xs">
                                 <Col xs={12}>
-                                    <RaisedButton
+                                    <FlatButton
                                         primary={ true }
-                                        fullWidth
                                         label="Create"
-                                        className="submit-button"
+                                        className="new-repository-submit"
                                         onClick={ this.createRepository }
                                     />
                                 </Col>

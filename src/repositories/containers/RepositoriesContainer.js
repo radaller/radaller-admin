@@ -26,8 +26,14 @@ class RepositoriesContainer extends Component {
         };
     }
 
-    openRepository = (repositoryId) => {
-        this.props.store.openRepository(repositoryId);
+    openSuggestedRepository = (repositoryId) => {
+        const repository = this.props.store.suggestedRepositories.get(repositoryId);
+        this.props.store.openRepository(repository.toJSON());
+    };
+
+    openRecentRepository = (repositoryId) => {
+        const repository = this.props.store.recentRepositories.get(repositoryId);;
+        this.props.store.openRepository(repository.toJSON());
     };
 
     handleOpen = () => {
@@ -65,7 +71,7 @@ class RepositoriesContainer extends Component {
                                 className="repository-list"
                                 listHeader={ "Recent Repositories" }
                                 items={ this.props.store.getSortedRecentRepositories() }
-                                onRepositoryClick={ this.openRepository }
+                                onRepositoryClick={ this.openRecentRepository }
                             />
                         </Col>
                     )
@@ -84,6 +90,7 @@ class RepositoriesContainer extends Component {
                                         leftIcon={ <FolderOpenIcon /> }
                                         onClick={ this.handleOpen } />
                                     <MenuItem
+                                        className="repository-create"
                                         primaryText="New"
                                         leftIcon={ <DatabasePlusIcon/> }
                                         onClick={ this.openNewRepositoryPage }
@@ -98,7 +105,7 @@ class RepositoriesContainer extends Component {
                                     <FilteredRepositoryList
                                         className="suggested-repositories"
                                         items={ this.props.store.suggestedRepositories.values() }
-                                        onRepositoryClick={ this.openRepository }
+                                        onRepositoryClick={ this.openSuggestedRepository }
                                     />
                                 </FetchContentPopup>
                             </Row>

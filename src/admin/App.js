@@ -19,7 +19,7 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            schemas:[]
+            schemas: null
         };
         this.showAdmin = this.showAdmin.bind(this);
         this.closeAdmin = this.closeAdmin.bind(this);
@@ -35,6 +35,8 @@ class App extends Component {
         this.restClient(GET_LIST, 'schemas')
         .then(resp => {
             this.setState({schemas: resp.data});
+        }).catch(e => {
+            this.setState({schemas: []});
         });
     }
 
@@ -45,12 +47,12 @@ class App extends Component {
 
     render() {
         return [
-            this.state.schemas.length === 0 && (
+            this.state.schemas === null && (
                 <MuiThemeProvider muiTheme={muiTheme}>
                     <LinearProgress mode="indeterminate" />
                 </MuiThemeProvider>
             ),
-            this.state.schemas.length > 0 && (
+            this.state.schemas !== null && (
                 <Admin
                     title="Radaller"
                     restClient={ this.restClient }

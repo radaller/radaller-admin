@@ -22,7 +22,7 @@ describe('Login Page', function() {
             let errorMessage = await nightmare
                 .goto(appUrl)
                 .insert('input[name="token"]', 'wrong_token')
-                .click('.submit-button button')
+                .click('.submit-button')
                 .wait(500)
                 .wait('.error-snack')
                 .evaluate(() => {
@@ -36,7 +36,7 @@ describe('Login Page', function() {
             let isOpenButtonVisible = await nightmare
                 .goto(appUrl)
                 .insert('input[name="token"]', 'valid_token')
-                .click('.submit-button button')
+                .click('.submit-button')
                 .wait('.repository-open')
                 .visible('.repository-open')
                 .end();

@@ -33,7 +33,7 @@ class Schema {
                 <Datagrid>
                     <TextField source="id" />
                     {
-                        this.schema.showInList.map(
+                        this.schema.showInList && this.schema.showInList.map(
                             (source) => {
                                 return listFieldsMap(source, this.schema.properties[source]);
                             }

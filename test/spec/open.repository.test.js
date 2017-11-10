@@ -9,7 +9,7 @@ describe('Repository Page', function() {
         return nightmare
             .goto(appUrl)
             .insert('input[name="token"]', 'valid_token')
-            .click('.submit-button button')
+            .click('.submit-button')
             .wait('.repository-open');
     }, 10000);
 
