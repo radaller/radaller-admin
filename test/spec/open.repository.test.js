@@ -24,13 +24,11 @@ describe('Repository Page', function() {
                     ).map(item => item.innerText.split('\n')[1]);
                 })
                 .end();
-            expect(repositoryNames).toEqual([
-                'test-repository-1',
-                'test-a-repository-2',
-                'test-a-repository-3',
-                'test-b-repository-4',
-                'test-b-repository-5'
-            ]);
+            expect(repositoryNames).toContain('test-repository-1');
+            expect(repositoryNames).toContain('test-a-repository-2');
+            expect(repositoryNames).toContain('test-a-repository-3');
+            expect(repositoryNames).toContain('test-b-repository-4');
+            expect(repositoryNames).toContain('test-b-repository-5');
         }, 5000);
 
         it('should filter repository list', async function () {

@@ -32,6 +32,14 @@ class NewRepositoryContainer extends Component {
     };
 
     createRepository = async () => {
+        if (this.state.name === '') {
+            this.setState({errorText: 'This field is required.'});
+            return;
+        }
+        if (this.state.name.trim().length < 3) {
+            this.setState({errorText: 'Name should be descriptive. (min 2 characters)'});
+            return;
+        }
         try {
             await this.props.store.api.getRepo(this.props.store.user.username, this.state.name).getDetails();
             this.setState({errorText: 'Repository already exist.'});
@@ -95,7 +103,7 @@ class NewRepositoryContainer extends Component {
                                     <FlatButton
                                         primary={ true }
                                         label="Create"
-                                        className="new-repository-submit"
+                                        className="create-submit"
                                         onClick={ this.createRepository }
                                     />
                                 </Col>
