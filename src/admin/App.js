@@ -4,7 +4,7 @@ import GitHubStorageClient from './GitHubStorageClient';
 import LogoutButton from './LogoutButton';
 import LinearProgress from 'material-ui/LinearProgress';
 import AddIcon from 'material-ui/svg-icons/content/add';
-import { Admin, Resource, Delete, GET_LIST } from 'admin-on-rest';
+import { Admin, Resource, Delete, GET_LIST, CRUD_CREATE_SUCCESS, CRUD_UPDATE_SUCCESS, CRUD_DELETE_SUCCESS} from 'admin-on-rest';
 
 import Schema from './Schema';
 import Session from '../LocalStorageSession';
@@ -14,6 +14,8 @@ import { ContentModelCreate, ContentModelEdit, ContentModelList } from './contai
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 const muiTheme = getMuiTheme();
+
+const SCHEMAS = 'schemas';
 
 class App extends Component {
     constructor() {
@@ -32,7 +34,7 @@ class App extends Component {
     }
 
     showAdmin() {
-        this.restClient(GET_LIST, 'schemas')
+        this.restClient(GET_LIST, SCHEMAS)
         .then(resp => {
             this.setState({schemas: resp.data});
         }).catch(e => {
@@ -44,6 +46,20 @@ class App extends Component {
         this.session.clearSelectedRepository();
         window.location.href = "/";
     }
+
+    schemasReducer  = (previousState = 0, {meta, type }) => {
+        console.log(type);
+        if (type === CRUD_CREATE_SUCCESS || type === CRUD_UPDATE_SUCCESS || type === CRUD_DELETE_SUCCESS) {
+            if (meta.resource === SCHEMAS) {
+                // we should reload because:
+                // '<Provider> does not support changing `store` on the fly.' and
+                // 'Warning: You cannot change <Router history>'
+                // we can't create resources dynamic
+                window.location.reload();
+            }
+        }
+        return previousState;
+    };
 
     render() {
         return [
@@ -58,6 +74,7 @@ class App extends Component {
                     restClient={ this.restClient }
                     logoutButton={ LogoutButton(this.closeAdmin) }
                     authClient={ ()=>{} }
+                    customReducers={ { schemasReducer: this.schemasReducer } }
                 >
                     {
                         this.state.schemas.map(item => {
@@ -66,7 +83,7 @@ class App extends Component {
                         })
                     }
                     <Resource
-                        name="schemas"
+                        name={ SCHEMAS }
                         options={{ label: "Content Model" }}
                         list={ ContentModelList }
                         create={ ContentModelCreate }
