@@ -102,7 +102,7 @@ class Form extends Component {
         // save value to folder field
         if (this.state.allowEditFolder) {
             
-            this.props.dispatch(change('record-form', 'folder', evt.target.value));
+            this.props.dispatch(change('record-form', 'folder', formatID(evt.target.value)));
         }
     }
 
@@ -117,7 +117,7 @@ class Form extends Component {
                     <TextInput label="Title" source="title" validate={ [required] } onChange={ this.onTitleChange } />
                     <TextInput elStyle={ { display: 'none' } } label="type" source="type" defaultValue="object"/>
                     {
-                        allowEditFolder && <TextInput label="Folder" source="folder" validate={ [required] } format={ formatID } />
+                        allowEditFolder && <TextInput label="Folder" source="folder" validate={ [required] } />
                     }
                     {
                         !allowEditFolder && <DisabledInput label="Folder" source="folder" />
