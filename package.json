@@ -58,7 +58,7 @@
     "postcss-loader": "^2.0.6",
     "radaller-mock-data": "^0.1.2",
     "sass-loader": "^6.0.6",
-    "style-loader": "^0.19.0",
+    "style-loader": "^0.21.0",
     "url-loader": "^0.6.1",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.8.2"
