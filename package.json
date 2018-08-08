@@ -55,7 +55,7 @@
     "nightmare": "^2.10.0",
     "node-sass": "^4.5.3",
     "open-browser-webpack-plugin": "0.0.5",
-    "postcss-loader": "^2.0.6",
+    "postcss-loader": "^3.0.0",
     "radaller-mock-data": "^0.1.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
