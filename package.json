@@ -14,7 +14,7 @@
     "test:spec": "TEST_URL=http://localhost:8080 jest --verbose ./test/spec"
   },
   "dependencies": {
-    "radaller-core": "^0.2.7",
+    "radaller-core": "0.2.15",
     "admin-on-rest": "^1.3.2",
     "aor-rich-text-input": "^1.0.1",
     "material-ui": "^0.19.2",
