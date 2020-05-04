@@ -53,7 +53,7 @@
     "jest": "^21.1.0",
     "json-server": "^0.12.0",
     "nightmare": "^2.10.0",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.14.1",
     "open-browser-webpack-plugin": "0.0.5",
     "postcss-loader": "^2.0.6",
     "radaller-mock-data": "^0.1.2",
